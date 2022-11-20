@@ -1,0 +1,41 @@
+package ua.foxminded.javaspring.schoolconsoleapp.menu;
+
+import java.util.List;
+
+import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
+import ua.foxminded.javaspring.schoolconsoleapp.Student;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.CoursesDao;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.CoursesDaoImpl;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsCoursesDao;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsCoursesDaoImpl;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDao;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDaoImpl;
+
+public class RemoveStudentFromCourse implements Menu {
+    private static final String NAME = "Remove the student from one of their courses";
+
+    @Override
+    public void execute() {
+        CoursesDao coursesDao = new CoursesDaoImpl();
+        StudentsDao studentsDao = new StudentsDaoImpl();
+        StudentsCoursesDao studentsCoursesDao = new StudentsCoursesDaoImpl();
+        ConsoleInput input = new ConsoleInput();
+
+        coursesDao.getAllCourse().forEach(System.out::println);
+        List<Student> students = studentsDao.getAllStudents();
+        students.sort((o1, o2) -> o1.getStudentID() - o2.getStudentID());
+        students.forEach(System.out::println);
+
+        System.out.print("Enter the id of student: ");
+        int studentId = input.getInt();
+        System.out.print("Enter the id of course: ");
+        int courseId = input.getInt();
+
+        studentsCoursesDao.removeStudentFromCourse(studentId, courseId);
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
+}

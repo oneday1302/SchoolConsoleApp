@@ -12,6 +12,6 @@ public interface StudentsDao {
     void updateGroupIdRow(Student student);
 
     List<Student> findAllStudentsInTheCourse(String courseName);
-    
+
     void deleteStudentById(int id);
 }

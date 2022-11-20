@@ -59,8 +59,7 @@ public class StudentsDaoImpl implements StudentsDao {
         try (Connection con = DriverManager.getConnection(PATH, USER, PASSWORD)) {
             Statement statement = con.createStatement();
             String sqlFormat = "UPDATE school.students SET group_id = %d WHERE student_id = %d";
-            statement.executeUpdate(
-                    String.format(sqlFormat, student.getGroup().getGroupID(), student.getStudentID()));
+            statement.executeUpdate(String.format(sqlFormat, student.getGroup().getGroupID(), student.getStudentID()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -76,11 +75,9 @@ public class StudentsDaoImpl implements StudentsDao {
             Statement statement = con.createStatement();
             GroupDao groupsDao = new GroupDaoImpl();
             StringJoiner sqlFormat = new StringJoiner(" ");
-            sqlFormat.add("SELECT * FROM school.students")
-                     .add("JOIN school.students_courses")
+            sqlFormat.add("SELECT * FROM school.students").add("JOIN school.students_courses")
                      .add("ON school.students.student_id = school.students_courses.student_id")
-                     .add("JOIN school.courses")
-                     .add("ON school.students_courses.course_id = school.courses.course_id")
+                     .add("JOIN school.courses").add("ON school.students_courses.course_id = school.courses.course_id")
                      .add("WHERE school.courses.course_name = '%s'");
             ResultSet result = statement.executeQuery(String.format(sqlFormat.toString(), courseName));
             while (result.next()) {
