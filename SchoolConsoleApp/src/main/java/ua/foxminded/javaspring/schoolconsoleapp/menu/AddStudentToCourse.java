@@ -4,8 +4,8 @@ import java.util.List;
 
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
 import ua.foxminded.javaspring.schoolconsoleapp.Student;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.CoursesDao;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.CoursesDaoImpl;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoImpl;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsCoursesDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsCoursesDaoImpl;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDao;
@@ -16,7 +16,7 @@ public class AddStudentToCourse implements Menu {
 
     @Override
     public void execute() {
-        CoursesDao coursesDao = new CoursesDaoImpl();
+        CourseDao coursesDao = new CourseDaoImpl();
         StudentsDao studentsDao = new StudentsDaoImpl();
         StudentsCoursesDao studentsCoursesDao = new StudentsCoursesDaoImpl();
         ConsoleInput input = new ConsoleInput();

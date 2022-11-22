@@ -2,8 +2,8 @@ package ua.foxminded.javaspring.schoolconsoleapp;
 
 import java.util.List;
 
-import ua.foxminded.javaspring.schoolconsoleapp.dao.CoursesDao;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.CoursesDaoImpl;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoImpl;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDaoImpl;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsCoursesDao;
@@ -23,7 +23,7 @@ public class SchoolConsoleApp {
         new SqlScriptRunner("schema.sql").run();
 
         GroupDao groupsDao = new GroupDaoImpl();
-        CoursesDao coursesDao = new CoursesDaoImpl();
+        CourseDao coursesDao = new CourseDaoImpl();
         StudentsDao studentsDao = new StudentsDaoImpl();
         StudentsCoursesDao studentsCoursesDao = new StudentsCoursesDaoImpl();
 

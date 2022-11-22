@@ -10,7 +10,7 @@ import java.util.List;
 
 import ua.foxminded.javaspring.schoolconsoleapp.Course;
 
-public class CoursesDaoImpl implements CoursesDao {
+public class CourseDaoImpl implements CourseDao {
     private static final String PATH = "jdbc:postgresql://localhost:5432/postgres";
     private static final String USER = "postgres";
     private static final String PASSWORD = "1996";
