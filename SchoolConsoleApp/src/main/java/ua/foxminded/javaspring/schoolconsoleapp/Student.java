@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Student {
-    private int studentID;
+    private int id;
     private final String firstName;
     private final String lastName;
     private Group group;
@@ -19,24 +19,21 @@ public class Student {
         this.lastName = lastName;
     }
 
-    public Student(int studentID, String firstName, String lastName) {
-        this.studentID = studentID;
+    public Student(int id, String firstName, String lastName) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public int getStudentID() {
-        return studentID;
+    public int getId() {
+        return id;
     }
 
-    public boolean ifStudentInGroup() {
-        if (group == null) {
-            return false;
-        }
-        return true;
+    public boolean hasGroup() {
+        return group != null;
     }
 
-    public boolean checkIfHasCourse(Course course) {
+    public boolean hasCourse(Course course) {
         if (course == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -67,12 +64,15 @@ public class Student {
     }
 
     public void setGroup(Group group) {
+        if (group == null) {
+            throw new IllegalArgumentException("Param cannot be null.");
+        }
         this.group = group;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(courses, firstName, group, lastName, studentID);
+        return Objects.hash(courses, firstName, group, lastName, id);
     }
 
     @Override
@@ -85,16 +85,15 @@ public class Student {
             return false;
         Student other = (Student) obj;
         return Objects.equals(courses, other.courses) && Objects.equals(firstName, other.firstName)
-                && Objects.equals(group, other.group) && Objects.equals(lastName, other.lastName)
-                && studentID == other.studentID;
+                && Objects.equals(group, other.group) && Objects.equals(lastName, other.lastName) && id == other.id;
     }
 
     @Override
     public String toString() {
         String format = "student ID: %-3d| first name: %-8s| last name: %-8s| group: %s";
         if (group == null) {
-            return String.format(format, studentID, firstName, lastName, "no group");
+            return String.format(format, id, firstName, lastName, "no group");
         }
-        return String.format(format, studentID, firstName, lastName, group.getGroupName());
+        return String.format(format, id, firstName, lastName, group.getName());
     }
 }

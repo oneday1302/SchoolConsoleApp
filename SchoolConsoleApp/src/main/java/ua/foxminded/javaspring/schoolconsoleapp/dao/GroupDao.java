@@ -1,13 +1,13 @@
 package ua.foxminded.javaspring.schoolconsoleapp.dao;
 
 import java.util.List;
-
 import ua.foxminded.javaspring.schoolconsoleapp.Group;
 
 public interface GroupDao {
-    void addGroup(Group group);
+    
+    void add(Group group);
 
-    List<Group> getAllGroup();
+    List<Group> getAll();
 
-    Group getGroupById(int id);
+    Group get(int id);
 }

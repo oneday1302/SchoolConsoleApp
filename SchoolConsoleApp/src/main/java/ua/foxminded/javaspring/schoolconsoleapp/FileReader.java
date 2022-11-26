@@ -19,8 +19,7 @@ public class FileReader implements DataSource<String> {
 
     @Override
     public Stream<String> getData() {
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(this.getClass().getResourceAsStream(fileName)))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(fileName)))) {
             List<String> list = new LinkedList<>();
             while (reader.ready()) {
                 list.add(reader.readLine());

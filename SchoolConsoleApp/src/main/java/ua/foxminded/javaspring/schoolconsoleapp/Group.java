@@ -5,23 +5,23 @@ import java.util.List;
 import java.util.Objects;
 
 public class Group {
-    private int groupID;
-    private final String groupName;
+    private int id;
+    private final String name;
     private List<Student> students = new ArrayList<>();
 
-    public Group(String groupName) {
-        if (groupName == null) {
+    public Group(String name) {
+        if (name == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
-        this.groupName = groupName;
+        this.name = name;
     }
 
-    public Group(int groupID, String groupName) {
-        if (groupName == null) {
+    public Group(int id, String name) {
+        if (name == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
-        this.groupID = groupID;
-        this.groupName = groupName;
+        this.id = id;
+        this.name = name;
     }
 
     public void addStudent(Student student) {
@@ -31,12 +31,12 @@ public class Group {
         students.add(student);
     }
 
-    public int getGroupID() {
-        return groupID;
+    public int getId() {
+        return id;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getName() {
+        return name;
     }
 
     public List<Student> getStudents() {
@@ -45,7 +45,7 @@ public class Group {
 
     @Override
     public int hashCode() {
-        return Objects.hash(groupID, groupName, students);
+        return Objects.hash(id, name);
     }
 
     @Override
@@ -57,12 +57,12 @@ public class Group {
         if (getClass() != obj.getClass())
             return false;
         Group other = (Group) obj;
-        return groupID == other.groupID && Objects.equals(groupName, other.groupName)
-                && Objects.equals(students, other.students);
+        return id == other.id && Objects.equals(name, other.name);
     }
 
     @Override
     public String toString() {
-        return "ID: " + groupID + "| group name: " + groupName;
+        String format = "ID: %-2d| group name: %s";
+        return String.format(format, id, name);
     }
 }

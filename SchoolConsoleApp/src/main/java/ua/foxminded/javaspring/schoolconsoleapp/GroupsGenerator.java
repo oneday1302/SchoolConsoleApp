@@ -5,11 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 public class GroupsGenerator implements Generator<Group> {
-    private static final String DATA_NUMBER = "0123456789";
-    private static final int NUMBER_LENGTH = 2;
-    private static final String DATA_SYMBOL = "QWERTYUIOPASDFGHJKLZXCVBNM";
-    private static final int SYMBOL_LENGTH = 2;
     private final int count;
+    private static final Random random = new Random();
 
     public GroupsGenerator(int count) {
         if (count <= 0) {
@@ -29,19 +26,15 @@ public class GroupsGenerator implements Generator<Group> {
 
     private String generateGroupName() {
         StringBuilder groupName = new StringBuilder();
-        return groupName
-                .append(cycle(DATA_SYMBOL, SYMBOL_LENGTH))
-                .append('-')
-                .append(cycle(DATA_NUMBER, NUMBER_LENGTH))
-                .toString();
+        return groupName.append((char)getRandomNum('A', 'Z'))
+                        .append((char)getRandomNum('A', 'Z'))
+                        .append('-')
+                        .append(getRandomNum(0, 9))
+                        .append(getRandomNum(0, 9))
+                        .toString();
     }
 
-    private StringBuilder cycle(String data, int length) {
-        Random random = new Random();
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            result.append(data.charAt(random.nextInt(data.length())));
-        }
-        return result;
+    private int getRandomNum(int min, int max) {
+        return random.nextInt(max + 1 - min) + min;
     }
 }

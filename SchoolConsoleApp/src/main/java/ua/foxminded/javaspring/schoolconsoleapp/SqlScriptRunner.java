@@ -4,25 +4,24 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.sql.DataSource;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 public class SqlScriptRunner {
-    private static final String PATH = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "1996";
     private final String sqlFileName;
+    private final DataSource dataSource;
 
-    public SqlScriptRunner(String sqlFileName) {
-        if (sqlFileName == null) {
+    public SqlScriptRunner(String sqlFileName, DataSource dataSource) {
+        if (sqlFileName == null || dataSource == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         this.sqlFileName = sqlFileName;
+        this.dataSource = dataSource;
     }
 
     public void run() {
-        try (Connection con = DriverManager.getConnection(PATH, USER, PASSWORD)) {
+        try (Connection con = dataSource.getConnection()) {
             ScriptRunner runner = new ScriptRunner(con);
             runner.setStopOnError(true);
             runner.setLogWriter(null);

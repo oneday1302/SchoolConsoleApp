@@ -1,40 +1,45 @@
 package ua.foxminded.javaspring.schoolconsoleapp.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.sql.DataSource;
 import ua.foxminded.javaspring.schoolconsoleapp.Group;
 
 public class GroupDaoImpl implements GroupDao {
-    private static final String PATH = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "1996";
+    private final DataSource dataSource;
+
+    public GroupDaoImpl(DataSource dataSource) {
+        if (dataSource == null) {
+            throw new IllegalArgumentException("Param cannot be null.");
+        }
+        this.dataSource = dataSource;
+    }
 
     @Override
-    public void addGroup(Group group) {
+    public void add(Group group) {
         if (group == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
-        try (Connection con = DriverManager.getConnection(PATH, USER, PASSWORD)) {
-            Statement statement = con.createStatement();
-            String insert = "INSERT INTO school.groups (group_name) VALUES ('%s')";
-            statement.executeUpdate(String.format(insert, group.getGroupName()));
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "INSERT INTO school.groups (group_name) VALUES (?)";
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, group.getName());
+            statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public List<Group> getAllGroup() {
+    public List<Group> getAll() {
         List<Group> groups = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection(PATH, USER, PASSWORD)) {
-            Statement statement = con.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM school.groups");
+        try (Connection con = dataSource.getConnection()) {
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM school.groups");
+            ResultSet result = statement.executeQuery();
             while (result.next()) {
                 groups.add(new Group(result.getInt("group_id"), result.getString("group_name")));
             }
@@ -45,11 +50,12 @@ public class GroupDaoImpl implements GroupDao {
     }
 
     @Override
-    public Group getGroupById(int id) {
-        try (Connection con = DriverManager.getConnection(PATH, USER, PASSWORD)) {
-            Statement statement = con.createStatement();
-            String sqlFormat = "SELECT * FROM school.groups WHERE group_id = %d";
-            ResultSet result = statement.executeQuery(String.format(sqlFormat, id));
+    public Group get(int id) {
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "SELECT * FROM school.groups WHERE group_id = ?";
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
             while (result.next()) {
                 return new Group(result.getInt("group_id"), result.getString("group_name"));
             }
