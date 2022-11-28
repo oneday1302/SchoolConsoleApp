@@ -35,7 +35,7 @@ public class SchoolConsoleApp {
         new CoursesDistributor(students, coursesDao.getAll()).distribute().forEach(studentsDao::addStudentToCourse);
 
         MenuGroup menu = new MenuGroup(null);
-        menu.addMenu(new FindAllGroupsWithLessOrEqualStudentsNumber(groupsDao, studentsDao));
+        menu.addMenu(new FindAllGroupsWithLessOrEqualStudentsNumber(groupsDao));
         menu.addMenu(new FindAllStudentsInTheCourse(studentsDao));
         menu.addMenu(new AddNewStudent(studentsDao));
         menu.addMenu(new DeleteStudentById(studentsDao));

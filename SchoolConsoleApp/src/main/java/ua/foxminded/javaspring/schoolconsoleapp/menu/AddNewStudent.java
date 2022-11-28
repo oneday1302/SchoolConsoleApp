@@ -24,8 +24,7 @@ public class AddNewStudent implements Menu {
         System.out.print("Enter the last name: ");
         String lastName = input.getLine();
 
-        Student student = new Student(fristName, lastName);
-        studentsDao.add(student);
+        studentsDao.add(new Student(fristName, lastName));
     }
 
     @Override

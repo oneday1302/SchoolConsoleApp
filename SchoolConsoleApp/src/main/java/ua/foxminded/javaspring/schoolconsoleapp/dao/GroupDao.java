@@ -10,4 +10,6 @@ public interface GroupDao {
     List<Group> getAll();
 
     Group get(int id);
+    
+    List<Group> getAllGrupsWithLessOrEqualsStudentsNumber(int studentsNumber);
 }

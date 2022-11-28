@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import javax.sql.DataSource;
 import ua.foxminded.javaspring.schoolconsoleapp.Group;
 
@@ -63,5 +64,25 @@ public class GroupDaoImpl implements GroupDao {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<Group> getAllGrupsWithLessOrEqualsStudentsNumber(int studentsNumber) {
+        List<Group> groups = new ArrayList<>();
+        try (Connection con = dataSource.getConnection()) {
+            StringJoiner sql = new StringJoiner(" ");
+            sql.add("SELECT school.groups.group_id, group_name FROM school.groups")
+               .add("JOIN school.students ON school.groups.group_id = school.students.group_id")
+               .add("GROUP BY school.groups.group_id HAVING COUNT(school.groups.group_id) <= ?");
+            PreparedStatement statement = con.prepareStatement(sql.toString());
+            statement.setInt(1, studentsNumber);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                groups.add(new Group(result.getInt("group_id"), result.getString("group_name")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return groups;
     }
 }

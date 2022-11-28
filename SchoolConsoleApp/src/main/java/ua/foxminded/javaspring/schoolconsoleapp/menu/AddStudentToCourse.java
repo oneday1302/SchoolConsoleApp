@@ -1,9 +1,6 @@
 package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
-import java.util.Comparator;
-import java.util.List;
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
-import ua.foxminded.javaspring.schoolconsoleapp.Student;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDao;
 
@@ -25,9 +22,7 @@ public class AddStudentToCourse implements Menu {
         ConsoleInput input = new ConsoleInput();
 
         coursesDao.getAll().forEach(System.out::println);
-        List<Student> students = studentsDao.getAll();
-        students.sort(Comparator.comparing(Student::getId));
-        students.forEach(System.out::println);
+        studentsDao.getAll().forEach(System.out::println);
 
         System.out.print("Enter the id of student: ");
         int studentId = input.getInt();

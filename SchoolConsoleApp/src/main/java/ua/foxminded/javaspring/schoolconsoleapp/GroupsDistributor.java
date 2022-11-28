@@ -3,7 +3,7 @@ package ua.foxminded.javaspring.schoolconsoleapp;
 import java.util.List;
 import java.util.Random;
 
-public class GroupsDistributor implements Distributor<List<Student>> {
+public class GroupsDistributor implements Distributor<Student> {
     private List<Student> students;
     private final List<Group> groups;
     private static final int MIN_COUNT_STUDENTS = 10;

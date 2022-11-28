@@ -6,13 +6,13 @@ import java.util.Properties;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 public class DataBaseUtility extends BasicDataSource {
-    private static final Properties prop = new Properties();
 
     public DataBaseUtility(String propertyFileName) {
         if (propertyFileName == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         try (InputStream input = this.getClass().getResourceAsStream(propertyFileName)) {
+            Properties prop = new Properties();
             prop.load(input);
             
             this.setDriverClassName(prop.getProperty("driverName"));

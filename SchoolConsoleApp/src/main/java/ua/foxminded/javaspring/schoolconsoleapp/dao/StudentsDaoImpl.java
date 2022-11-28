@@ -44,7 +44,7 @@ public class StudentsDaoImpl implements StudentsDao {
         List<Student> students = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
             GroupDao groupsDao = new GroupDaoImpl(new DataBaseUtility("config.properties"));
-            PreparedStatement statement = con.prepareStatement("SELECT * FROM school.students");
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM school.students ORDER BY student_id");
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 Student student = new Student(result.getInt("student_id"), result.getString("first_name"), result.getString("last_name"));
