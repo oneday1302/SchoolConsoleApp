@@ -31,6 +31,9 @@ public class CoursesGenerator implements Generator<Course> {
         Map<String, String> map = new HashMap<>();
         for (String line : dataSource.getData().collect(Collectors.toList())) {
             String[] data = line.split("_");
+            if (data.length != 2) {
+                throw new IllegalStateException();
+            }
             map.put(data[KEY], data[VALUE]);
         }
         return map;

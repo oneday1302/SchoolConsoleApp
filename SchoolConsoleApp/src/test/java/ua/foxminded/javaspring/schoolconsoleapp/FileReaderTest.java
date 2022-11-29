@@ -15,7 +15,7 @@ class FileReaderTest {
             new FileReader(null);
         });
     }
-    
+
     @Test
     void getData_shouldReturnNullPointerException_whenInputNonExistingFileName() {
         FileReader fileReader = new FileReader("abc.txt");
@@ -23,13 +23,13 @@ class FileReaderTest {
             fileReader.getData();
         });
     }
-    
+
     @Test
     void getData_shouldReturnStream_whenInputCorrectFileName() {
         List<String> expected = new ArrayList<>();
         expected.add("Hello");
         expected.add("World");
-        
+
         List<String> actual = new FileReader("test.txt").getData().collect(Collectors.toList());
         assertEquals(expected, actual);
     }
