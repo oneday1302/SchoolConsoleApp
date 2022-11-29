@@ -17,6 +17,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.menu.RemoveStudentFromCourse;
 import javax.sql.DataSource;
 
 public class SchoolConsoleApp {
+    
     public static void main(String[] args) {
         DataSource databaseConnect = new DataBaseUtility("config.properties");
         

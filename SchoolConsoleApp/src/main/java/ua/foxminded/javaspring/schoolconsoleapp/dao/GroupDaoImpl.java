@@ -73,7 +73,7 @@ public class GroupDaoImpl implements GroupDao {
             StringJoiner sql = new StringJoiner(" ");
             sql.add("SELECT school.groups.group_id, group_name FROM school.groups")
                .add("JOIN school.students ON school.groups.group_id = school.students.group_id")
-               .add("GROUP BY school.groups.group_id HAVING COUNT(school.groups.group_id) <= ?");
+               .add("GROUP BY school.groups.group_id HAVING COUNT(school.students.student_id) <= ?");
             PreparedStatement statement = con.prepareStatement(sql.toString());
             statement.setInt(1, studentsNumber);
             ResultSet result = statement.executeQuery();
