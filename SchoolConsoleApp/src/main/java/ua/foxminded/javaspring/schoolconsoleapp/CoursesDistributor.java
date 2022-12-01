@@ -6,16 +6,21 @@ import java.util.Random;
 public class CoursesDistributor implements Distributor<Student> {
     private List<Student> students;
     private final List<Course> courses;
+    private final Random random;
     private static final int MIN_COUNT_COURSES = 1;
     private static final int MAX_COUNT_COURSES = 3;
-    private static final Random random = new Random();
 
     public CoursesDistributor(List<Student> students, List<Course> courses) {
-        if (students == null || courses == null) {
+        this(students, courses, new Random());
+    }
+    
+    public CoursesDistributor(List<Student> students, List<Course> courses, Random random) {
+        if (students == null || courses == null || random == null) {
             throw new IllegalArgumentException("Params cannot be null.");
         }
         this.students = students;
         this.courses = courses;
+        this.random = random;
     }
 
     @Override
