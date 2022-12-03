@@ -6,13 +6,18 @@ import java.util.Random;
 
 public class GroupsGenerator implements Generator<Group> {
     private final int count;
-    private static final Random random = new Random();
+    private final Random random;
 
     public GroupsGenerator(int count) {
+        this(count, new Random());
+    }
+    
+    GroupsGenerator(int count, Random random) {
         if (count <= 0) {
             throw new IllegalArgumentException("Param cannot be less or equals zero.");
         }
         this.count = count;
+        this.random = random;
     }
 
     @Override
