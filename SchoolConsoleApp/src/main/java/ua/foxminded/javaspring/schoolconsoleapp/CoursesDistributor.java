@@ -14,8 +14,8 @@ public class CoursesDistributor implements Distributor<Student> {
         this(students, courses, new Random());
     }
     
-    public CoursesDistributor(List<Student> students, List<Course> courses, Random random) {
-        if (students == null || courses == null || random == null) {
+    CoursesDistributor(List<Student> students, List<Course> courses, Random random) {
+        if (students == null || courses == null) {
             throw new IllegalArgumentException("Params cannot be null.");
         }
         this.students = students;

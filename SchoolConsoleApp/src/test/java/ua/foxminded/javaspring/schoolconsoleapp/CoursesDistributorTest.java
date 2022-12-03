@@ -25,18 +25,9 @@ class CoursesDistributorTest {
     }
     
     @Test
-    void CoursesDistributor_shouldReturnIllegalArgumentException_whenInputThirdParamNull() {
-        List<Student> students = new ArrayList<>();
-        List<Course> courses = new ArrayList<>();
-        assertThrows(IllegalArgumentException.class, () -> {
-            new CoursesDistributor(students, courses, null);
-        });
-    }
-    
-    @Test
     void CoursesDistributor_shouldReturnIllegalArgumentException_whenInputAllParamsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new CoursesDistributor(null, null, null);
+            new CoursesDistributor(null, null);
         });
     }
     
