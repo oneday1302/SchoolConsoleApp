@@ -24,7 +24,7 @@ class CoursesGeneratorTest {
         DataSource<String> mockDataSource = Mockito.mock(DataSource.class);
         when(mockDataSource.getData()).thenReturn(stream);
         CoursesGenerator coursesGenerator = new CoursesGenerator(mockDataSource);
-        
+
         assertThrows(IllegalStateException.class, () -> {
             coursesGenerator.generate();
         });
@@ -41,6 +41,7 @@ class CoursesGeneratorTest {
         when(mockDataSource.getData()).thenReturn(stream);
 
         List<Course> actual = new CoursesGenerator(mockDataSource).generate();
+
         assertEquals(expected, actual);
     }
 }

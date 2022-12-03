@@ -9,9 +9,13 @@ public class StudentsGenerator implements Generator<Student> {
     private final DataSource<String> firstName;
     private final DataSource<String> lastName;
     private final int count;
-    private static final Random random = new Random();
+    private final Random random;
 
     public StudentsGenerator(DataSource<String> firstName, DataSource<String> lastName, int count) {
+        this(firstName, lastName, count, new Random());
+    }
+    
+    StudentsGenerator(DataSource<String> firstName, DataSource<String> lastName, int count, Random random) {
         if (firstName == null || lastName == null) {
             throw new IllegalArgumentException("Params cannot be null.");
         }
@@ -21,6 +25,7 @@ public class StudentsGenerator implements Generator<Student> {
         this.firstName = firstName;
         this.lastName = lastName;
         this.count = count;
+        this.random = random;
     }
 
     @Override
