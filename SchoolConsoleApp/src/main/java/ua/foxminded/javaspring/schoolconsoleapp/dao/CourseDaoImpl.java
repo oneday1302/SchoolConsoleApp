@@ -30,6 +30,7 @@ public class CourseDaoImpl implements CourseDao {
             statement.setString(1, course.getName());
             statement.setString(2, course.getDesc());
             statement.execute();
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,7 +40,7 @@ public class CourseDaoImpl implements CourseDao {
     public List<Course> getAll() {
         List<Course> courses = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
-            PreparedStatement statement = con.prepareStatement("SELECT * FROM school.courses");
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM school.courses ORDER BY course_id");
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 courses.add(new Course(result.getInt("course_id"), result.getString("course_name"), result.getString("course_description")));

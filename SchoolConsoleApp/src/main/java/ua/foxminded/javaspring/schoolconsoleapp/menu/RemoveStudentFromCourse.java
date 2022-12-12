@@ -5,7 +5,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDao;
 
 public class RemoveStudentFromCourse implements Menu {
-    private static final String NAME = "Remove the student from one of their courses";
+    private static final String NAME = "Remove the student from one of his courses";
     private final CourseDao coursesDao;
     private final StudentsDao studentsDao;
 

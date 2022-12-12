@@ -1,7 +1,5 @@
-DROP TABLE IF EXISTS school.students_courses;
-DROP TABLE IF EXISTS school.students;
-DROP TABLE IF EXISTS school.courses;
-DROP TABLE IF EXISTS school.groups;
+CREATE SCHEMA IF NOT EXISTS school
+    AUTHORIZATION postgres;
 
 CREATE TABLE IF NOT EXISTS school.courses
 (
