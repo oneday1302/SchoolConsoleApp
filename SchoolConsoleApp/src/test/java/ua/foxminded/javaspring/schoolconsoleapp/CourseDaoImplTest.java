@@ -8,34 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoImpl;
 
-@Testcontainers
-class CourseDaoImplTest {
-
-    @Container
-    static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:14").withDatabaseName("postgres")
-            .withUsername("postgres").withInitScript("schemaTest.sql");
-    static DataSource dataSource;
-
-    @BeforeAll
-    static void init() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(container.getJdbcUrl());
-        config.setUsername(container.getUsername());
-        config.setPassword(container.getPassword());
-        config.setDriverClassName(container.getDriverClassName());
-        dataSource = new HikariDataSource(config);
-    }
+class CourseDaoImplTest extends MyContainer{
 
     @AfterEach
     void cleanup() {
@@ -82,7 +60,7 @@ class CourseDaoImplTest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         assertEquals(course, courses.get(0));
     }
 
@@ -92,7 +70,7 @@ class CourseDaoImplTest {
         courses.add(new Course(2, "History", "History"));
         courses.add(new Course(3, "Mathematics", "Mathematics"));
         courses.add(new Course(4, "Biology", "Biology"));
-        
+
         try (Connection con = dataSource.getConnection()) {
             String sql = "INSERT INTO school.courses (course_name, course_description) VALUES (?, ?)";
             PreparedStatement statement = con.prepareStatement(sql);
@@ -102,13 +80,13 @@ class CourseDaoImplTest {
                 statement.addBatch();
             }
             statement.executeBatch();
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         CourseDaoImpl courseDaoImpl = new CourseDaoImpl(dataSource);
-        
+
         assertEquals(courses, courseDaoImpl.getAll());
     }
 }
