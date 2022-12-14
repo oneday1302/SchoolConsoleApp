@@ -30,6 +30,7 @@ public class GroupDaoImpl implements GroupDao {
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setString(1, group.getName());
             statement.execute();
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
