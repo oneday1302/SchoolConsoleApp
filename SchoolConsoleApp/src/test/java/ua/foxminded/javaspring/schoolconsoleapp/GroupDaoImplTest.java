@@ -46,7 +46,6 @@ class GroupDaoImplTest extends MyContainer {
     @Test
     void add__whenInputParamGroup() {
         Group group = new Group("AT-42");
-
         GroupDaoImpl groupDaoImpl = new GroupDaoImpl(dataSource);
         groupDaoImpl.add(group);
 
@@ -85,7 +84,6 @@ class GroupDaoImplTest extends MyContainer {
         }
 
         GroupDaoImpl groupDaoImpl = new GroupDaoImpl(dataSource);
-
         assertEquals(groups, groupDaoImpl.getAll());
     }
 
@@ -110,7 +108,6 @@ class GroupDaoImplTest extends MyContainer {
         }
         
         GroupDaoImpl groupDaoImpl = new GroupDaoImpl(dataSource);
-        
         assertEquals(group, groupDaoImpl.get(1));
     }
     
@@ -150,7 +147,6 @@ class GroupDaoImplTest extends MyContainer {
         }
         
         GroupDaoImpl groupDaoImpl = new GroupDaoImpl(dataSource);
-        
         assertEquals(group, groupDaoImpl.getAllGrupsWithLessOrEqualsStudentsNumber(3).get(0));
     }
 }

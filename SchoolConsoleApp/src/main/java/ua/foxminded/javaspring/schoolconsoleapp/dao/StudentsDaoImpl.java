@@ -34,6 +34,7 @@ public class StudentsDaoImpl implements StudentsDao {
             statement.setString(1, student.getFirstName());
             statement.setString(2, student.getLastName());
             statement.execute();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -47,8 +48,7 @@ public class StudentsDaoImpl implements StudentsDao {
             PreparedStatement statement = con.prepareStatement("SELECT * FROM school.students ORDER BY student_id");
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                Student student = new Student(result.getInt("student_id"), result.getString("first_name"),
-                        result.getString("last_name"));
+                Student student = new Student(result.getInt("student_id"), result.getString("first_name"), result.getString("last_name"));
                 if (result.getInt("group_id") != 0) {
                     student.setGroup(groupsDao.get(result.getInt("group_id")));
                 }
@@ -78,7 +78,6 @@ public class StudentsDaoImpl implements StudentsDao {
                 statement.setInt(2, student.getId());
                 statement.execute();
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -93,11 +92,14 @@ public class StudentsDaoImpl implements StudentsDao {
         try (Connection con = dataSource.getConnection()) {
             StringJoiner sql = new StringJoiner(" ");
             sql.add("SELECT school.students.student_id, school.students.group_id, school.groups.group_name, first_name, last_name")
-                    .add("FROM school.students").add("LEFT JOIN school.groups")
-                    .add("ON school.students.group_id = school.groups.group_id").add("JOIN school.students_courses")
-                    .add("ON school.students.student_id = school.students_courses.student_id")
-                    .add("JOIN school.courses").add("ON school.students_courses.course_id = school.courses.course_id")
-                    .add("WHERE school.courses.course_name = ?");
+               .add("FROM school.students")
+               .add("LEFT JOIN school.groups")
+               .add("ON school.students.group_id = school.groups.group_id")
+               .add("JOIN school.students_courses")
+               .add("ON school.students.student_id = school.students_courses.student_id")
+               .add("JOIN school.courses")
+               .add("ON school.students_courses.course_id = school.courses.course_id")
+               .add("WHERE school.courses.course_name = ?");
             PreparedStatement statement = con.prepareStatement(sql.toString());
             statement.setString(1, courseName);
 

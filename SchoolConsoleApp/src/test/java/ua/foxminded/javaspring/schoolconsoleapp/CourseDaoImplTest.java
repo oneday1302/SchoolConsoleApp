@@ -45,7 +45,6 @@ class CourseDaoImplTest extends MyContainer{
     @Test
     void add_whenInputParamCourse() {
         Course course = new Course("History", "History");
-
         CourseDaoImpl courseDaoImpl = new CourseDaoImpl(dataSource);
         courseDaoImpl.add(course);
 
@@ -60,7 +59,7 @@ class CourseDaoImplTest extends MyContainer{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        
         assertEquals(course, courses.get(0));
     }
 
@@ -86,7 +85,6 @@ class CourseDaoImplTest extends MyContainer{
         }
 
         CourseDaoImpl courseDaoImpl = new CourseDaoImpl(dataSource);
-
         assertEquals(courses, courseDaoImpl.getAll());
     }
 }
