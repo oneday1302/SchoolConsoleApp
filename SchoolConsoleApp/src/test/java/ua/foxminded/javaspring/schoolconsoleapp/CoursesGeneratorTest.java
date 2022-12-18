@@ -19,18 +19,6 @@ class CoursesGeneratorTest {
     }
 
     @Test
-    void generate_shouldReturnIllegalStateException_whenInputIncorrectFormatData() {
-        Stream<String> stream = Stream.of("Mathematics");
-        DataSource<String> mockDataSource = Mockito.mock(DataSource.class);
-        when(mockDataSource.getData()).thenReturn(stream);
-        CoursesGenerator coursesGenerator = new CoursesGenerator(mockDataSource);
-
-        assertThrows(IllegalStateException.class, () -> {
-            coursesGenerator.generate();
-        });
-    }
-
-    @Test
     void generate_shouldReturnListOfCourse_whenInputCourseData() {
         List<Course> expected = new ArrayList<>();
         expected.add(new Course("Mathematics", "Mathematics"));

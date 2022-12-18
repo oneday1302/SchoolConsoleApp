@@ -44,7 +44,7 @@ public class StudentsDaoImpl implements StudentsDao {
     public List<Student> getAll() {
         List<Student> students = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
-            GroupDao groupsDao = new GroupDaoImpl(new DataBaseUtility("config.properties"));
+            GroupDao groupsDao = new GroupDaoImpl(dataSource);
             PreparedStatement statement = con.prepareStatement("SELECT * FROM school.students ORDER BY student_id");
             ResultSet result = statement.executeQuery();
             while (result.next()) {
@@ -66,18 +66,16 @@ public class StudentsDaoImpl implements StudentsDao {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         try (Connection con = dataSource.getConnection()) {
+            String sql = "UPDATE school.students SET group_id = ? WHERE student_id = ?";
+            PreparedStatement statement = con.prepareStatement(sql);
             if (student.getGroup() == null) {
-                String sql = "UPDATE school.students SET group_id = NULL WHERE student_id = ?";
-                PreparedStatement statement = con.prepareStatement(sql);
-                statement.setInt(1, student.getId());
-                statement.execute();
+                statement.setNull(1, java.sql.Types.INTEGER);
             } else {
-                String sql = "UPDATE school.students SET group_id = ? WHERE student_id = ?";
-                PreparedStatement statement = con.prepareStatement(sql);
                 statement.setInt(1, student.getGroup().getId());
-                statement.setInt(2, student.getId());
-                statement.execute();
             }
+            statement.setInt(2, student.getId());
+            statement.execute();
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -105,8 +103,7 @@ public class StudentsDaoImpl implements StudentsDao {
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                Student student = new Student(result.getInt("student_id"), result.getString("first_name"),
-                        result.getString("last_name"));
+                Student student = new Student(result.getInt("student_id"), result.getString("first_name"), result.getString("last_name"));
                 if (result.getInt("group_id") != 0) {
                     student.setGroup(new Group(result.getInt("group_id"), result.getString("group_name")));
                 }
@@ -124,7 +121,6 @@ public class StudentsDaoImpl implements StudentsDao {
             String sql = "DELETE FROM school.students WHERE student_id = ?";
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setInt(1, id);
-            removeStudentFromCourses(id);
             statement.execute();
 
         } catch (SQLException e) {

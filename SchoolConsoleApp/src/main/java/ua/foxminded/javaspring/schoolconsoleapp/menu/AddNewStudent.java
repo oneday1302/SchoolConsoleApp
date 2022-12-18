@@ -7,18 +7,18 @@ import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDao;
 public class AddNewStudent implements Menu {
     private static final String NAME = "Add new student";
     private final StudentsDao studentsDao;
+    private final ConsoleInput input;
 
-    public AddNewStudent(StudentsDao studentsDao) {
-        if (studentsDao == null) {
-            throw new IllegalArgumentException("Param cannot be null.");
+    public AddNewStudent(StudentsDao studentsDao, ConsoleInput input) {
+        if (studentsDao == null || input == null) {
+            throw new IllegalArgumentException("Params cannot be null.");
         }
         this.studentsDao = studentsDao;
+        this.input = input;
     }
 
     @Override
     public void execute() {
-        ConsoleInput input = new ConsoleInput();
-
         System.out.print("Enter the first name: ");
         String fristName = input.getLine();
         System.out.print("Enter the last name: ");

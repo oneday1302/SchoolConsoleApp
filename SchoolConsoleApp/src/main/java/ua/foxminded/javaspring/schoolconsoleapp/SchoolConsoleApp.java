@@ -10,6 +10,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDaoImpl;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.AddNewStudent;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.AddStudentToCourse;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.DeleteStudentById;
+import ua.foxminded.javaspring.schoolconsoleapp.menu.Exit;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.FindAllGroupsWithLessOrEqualStudentsNumber;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.FindAllStudentsInTheCourse;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.MenuGroup;
@@ -35,13 +36,16 @@ public class SchoolConsoleApp {
         new GroupsDistributor(students, groupsDao.getAll()).distribute().forEach(studentsDao::updateGroupIdRow);
         new CoursesDistributor(students, coursesDao.getAll()).distribute().forEach(studentsDao::addStudentToCourse);
 
-        MenuGroup menu = new MenuGroup(null);
-        menu.addMenu(new FindAllGroupsWithLessOrEqualStudentsNumber(groupsDao));
-        menu.addMenu(new FindAllStudentsInTheCourse(studentsDao));
-        menu.addMenu(new AddNewStudent(studentsDao));
-        menu.addMenu(new DeleteStudentById(studentsDao));
-        menu.addMenu(new AddStudentToCourse(coursesDao, studentsDao));
-        menu.addMenu(new RemoveStudentFromCourse(coursesDao, studentsDao));
+        ConsoleInput input = new ConsoleInput();
+        
+        MenuGroup menu = new MenuGroup(null, input);
+        menu.addMenu(new FindAllGroupsWithLessOrEqualStudentsNumber(groupsDao, input));
+        menu.addMenu(new FindAllStudentsInTheCourse(studentsDao, input));
+        menu.addMenu(new AddNewStudent(studentsDao, input));
+        menu.addMenu(new DeleteStudentById(studentsDao, input));
+        menu.addMenu(new AddStudentToCourse(coursesDao, studentsDao, input));
+        menu.addMenu(new RemoveStudentFromCourse(coursesDao, studentsDao, input));
+        menu.addMenu(new Exit());
         menu.execute();
     }
 }

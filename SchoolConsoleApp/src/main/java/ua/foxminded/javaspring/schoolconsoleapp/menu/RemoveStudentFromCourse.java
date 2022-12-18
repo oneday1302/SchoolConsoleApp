@@ -8,16 +8,19 @@ public class RemoveStudentFromCourse implements Menu {
     private static final String NAME = "Remove the student from one of his courses";
     private final CourseDao coursesDao;
     private final StudentsDao studentsDao;
+    private final ConsoleInput input;
 
-    public RemoveStudentFromCourse(CourseDao coursesDao, StudentsDao studentsDao) {
+    public RemoveStudentFromCourse(CourseDao coursesDao, StudentsDao studentsDao, ConsoleInput input) {
+        if (coursesDao == null || studentsDao == null || input == null) {
+            throw new IllegalArgumentException("Params cannot be null.");
+        }
         this.coursesDao = coursesDao;
         this.studentsDao = studentsDao;
+        this.input = input;
     }
 
     @Override
     public void execute() {
-        ConsoleInput input = new ConsoleInput();
-
         coursesDao.getAll().forEach(System.out::println);
         studentsDao.getAll().forEach(System.out::println);
 

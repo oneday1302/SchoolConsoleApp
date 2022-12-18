@@ -57,7 +57,7 @@ class CoursesDistributorTest {
         expected.add(student2);
         expected.add(student3);
 
-        CoursesDistributor actual = new CoursesDistributor(students, courses, new Random(42));
+        CoursesDistributor actual = new CoursesDistributor(students, courses, 1, 3, new Random(42));
 
         assertEquals(expected, actual.distribute());
     }

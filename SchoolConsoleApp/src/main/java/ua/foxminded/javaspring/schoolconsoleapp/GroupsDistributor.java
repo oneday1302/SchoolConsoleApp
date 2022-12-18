@@ -36,8 +36,8 @@ public class GroupsDistributor implements Distributor<Student> {
                 return students;
             }
             int index = 0;
-            int tempMin = Math.min(max, numberOfStudentsWithoutGroup.get());
-            while (index < getRandomNum(min, tempMin)) {
+            int tempMax = Math.min(max, numberOfStudentsWithoutGroup.get());
+            while (index < getRandomNum(min, tempMax)) {
                 int i = random.nextInt(students.size());
                 if (!students.get(i).hasGroup()) {
                     students.get(i).setGroup(group);

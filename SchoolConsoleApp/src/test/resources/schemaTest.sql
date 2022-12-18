@@ -42,8 +42,8 @@ ALTER TABLE IF EXISTS school.students
     
 CREATE TABLE IF NOT EXISTS school.students_courses
 (
-    student_id integer REFERENCES school.students (student_id) NOT NULL,
-    course_id integer REFERENCES school.courses (course_id) NOT NULL,
+    student_id integer REFERENCES school.students (student_id) ON DELETE CASCADE NOT NULL,
+    course_id integer REFERENCES school.courses (course_id) ON DELETE CASCADE NOT NULL,
     CONSTRAINT students_courses_pkey PRIMARY KEY (student_id, course_id)
 )
 
