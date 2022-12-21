@@ -30,19 +30,19 @@ public class GroupsDistributor implements Distributor<Student> {
 
     @Override
     public List<Student> distribute() {
-        AtomicInteger numberOfStudentsWithoutGroup = new AtomicInteger(students.size());
+        int numberOfStudentsWithoutGroup = students.size();
         for (Group group : groups) {
-            if (numberOfStudentsWithoutGroup.get() < min) {
+            if (numberOfStudentsWithoutGroup < min) {
                 return students;
             }
             int index = 0;
-            int tempMax = Math.min(max, numberOfStudentsWithoutGroup.get());
+            int tempMax = Math.min(max, numberOfStudentsWithoutGroup);
             while (index < getRandomNum(min, tempMax)) {
                 int i = random.nextInt(students.size());
                 if (!students.get(i).hasGroup()) {
                     students.get(i).setGroup(group);
                     index++;
-                    numberOfStudentsWithoutGroup.decrementAndGet();
+                    numberOfStudentsWithoutGroup--;
                 }
             }
         }

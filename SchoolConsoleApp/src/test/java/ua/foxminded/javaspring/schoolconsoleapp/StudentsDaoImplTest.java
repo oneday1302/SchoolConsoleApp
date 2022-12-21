@@ -20,7 +20,8 @@ class StudentsDaoImplTest extends MyContainer {
     void cleanup() {
         try (Connection con = dataSource.getConnection()) {
             StringJoiner sql = new StringJoiner(" ");
-            sql.add("TRUNCATE TABLE school.students CASCADE;").add("TRUNCATE TABLE school.courses CASCADE;")
+            sql.add("TRUNCATE TABLE school.students CASCADE;")
+               .add("TRUNCATE TABLE school.courses CASCADE;")
                .add("TRUNCATE TABLE school.groups CASCADE;")
                .add("TRUNCATE TABLE school.students_courses CASCADE;");
             PreparedStatement statement = con.prepareStatement(sql.toString());
@@ -291,29 +292,15 @@ class StudentsDaoImplTest extends MyContainer {
         StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(dataSource);
         studentsDaoImpl.addStudentToCourse(student);
 
-        Student actual = null;
         try (Connection con = dataSource.getConnection()) {
-            StringJoiner sql = new StringJoiner(" ");
-            sql.add("SELECT school.students.student_id, first_name, last_name, school.courses.course_id, course_name, course_description FROM school.students")
-               .add("JOIN school.students_courses")
-               .add("ON school.students.student_id = school.students_courses.student_id")
-               .add("JOIN school.courses")
-               .add("ON school.students_courses.course_id = school.courses.course_id");
-            PreparedStatement statement = con.prepareStatement(sql.toString());
+            String sql = "SELECT * FROM school.students_courses WHERE student_id = 1 AND course_id = 1";
+            PreparedStatement statement = con.prepareStatement(sql);
             ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                Student tempStudent = new Student(
-                        result.getInt("student_id"), result.getString("first_name"),result.getString("last_name"));
-                tempStudent.addCourse(
-                        new Course(result.getInt("course_id"), result.getString("course_name"),result.getString("course_description")));
-                actual = tempStudent;
-            }
+            assertEquals(true, result.next());
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        assertEquals(student, actual);
     }
 
     @Test

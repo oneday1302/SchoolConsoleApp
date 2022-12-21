@@ -37,12 +37,12 @@ public class CoursesDistributor implements Distributor<Student> {
     @Override
     public List<Student> distribute() {
         for (Student student : students) {
-            int index = 0;
-            while (index < getRandomNum(minCountCurses, maxCountCurses)) {
+            int countCourses = getRandomNum(minCountCurses, maxCountCurses);
+            while (countCourses != 0) {
                 int i = random.nextInt(courses.size());
                 if (!student.hasCourse(courses.get(i))) {
                     student.addCourse(courses.get(i));
-                    index++;
+                    countCourses--;
                 }
             }
         }

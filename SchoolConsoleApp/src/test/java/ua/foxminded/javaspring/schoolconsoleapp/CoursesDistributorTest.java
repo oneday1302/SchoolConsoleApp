@@ -45,10 +45,12 @@ class CoursesDistributorTest {
 
         Student student1 = new Student("Jacob", "Smith");
         student1.addCourse(new Course("Mathematics", "Mathematics"));
+        student1.addCourse(new Course("Economics", "Economics"));
+        student1.addCourse(new Course("Biology", "Biology"));
         Student student2 = new Student("Emily", "Jones");
-        student2.addCourse(new Course("Mathematics", "Mathematics"));
         student2.addCourse(new Course("Economics", "Economics"));
         student2.addCourse(new Course("Biology", "Biology"));
+        student2.addCourse(new Course("Mathematics", "Mathematics"));
         Student student3 = new Student("Michael", "Taylor");
         student3.addCourse(new Course("Economics", "Economics"));
 
