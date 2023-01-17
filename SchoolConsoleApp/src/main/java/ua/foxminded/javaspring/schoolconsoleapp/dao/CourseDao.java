@@ -8,4 +8,6 @@ public interface CourseDao {
     void add(Course course);
 
     List<Course> getAll();
+    
+    boolean isEmpty();
 }

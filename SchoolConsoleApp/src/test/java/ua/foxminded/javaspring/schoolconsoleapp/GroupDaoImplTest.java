@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDaoImpl;
 
-class GroupDaoImplTest extends MyContainer {
+class GroupDaoImplTest extends IntegrationTestBase {
 
     @AfterEach
     void cleanup() {

@@ -3,7 +3,7 @@ package ua.foxminded.javaspring.schoolconsoleapp.dao;
 import java.util.List;
 import ua.foxminded.javaspring.schoolconsoleapp.Student;
 
-public interface StudentsDao {
+public interface StudentDao {
     
     void add(Student student);
 
@@ -22,4 +22,6 @@ public interface StudentsDao {
     void removeStudentFromCourse(int studentId, int courseId);
     
     void addStudentToCourse(int studentId, int courseId);
+    
+    boolean isEmpty();
 }

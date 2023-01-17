@@ -9,14 +9,13 @@ import java.util.List;
 import java.util.StringJoiner;
 import javax.sql.DataSource;
 import ua.foxminded.javaspring.schoolconsoleapp.Course;
-import ua.foxminded.javaspring.schoolconsoleapp.DataBaseUtility;
 import ua.foxminded.javaspring.schoolconsoleapp.Group;
 import ua.foxminded.javaspring.schoolconsoleapp.Student;
 
-public class StudentsDaoImpl implements StudentsDao {
+public class StudentDaoImpl implements StudentDao {
     private final DataSource dataSource;
 
-    public StudentsDaoImpl(DataSource dataSource) {
+    public StudentDaoImpl(DataSource dataSource) {
         if (dataSource == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -44,13 +43,18 @@ public class StudentsDaoImpl implements StudentsDao {
     public List<Student> getAll() {
         List<Student> students = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
-            GroupDao groupsDao = new GroupDaoImpl(dataSource);
-            PreparedStatement statement = con.prepareStatement("SELECT * FROM school.students ORDER BY student_id");
+            StringJoiner sql = new StringJoiner(" ");
+            sql.add("SELECT school.students.student_id, school.students.group_id, school.groups.group_name, first_name, last_name")
+               .add("FROM school.students")
+               .add("LEFT JOIN school.groups")
+               .add("ON school.students.group_id = school.groups.group_id")
+               .add("ORDER BY school.students.student_id");
+            PreparedStatement statement = con.prepareStatement(sql.toString());
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 Student student = new Student(result.getInt("student_id"), result.getString("first_name"), result.getString("last_name"));
                 if (result.getInt("group_id") != 0) {
-                    student.setGroup(groupsDao.get(result.getInt("group_id")));
+                    student.setGroup(new Group(result.getInt("group_id"), result.getString("group_name")));
                 }
                 students.add(student);
             }
@@ -187,5 +191,17 @@ public class StudentsDaoImpl implements StudentsDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean isEmpty() {
+        try (Connection con = dataSource.getConnection()) {
+            PreparedStatement statement = con.prepareStatement("SELECT student_id FROM school.students LIMIT 1");
+            ResultSet result = statement.executeQuery();
+            return result.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import javax.sql.DataSource;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoImpl;
 
-class CourseDaoImplTest extends MyContainer{
+class CourseDaoImplTest extends IntegrationTestBase {
 
     @AfterEach
     void cleanup() {
@@ -59,7 +59,7 @@ class CourseDaoImplTest extends MyContainer{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         assertEquals(course, courses.get(0));
     }
 

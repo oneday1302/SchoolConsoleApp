@@ -40,7 +40,7 @@ public class GroupDaoImpl implements GroupDao {
     public List<Group> getAll() {
         List<Group> groups = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
-            PreparedStatement statement = con.prepareStatement("SELECT * FROM school.groups");
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM school.groups ORDER BY group_id");
             ResultSet result = statement.executeQuery();
             while (result.next()) {
                 groups.add(new Group(result.getInt("group_id"), result.getString("group_name")));
@@ -74,7 +74,8 @@ public class GroupDaoImpl implements GroupDao {
             StringJoiner sql = new StringJoiner(" ");
             sql.add("SELECT school.groups.group_id, group_name FROM school.groups")
                .add("JOIN school.students ON school.groups.group_id = school.students.group_id")
-               .add("GROUP BY school.groups.group_id HAVING COUNT(school.students.student_id) <= ?");
+               .add("GROUP BY school.groups.group_id HAVING COUNT(school.students.student_id) <= ?")
+               .add("ORDER BY group_id");
             PreparedStatement statement = con.prepareStatement(sql.toString());
             statement.setInt(1, studentsNumber);
             ResultSet result = statement.executeQuery();
@@ -85,5 +86,17 @@ public class GroupDaoImpl implements GroupDao {
             e.printStackTrace();
         }
         return groups;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        try (Connection con = dataSource.getConnection()) {
+            PreparedStatement statement = con.prepareStatement("SELECT group_id FROM school.groups LIMIT 1");
+            ResultSet result = statement.executeQuery();
+            return result.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

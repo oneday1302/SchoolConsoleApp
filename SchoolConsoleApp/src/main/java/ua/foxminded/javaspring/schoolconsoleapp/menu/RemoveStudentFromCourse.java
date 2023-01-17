@@ -2,15 +2,15 @@ package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDao;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
 
 public class RemoveStudentFromCourse implements Menu {
     private static final String NAME = "Remove the student from one of his courses";
     private final CourseDao coursesDao;
-    private final StudentsDao studentsDao;
+    private final StudentDao studentsDao;
     private final ConsoleInput input;
 
-    public RemoveStudentFromCourse(CourseDao coursesDao, StudentsDao studentsDao, ConsoleInput input) {
+    public RemoveStudentFromCourse(CourseDao coursesDao, StudentDao studentsDao, ConsoleInput input) {
         if (coursesDao == null || studentsDao == null || input == null) {
             throw new IllegalArgumentException("Params cannot be null.");
         }

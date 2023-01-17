@@ -2,14 +2,14 @@ package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
 import ua.foxminded.javaspring.schoolconsoleapp.Student;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDao;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
 
 public class AddNewStudent implements Menu {
     private static final String NAME = "Add new student";
-    private final StudentsDao studentsDao;
+    private final StudentDao studentsDao;
     private final ConsoleInput input;
 
-    public AddNewStudent(StudentsDao studentsDao, ConsoleInput input) {
+    public AddNewStudent(StudentDao studentsDao, ConsoleInput input) {
         if (studentsDao == null || input == null) {
             throw new IllegalArgumentException("Params cannot be null.");
         }

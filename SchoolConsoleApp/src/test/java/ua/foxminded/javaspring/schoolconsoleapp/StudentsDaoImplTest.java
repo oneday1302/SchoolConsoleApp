@@ -12,9 +12,9 @@ import javax.sql.DataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDaoImpl;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDaoImpl;
 
-class StudentsDaoImplTest extends MyContainer {
+class StudentsDaoImplTest extends IntegrationTestBase {
 
     @AfterEach
     void cleanup() {
@@ -35,14 +35,14 @@ class StudentsDaoImplTest extends MyContainer {
     @Test
     void StudentsDaoImpl_shouldReturnIllegalArgumentException_whenInputParamNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new StudentsDaoImpl(null);
+            new StudentDaoImpl(null);
         });
     }
 
     @Test
     void add_shouldReturnIllegalArgumentException_whenInputParamNull() {
         DataSource mocDataSource = Mockito.mock(DataSource.class);
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(mocDataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(mocDataSource);
         assertThrows(IllegalArgumentException.class, () -> {
             studentsDaoImpl.add(null);
         });
@@ -51,7 +51,7 @@ class StudentsDaoImplTest extends MyContainer {
     @Test
     void add__whenInputParamStudent() {
         Student student = new Student("Jacob", "Smith");
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(dataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
         studentsDaoImpl.add(student);
 
         List<Student> students = new ArrayList<>();
@@ -93,14 +93,14 @@ class StudentsDaoImplTest extends MyContainer {
             e.printStackTrace();
         }
 
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(dataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
         assertEquals(students, studentsDaoImpl.getAll());
     }
 
     @Test
     void updateGroupIdRow_shouldReturnIllegalArgumentException_whenInputNull() {
         DataSource mocDataSource = Mockito.mock(DataSource.class);
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(mocDataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(mocDataSource);
         assertThrows(IllegalArgumentException.class, () -> {
             studentsDaoImpl.updateGroupIdRow(null);
         });
@@ -138,7 +138,7 @@ class StudentsDaoImplTest extends MyContainer {
         }
 
         student.setGroup(groups.get(1));
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(dataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
         studentsDaoImpl.updateGroupIdRow(student);
 
         List<Student> students = new ArrayList<>();
@@ -168,7 +168,7 @@ class StudentsDaoImplTest extends MyContainer {
     @Test
     void findAllStudentsInTheCourse_shouldReturnIllegalArgumentException_whenInputNull() {
         DataSource mocDataSource = Mockito.mock(DataSource.class);
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(mocDataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(mocDataSource);
         assertThrows(IllegalArgumentException.class, () -> {
             studentsDaoImpl.findAllStudentsInTheCourse(null);
         });
@@ -218,7 +218,7 @@ class StudentsDaoImplTest extends MyContainer {
             e.printStackTrace();
         }
 
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(dataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
         assertEquals(students, studentsDaoImpl.findAllStudentsInTheCourse("History"));
     }
 
@@ -238,7 +238,7 @@ class StudentsDaoImplTest extends MyContainer {
             e.printStackTrace();
         }
 
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(dataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
         studentsDaoImpl.delete(1);
 
         Student actual = null;
@@ -258,7 +258,7 @@ class StudentsDaoImplTest extends MyContainer {
     @Test
     void addStudentToCourse_shouldReturnIllegalArgumentException_whenInputNull() {
         DataSource mocDataSource = Mockito.mock(DataSource.class);
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(mocDataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(mocDataSource);
         assertThrows(IllegalArgumentException.class, () -> {
             studentsDaoImpl.addStudentToCourse(null);
         });
@@ -289,7 +289,7 @@ class StudentsDaoImplTest extends MyContainer {
             e.printStackTrace();
         }
 
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(dataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
         studentsDaoImpl.addStudentToCourse(student);
 
         try (Connection con = dataSource.getConnection()) {
@@ -333,7 +333,7 @@ class StudentsDaoImplTest extends MyContainer {
             e.printStackTrace();
         }
 
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(dataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
         studentsDaoImpl.removeStudentFromCourses(1);
 
         try (Connection con = dataSource.getConnection()) {
@@ -372,7 +372,7 @@ class StudentsDaoImplTest extends MyContainer {
             e.printStackTrace();
         }
 
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(dataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
         studentsDaoImpl.addStudentToCourse(student.getId(), course.getId());
 
         Student actual = null;
@@ -430,7 +430,7 @@ class StudentsDaoImplTest extends MyContainer {
             e.printStackTrace();
         }
 
-        StudentsDaoImpl studentsDaoImpl = new StudentsDaoImpl(dataSource);
+        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
         studentsDaoImpl.removeStudentFromCourse(student.getId(), course.getId());
 
         try (Connection con = dataSource.getConnection()) {

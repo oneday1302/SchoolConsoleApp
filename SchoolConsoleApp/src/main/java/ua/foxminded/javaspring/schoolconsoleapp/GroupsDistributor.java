@@ -2,7 +2,6 @@ package ua.foxminded.javaspring.schoolconsoleapp;
 
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class GroupsDistributor implements Distributor<Student> {
     private static final int MIN_COUNT_STUDENTS = 10;

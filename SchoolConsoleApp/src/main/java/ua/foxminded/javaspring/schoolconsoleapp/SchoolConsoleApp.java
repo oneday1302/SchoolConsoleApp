@@ -2,11 +2,8 @@ package ua.foxminded.javaspring.schoolconsoleapp;
 
 import java.util.List;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoImpl;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDaoImpl;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDao;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentsDaoImpl;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.AddNewStudent;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.AddStudentToCourse;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.DeleteStudentById;
@@ -15,36 +12,48 @@ import ua.foxminded.javaspring.schoolconsoleapp.menu.FindAllGroupsWithLessOrEqua
 import ua.foxminded.javaspring.schoolconsoleapp.menu.FindAllStudentsInTheCourse;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.MenuGroup;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.RemoveStudentFromCourse;
-import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class SchoolConsoleApp {
-    
+@SpringBootApplication
+public class SchoolConsoleApp implements CommandLineRunner {
+
+    @Autowired
+    private CourseDao courseDao;
+
+    @Autowired
+    private GroupDao groupDao;
+
+    @Autowired
+    private StudentDao studentDao;
+
     public static void main(String[] args) {
-        DataSource databaseConnect = new DataBaseUtility("config.properties");
+        SpringApplication.run(SchoolConsoleApp.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        if (groupDao.isEmpty() && courseDao.isEmpty() && studentDao.isEmpty()) {
+            new GroupsGenerator(10).generate().forEach(groupDao::add);
+            new CoursesGenerator(new FileReader("coursesData.txt")).generate().forEach(courseDao::add);
+            new StudentsGenerator(new FileReader("firstNameData.txt"), new FileReader("lastNameData.txt"), 200).generate().forEach(studentDao::add);
+
+            List<Student> students = studentDao.getAll();
+            new GroupsDistributor(students, groupDao.getAll()).distribute().forEach(studentDao::updateGroupIdRow);
+            new CoursesDistributor(students, courseDao.getAll()).distribute().forEach(studentDao::addStudentToCourse);
+        }
         
-        new SqlScriptRunner("schema.sql", databaseConnect).run();
-
-        GroupDao groupsDao = new GroupDaoImpl(databaseConnect);
-        CourseDao coursesDao = new CourseDaoImpl(databaseConnect);
-        StudentsDao studentsDao = new StudentsDaoImpl(databaseConnect); 
-
-        new GroupsGenerator(10).generate().forEach(groupsDao::add);
-        new CoursesGenerator(new FileReader("coursesData.txt")).generate().forEach(coursesDao::add);
-        new StudentsGenerator(new FileReader("firstNameData.txt"), new FileReader("lastNameData.txt"), 200).generate().forEach(studentsDao::add);
-
-        List<Student> students = studentsDao.getAll();
-        new GroupsDistributor(students, groupsDao.getAll()).distribute().forEach(studentsDao::updateGroupIdRow);
-        new CoursesDistributor(students, coursesDao.getAll()).distribute().forEach(studentsDao::addStudentToCourse);
-
         ConsoleInput input = new ConsoleInput();
-        
+
         MenuGroup menu = new MenuGroup(null, input);
-        menu.addMenu(new FindAllGroupsWithLessOrEqualStudentsNumber(groupsDao, input));
-        menu.addMenu(new FindAllStudentsInTheCourse(studentsDao, input));
-        menu.addMenu(new AddNewStudent(studentsDao, input));
-        menu.addMenu(new DeleteStudentById(studentsDao, input));
-        menu.addMenu(new AddStudentToCourse(coursesDao, studentsDao, input));
-        menu.addMenu(new RemoveStudentFromCourse(coursesDao, studentsDao, input));
+        menu.addMenu(new FindAllGroupsWithLessOrEqualStudentsNumber(groupDao, input));
+        menu.addMenu(new FindAllStudentsInTheCourse(studentDao, input));
+        menu.addMenu(new AddNewStudent(studentDao, input));
+        menu.addMenu(new DeleteStudentById(studentDao, input));
+        menu.addMenu(new AddStudentToCourse(courseDao, studentDao, input));
+        menu.addMenu(new RemoveStudentFromCourse(courseDao, studentDao, input));
         menu.addMenu(new Exit());
         menu.execute();
     }

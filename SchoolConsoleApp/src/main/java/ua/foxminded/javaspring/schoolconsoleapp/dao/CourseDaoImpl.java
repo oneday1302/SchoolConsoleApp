@@ -50,4 +50,16 @@ public class CourseDaoImpl implements CourseDao {
         }
         return courses;
     }
+
+    @Override
+    public boolean isEmpty() {
+        try (Connection con = dataSource.getConnection()) {
+            PreparedStatement statement = con.prepareStatement("SELECT course_id FROM school.courses LIMIT 1");
+            ResultSet result = statement.executeQuery();
+            return result.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

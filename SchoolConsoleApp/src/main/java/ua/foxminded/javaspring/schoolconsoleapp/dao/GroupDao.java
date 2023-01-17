@@ -12,4 +12,6 @@ public interface GroupDao {
     Group get(int id);
     
     List<Group> getAllGrupsWithLessOrEqualsStudentsNumber(int studentsNumber);
+    
+    boolean isEmpty();
 }
