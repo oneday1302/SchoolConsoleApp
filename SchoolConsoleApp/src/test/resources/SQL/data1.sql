@@ -1,0 +1,1 @@
+insert into school.courses ("course_name", "course_description") values ('History', 'History'), ('Mathematics', 'Mathematics'), ('Biology', 'Biology');

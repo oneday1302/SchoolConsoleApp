@@ -1,0 +1,1 @@
+insert into school.groups ("group_name") values ('AT-42'), ('VK-13'), ('GG-01');

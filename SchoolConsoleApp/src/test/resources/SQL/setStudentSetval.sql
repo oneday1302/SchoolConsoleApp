@@ -1,0 +1,1 @@
+select setval('school.students_student_id_seq', 1, false);

@@ -1,0 +1,1 @@
+select setval('school.groups_group_id_seq', 1, false);

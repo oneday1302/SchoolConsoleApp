@@ -1,12 +1,3 @@
-DROP TABLE IF EXISTS school.students_courses;
-DROP TABLE IF EXISTS school.students;
-DROP TABLE IF EXISTS school.courses;
-DROP TABLE IF EXISTS school.groups;
-DROP SCHEMA IF EXISTS school;
-
-CREATE SCHEMA IF NOT EXISTS school
-    AUTHORIZATION postgres;
-
 CREATE TABLE IF NOT EXISTS school.courses
 (
     course_id SERIAL NOT NULL,
