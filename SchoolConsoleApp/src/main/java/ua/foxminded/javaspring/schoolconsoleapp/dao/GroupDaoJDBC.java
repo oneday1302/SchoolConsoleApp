@@ -3,6 +3,7 @@ package ua.foxminded.javaspring.schoolconsoleapp.dao;
 import java.util.List;
 import java.util.StringJoiner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,8 @@ import ua.foxminded.javaspring.schoolconsoleapp.Group;
 import ua.foxminded.javaspring.schoolconsoleapp.GroupMapper;
 
 @Repository
-public class GroupDaoSpringBootImpl implements GroupDao {
+@Profile("JDBCTemplate")
+public class GroupDaoJDBC implements GroupDao {
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -55,9 +57,6 @@ public class GroupDaoSpringBootImpl implements GroupDao {
     public boolean isEmpty() {
         String sql = "SELECT COUNT(group_id) FROM school.groups";
         int count = jdbc.queryForObject(sql, Integer.class);
-        if (count == 0) {
-            return true;
-        }
-        return false;
+        return count == 0;
     }
 }

@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.StringJoiner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,8 @@ import ua.foxminded.javaspring.schoolconsoleapp.Student;
 import ua.foxminded.javaspring.schoolconsoleapp.StudentMapper;
 
 @Repository
-public class StudentDaoSpringBootImpl implements StudentDao {
+@Profile("JDBCTemplate")
+public class StudentDaoJDBC implements StudentDao {
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -118,9 +120,6 @@ public class StudentDaoSpringBootImpl implements StudentDao {
     public boolean isEmpty() {
         String sql = "SELECT COUNT(student_id) FROM school.students";
         int count = jdbc.queryForObject(sql, Integer.class);
-        if (count == 0) {
-            return true;
-        }
-        return false;
+        return count == 0;
     }
 }

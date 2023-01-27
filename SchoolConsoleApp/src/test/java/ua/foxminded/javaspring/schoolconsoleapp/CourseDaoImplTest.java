@@ -9,11 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import javax.sql.DataSource;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoImpl;
 
-class CourseDaoImplTest extends IntegrationTestBase {
+@SpringBootTest(classes = TestConfig.class)
+@ActiveProfiles("nativeJDBC")
+class CourseDaoImplTest {
+    
+    @Autowired
+    CourseDao courseDao;
+    
+    @Autowired
+    DataSource dataSource;
 
     @AfterEach
     void cleanup() {
@@ -35,18 +46,15 @@ class CourseDaoImplTest extends IntegrationTestBase {
 
     @Test
     void add_shouldReturnIllegalArgumentException_whenInputParamNull() {
-        DataSource mocDataSource = Mockito.mock(DataSource.class);
-        CourseDaoImpl courseDaoImpl = new CourseDaoImpl(mocDataSource);
         assertThrows(IllegalArgumentException.class, () -> {
-            courseDaoImpl.add(null);
+            courseDao.add(null);
         });
     }
 
     @Test
     void add_whenInputParamCourse() {
         Course course = new Course("History", "History");
-        CourseDaoImpl courseDaoImpl = new CourseDaoImpl(dataSource);
-        courseDaoImpl.add(course);
+        courseDao.add(course);
 
         List<Course> courses = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
@@ -84,7 +92,35 @@ class CourseDaoImplTest extends IntegrationTestBase {
             e.printStackTrace();
         }
 
-        CourseDaoImpl courseDaoImpl = new CourseDaoImpl(dataSource);
-        assertEquals(courses, courseDaoImpl.getAll());
+        assertEquals(courses, courseDao.getAll());
+    }
+    
+    @Test
+    void isEmpty_shouldReturnTrue_whenTableIsEmpty() {
+        assertEquals(true, courseDao.isEmpty());
+    }
+    
+    @Test
+    void isEmpty_shouldReturnFalse_whenTableIsNotEmpty() {
+        List<Course> courses = new ArrayList<>();
+        courses.add(new Course(2, "History", "History"));
+        courses.add(new Course(3, "Mathematics", "Mathematics"));
+        courses.add(new Course(4, "Biology", "Biology"));
+
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "INSERT INTO school.courses (course_name, course_description) VALUES (?, ?)";
+            PreparedStatement statement = con.prepareStatement(sql);
+            for (Course course : courses) {
+                statement.setString(1, course.getName());
+                statement.setString(2, course.getDesc());
+                statement.addBatch();
+            }
+            statement.executeBatch();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(false, courseDao.isEmpty());
     }
 }

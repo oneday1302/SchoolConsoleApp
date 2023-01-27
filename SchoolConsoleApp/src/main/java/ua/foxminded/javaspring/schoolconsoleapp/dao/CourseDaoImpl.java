@@ -7,8 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 import ua.foxminded.javaspring.schoolconsoleapp.Course;
 
+@Repository
+@Profile("nativeJDBC")
 public class CourseDaoImpl implements CourseDao {
     private final DataSource dataSource;
 
@@ -56,10 +60,9 @@ public class CourseDaoImpl implements CourseDao {
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement statement = con.prepareStatement("SELECT course_id FROM school.courses LIMIT 1");
             ResultSet result = statement.executeQuery();
-            return result.next();
+            return !result.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
-        return false;
     }
 }

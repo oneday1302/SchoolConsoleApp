@@ -7,14 +7,22 @@ import java.util.StringJoiner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDaoSpringBootImpl;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
 
-class StudentDaoSpringBootImplTest extends IntegrationTestBase {
+@SpringBootTest(classes = TestConfig.class)
+@ActiveProfiles("JDBCTemplate")
+class StudentDaoJDBCTest {
     
     @Autowired
-    StudentDaoSpringBootImpl studentDao;
+    JdbcTemplate jdbc;
+    
+    @Autowired
+    StudentDao studentDao;
 
     @AfterEach
     void cleanup() {
@@ -173,5 +181,16 @@ class StudentDaoSpringBootImplTest extends IntegrationTestBase {
         String sql = "SELECT COUNT (*) FROM school.students_courses";
         int actual = jdbc.queryForObject(sql, Integer.class);
         assertEquals(0, actual);
+    }
+    
+    @Test
+    void gisEmpty_shouldReturnTrue_whenTableIsEmpty() {
+        assertEquals(true, studentDao.isEmpty());
+    }
+    
+    @Sql("/SQL/data5.sql")
+    @Test
+    void isEmpty_shouldReturnFalse_whenTableIsNotEmpty() {
+        assertEquals(false, studentDao.isEmpty());
     }
 }

@@ -6,13 +6,21 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoSpringBootImpl;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
 
-class CourseDaoSpringBootImplTest extends IntegrationTestBase {
+@SpringBootTest(classes = TestConfig.class)
+@ActiveProfiles("JDBCTemplate")
+class CourseDaoJDBCTest {
+    
+    @Autowired
+    JdbcTemplate jdbc;
 
     @Autowired
-    CourseDaoSpringBootImpl courseDao;
+    CourseDao courseDao;
     
     @AfterEach
     void cleanup() {
@@ -46,5 +54,16 @@ class CourseDaoSpringBootImplTest extends IntegrationTestBase {
         courses.add(new Course(3, "Biology", "Biology"));
 
         assertEquals(courses, courseDao.getAll());
+    }
+    
+    @Test
+    void isEmpty_shouldReturnTrue_whenTableIsEmpty() {
+        assertEquals(true, courseDao.isEmpty());
+    }
+    
+    @Sql("/SQL/data1.sql")
+    @Test
+    void isEmpty_shouldReturnFalse_whenTableIsNotEmpty() {
+        assertEquals(false, courseDao.isEmpty());
     }
 }

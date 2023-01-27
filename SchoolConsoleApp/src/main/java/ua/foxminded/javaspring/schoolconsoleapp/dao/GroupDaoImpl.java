@@ -8,8 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 import javax.sql.DataSource;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 import ua.foxminded.javaspring.schoolconsoleapp.Group;
 
+@Repository
+@Profile("nativeJDBC")
 public class GroupDaoImpl implements GroupDao {
     private final DataSource dataSource;
 
@@ -93,10 +97,9 @@ public class GroupDaoImpl implements GroupDao {
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement statement = con.prepareStatement("SELECT group_id FROM school.groups LIMIT 1");
             ResultSet result = statement.executeQuery();
-            return result.next();
+            return !result.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
-        return false;
     }
 }

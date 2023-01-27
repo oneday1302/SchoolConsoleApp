@@ -10,10 +10,21 @@ import java.util.List;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDaoImpl;
 
-class GroupDaoImplTest extends IntegrationTestBase {
+@SpringBootTest(classes = TestConfig.class)
+@ActiveProfiles("nativeJDBC")
+class GroupDaoImplTest {
+    
+    @Autowired
+    GroupDao groupDao;
+    
+    @Autowired
+    DataSource dataSource;
 
     @AfterEach
     void cleanup() {
@@ -36,18 +47,15 @@ class GroupDaoImplTest extends IntegrationTestBase {
 
     @Test
     void add_shouldReturnIllegalArgumentException_whenInputParamNull() {
-        DataSource mocDataSource = Mockito.mock(DataSource.class);
-        GroupDaoImpl groupDaoImpl = new GroupDaoImpl(mocDataSource);
         assertThrows(IllegalArgumentException.class, () -> {
-            groupDaoImpl.add(null);
+            groupDao.add(null);
         });
     }
 
     @Test
     void add__whenInputParamGroup() {
         Group group = new Group("AT-42");
-        GroupDaoImpl groupDaoImpl = new GroupDaoImpl(dataSource);
-        groupDaoImpl.add(group);
+        groupDao.add(group);
 
         List<Group> groups = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
@@ -83,14 +91,12 @@ class GroupDaoImplTest extends IntegrationTestBase {
             e.printStackTrace();
         }
 
-        GroupDaoImpl groupDaoImpl = new GroupDaoImpl(dataSource);
-        assertEquals(groups, groupDaoImpl.getAll());
+        assertEquals(groups, groupDao.getAll());
     }
 
     @Test
     void get_shouldReturnNull_whenInputIncorrectGroupId() {
-        GroupDaoImpl groupDaoImpl = new GroupDaoImpl(dataSource);
-        assertEquals(null, groupDaoImpl.get(1));
+        assertEquals(null, groupDao.get(1));
     }
     
     @Test
@@ -107,8 +113,7 @@ class GroupDaoImplTest extends IntegrationTestBase {
             e.printStackTrace();
         }
         
-        GroupDaoImpl groupDaoImpl = new GroupDaoImpl(dataSource);
-        assertEquals(group, groupDaoImpl.get(1));
+        assertEquals(group, groupDao.get(1));
     }
     
     @Test
@@ -146,7 +151,34 @@ class GroupDaoImplTest extends IntegrationTestBase {
             e.printStackTrace();
         }
         
-        GroupDaoImpl groupDaoImpl = new GroupDaoImpl(dataSource);
-        assertEquals(group, groupDaoImpl.getAllGrupsWithLessOrEqualsStudentsNumber(3).get(0));
+        assertEquals(group, groupDao.getAllGrupsWithLessOrEqualsStudentsNumber(3).get(0));
+    }
+    
+    @Test
+    void isEmpty_shouldReturnTrue_whenTableIsEmpty() {
+        assertEquals(true, groupDao.isEmpty());
+    }
+    
+    @Test
+    void isEmpty_shouldReturnFalse_whenTableIsNotEmpty() {
+        List<Group> groups = new ArrayList<>();
+        groups.add(new Group(2, "AT-42"));
+        groups.add(new Group(3, "VK-13"));
+        groups.add(new Group(4, "GG-01"));
+
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "INSERT INTO school.groups (group_name) VALUES (?)";
+            PreparedStatement statement = con.prepareStatement(sql);
+            for (Group group : groups) {
+                statement.setString(1, group.getName());
+                statement.addBatch();
+            }
+            statement.executeBatch();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(false, groupDao.isEmpty());
     }
 }

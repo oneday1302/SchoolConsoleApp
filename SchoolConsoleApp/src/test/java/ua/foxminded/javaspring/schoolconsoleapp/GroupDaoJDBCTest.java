@@ -6,13 +6,21 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDaoSpringBootImpl;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
 
-class GroupDaoSpringBootImplTest extends IntegrationTestBase {
+@SpringBootTest(classes = TestConfig.class)
+@ActiveProfiles("JDBCTemplate")
+class GroupDaoJDBCTest {
 
     @Autowired
-    GroupDaoSpringBootImpl groupDao;
+    JdbcTemplate jdbc;
+    
+    @Autowired
+    GroupDao groupDao;
 
     @AfterEach
     void cleanup() {
@@ -78,5 +86,16 @@ class GroupDaoSpringBootImplTest extends IntegrationTestBase {
         students.add(student3);
 
         assertEquals(group, groupDao.getAllGrupsWithLessOrEqualsStudentsNumber(3).get(0));
+    }
+    
+    @Test
+    void isEmpty_shouldReturnTrue_whenTableIsEmpty() {
+        assertEquals(true, groupDao.isEmpty());
+    }
+    
+    @Sql("/SQL/data2.sql")
+    @Test
+    void isEmpty_shouldReturnFalse_whenTableIsNotEmpty() {
+        assertEquals(false, groupDao.isEmpty());
     }
 }

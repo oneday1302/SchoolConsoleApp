@@ -11,10 +11,21 @@ import java.util.StringJoiner;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDaoImpl;
 
-class StudentsDaoImplTest extends IntegrationTestBase {
+@SpringBootTest(classes = TestConfig.class)
+@ActiveProfiles("nativeJDBC")
+class StudentsDaoImplTest {
+    
+    @Autowired
+    StudentDao studentsDao;
+    
+    @Autowired
+    DataSource dataSource;
 
     @AfterEach
     void cleanup() {
@@ -41,18 +52,15 @@ class StudentsDaoImplTest extends IntegrationTestBase {
 
     @Test
     void add_shouldReturnIllegalArgumentException_whenInputParamNull() {
-        DataSource mocDataSource = Mockito.mock(DataSource.class);
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(mocDataSource);
         assertThrows(IllegalArgumentException.class, () -> {
-            studentsDaoImpl.add(null);
+            studentsDao.add(null);
         });
     }
 
     @Test
     void add__whenInputParamStudent() {
         Student student = new Student("Jacob", "Smith");
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
-        studentsDaoImpl.add(student);
+        studentsDao.add(student);
 
         List<Student> students = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
@@ -93,16 +101,13 @@ class StudentsDaoImplTest extends IntegrationTestBase {
             e.printStackTrace();
         }
 
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
-        assertEquals(students, studentsDaoImpl.getAll());
+        assertEquals(students, studentsDao.getAll());
     }
 
     @Test
     void updateGroupIdRow_shouldReturnIllegalArgumentException_whenInputNull() {
-        DataSource mocDataSource = Mockito.mock(DataSource.class);
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(mocDataSource);
         assertThrows(IllegalArgumentException.class, () -> {
-            studentsDaoImpl.updateGroupIdRow(null);
+            studentsDao.updateGroupIdRow(null);
         });
     }
 
@@ -138,8 +143,7 @@ class StudentsDaoImplTest extends IntegrationTestBase {
         }
 
         student.setGroup(groups.get(1));
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
-        studentsDaoImpl.updateGroupIdRow(student);
+        studentsDao.updateGroupIdRow(student);
 
         List<Student> students = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
@@ -167,10 +171,8 @@ class StudentsDaoImplTest extends IntegrationTestBase {
 
     @Test
     void findAllStudentsInTheCourse_shouldReturnIllegalArgumentException_whenInputNull() {
-        DataSource mocDataSource = Mockito.mock(DataSource.class);
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(mocDataSource);
         assertThrows(IllegalArgumentException.class, () -> {
-            studentsDaoImpl.findAllStudentsInTheCourse(null);
+            studentsDao.findAllStudentsInTheCourse(null);
         });
     }
 
@@ -218,8 +220,7 @@ class StudentsDaoImplTest extends IntegrationTestBase {
             e.printStackTrace();
         }
 
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
-        assertEquals(students, studentsDaoImpl.findAllStudentsInTheCourse("History"));
+        assertEquals(students, studentsDao.findAllStudentsInTheCourse("History"));
     }
 
     @Test
@@ -238,8 +239,7 @@ class StudentsDaoImplTest extends IntegrationTestBase {
             e.printStackTrace();
         }
 
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
-        studentsDaoImpl.delete(1);
+        studentsDao.delete(1);
 
         Student actual = null;
         try (Connection con = dataSource.getConnection()) {
@@ -257,10 +257,8 @@ class StudentsDaoImplTest extends IntegrationTestBase {
 
     @Test
     void addStudentToCourse_shouldReturnIllegalArgumentException_whenInputNull() {
-        DataSource mocDataSource = Mockito.mock(DataSource.class);
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(mocDataSource);
         assertThrows(IllegalArgumentException.class, () -> {
-            studentsDaoImpl.addStudentToCourse(null);
+            studentsDao.addStudentToCourse(null);
         });
     }
 
@@ -289,8 +287,7 @@ class StudentsDaoImplTest extends IntegrationTestBase {
             e.printStackTrace();
         }
 
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
-        studentsDaoImpl.addStudentToCourse(student);
+        studentsDao.addStudentToCourse(student);
 
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT * FROM school.students_courses WHERE student_id = 1 AND course_id = 1";
@@ -333,8 +330,7 @@ class StudentsDaoImplTest extends IntegrationTestBase {
             e.printStackTrace();
         }
 
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
-        studentsDaoImpl.removeStudentFromCourses(1);
+        studentsDao.removeStudentFromCourses(1);
 
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT * FROM school.students_courses";
@@ -372,8 +368,7 @@ class StudentsDaoImplTest extends IntegrationTestBase {
             e.printStackTrace();
         }
 
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
-        studentsDaoImpl.addStudentToCourse(student.getId(), course.getId());
+        studentsDao.addStudentToCourse(student.getId(), course.getId());
 
         Student actual = null;
         try (Connection con = dataSource.getConnection()) {
@@ -430,8 +425,7 @@ class StudentsDaoImplTest extends IntegrationTestBase {
             e.printStackTrace();
         }
 
-        StudentDaoImpl studentsDaoImpl = new StudentDaoImpl(dataSource);
-        studentsDaoImpl.removeStudentFromCourse(student.getId(), course.getId());
+        studentsDao.removeStudentFromCourse(student.getId(), course.getId());
 
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT * FROM school.students_courses";
@@ -442,5 +436,38 @@ class StudentsDaoImplTest extends IntegrationTestBase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    @Test
+    void isEmpty_shouldReturnTrue_whenTableIsEmpty() {
+        assertEquals(true, studentsDao.isEmpty());
+    }
+    
+    @Test
+    void isEmpty_shouldReturnFalse_whenTableIsNotEmpty() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student(1, "Jacob", "Smith"));
+        students.add(new Student(2, "Emily", "Jones"));
+        students.add(new Student(3, "Michael", "Taylor"));
+
+        try (Connection con = dataSource.getConnection()) {
+            String sqlSetval = "SELECT setval('school.students_student_id_seq', 1, false)";
+            PreparedStatement statementSetval = con.prepareStatement(sqlSetval);
+            statementSetval.execute();
+
+            String sql = "INSERT INTO school.students (first_name, last_name) VALUES (?, ?)";
+            PreparedStatement statement = con.prepareStatement(sql);
+            for (Student student : students) {
+                statement.setString(1, student.getFirstName());
+                statement.setString(2, student.getLastName());
+                statement.addBatch();
+            }
+            statement.executeBatch();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(false, studentsDao.isEmpty());
     }
 }

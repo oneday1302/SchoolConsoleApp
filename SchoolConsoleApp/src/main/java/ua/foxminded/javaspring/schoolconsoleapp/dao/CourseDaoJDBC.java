@@ -2,13 +2,15 @@ package ua.foxminded.javaspring.schoolconsoleapp.dao;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.foxminded.javaspring.schoolconsoleapp.Course;
 import ua.foxminded.javaspring.schoolconsoleapp.CourseMapper;
 
 @Repository
-public class CourseDaoSpringBootImpl implements CourseDao {
+@Profile("JDBCTemplate")
+public class CourseDaoJDBC implements CourseDao {
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -33,9 +35,6 @@ public class CourseDaoSpringBootImpl implements CourseDao {
     public boolean isEmpty() {
         String sql = "SELECT COUNT(course_id) FROM school.courses";
         int count = jdbc.queryForObject(sql, Integer.class);
-        if (count == 0) {
-            return true;
-        }
-        return false;
+        return count == 0;
     }
 }

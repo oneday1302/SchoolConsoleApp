@@ -8,10 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 import javax.sql.DataSource;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 import ua.foxminded.javaspring.schoolconsoleapp.Course;
 import ua.foxminded.javaspring.schoolconsoleapp.Group;
 import ua.foxminded.javaspring.schoolconsoleapp.Student;
 
+@Repository
+@Profile("nativeJDBC")
 public class StudentDaoImpl implements StudentDao {
     private final DataSource dataSource;
 
@@ -198,10 +202,9 @@ public class StudentDaoImpl implements StudentDao {
         try (Connection con = dataSource.getConnection()) {
             PreparedStatement statement = con.prepareStatement("SELECT student_id FROM school.students LIMIT 1");
             ResultSet result = statement.executeQuery();
-            return result.next();
+            return !result.next();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException(e);
         }
-        return false;
     }
 }
