@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDaoImpl;
 
@@ -70,26 +71,44 @@ class GroupDaoImplTest {
 
         assertEquals(group, groups.get(0));
     }
+    
+    @Test
+    void addAll_shouldReturnIllegalArgumentException_whenInputParamNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            groupDao.addAll(null);
+        });
+    }
 
     @Test
-    void getAll_shouldReturnListOfGroups() {
-        List<Group> groups = new ArrayList<>();
-        groups.add(new Group(2, "AT-42"));
-        groups.add(new Group(3, "VK-13"));
-        groups.add(new Group(4, "GG-01"));
+    void addAll__whenInputParamListOfGroup() {
+        List<Group> expected = new ArrayList<>();
+        expected.add(new Group("AT-42"));
+        expected.add(new Group("VK-13"));
+        expected.add(new Group("GG-01"));
+        groupDao.addAll(expected);
 
+        List<Group> actual = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
-            String sql = "INSERT INTO school.groups (group_name) VALUES (?)";
-            PreparedStatement statement = con.prepareStatement(sql);
-            for (Group group : groups) {
-                statement.setString(1, group.getName());
-                statement.addBatch();
+            PreparedStatement statement = con.prepareStatement("SELECT group_name FROM school.groups");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                actual.add(new Group(result.getString("group_name")));
             }
-            statement.executeBatch();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        assertEquals(expected, actual);
+    }
+
+    @Sql("/SQL/setGroupSetval.sql")
+    @Sql("/SQL/data2.sql")
+    @Test
+    void getAll_shouldReturnListOfGroups() {
+        List<Group> groups = new ArrayList<>();
+        groups.add(new Group(1, "AT-42"));
+        groups.add(new Group(2, "VK-13"));
+        groups.add(new Group(3, "GG-01"));
 
         assertEquals(groups, groupDao.getAll());
     }
@@ -99,23 +118,15 @@ class GroupDaoImplTest {
         assertEquals(null, groupDao.get(1));
     }
     
+    @Sql("/SQL/setGroupSetval.sql")
+    @Sql("/SQL/data3.sql")
     @Test
     void get_shouldReturnGroup_whenInputGroupId() {
-        Group group = new Group(1, "AT-42");
-
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "INSERT INTO school.groups (group_name) VALUES (?)";
-            PreparedStatement statement = con.prepareStatement(sql);
-            statement.setString(1, group.getName());
-            statement.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
+        Group group = new Group(1, "AT-42");        
         assertEquals(group, groupDao.get(1));
     }
     
+    @Sql("/SQL/data4.sql")
     @Test
     void getAllGrupsWithLessOrEqualsStudentsNumber_shouldReturnListOfGroups_whenInputStudentsNumber() {
         Group group = new Group(1, "VK-13");
@@ -130,26 +141,6 @@ class GroupDaoImplTest {
         students.add(student1);
         students.add(student2);
         students.add(student3);
-
-        try (Connection con = dataSource.getConnection()) {
-            String sqlGroup = "INSERT INTO school.groups (group_id, group_name) VALUES (?, ?)";
-            PreparedStatement statementGroup = con.prepareStatement(sqlGroup);
-            statementGroup.setInt(1, group.getId());
-            statementGroup.setString(2, group.getName());
-            statementGroup.execute();
-            String sqlStudent = "INSERT INTO school.students (group_id, first_name, last_name) VALUES (?, ?, ?)";
-            PreparedStatement statementStudent = con.prepareStatement(sqlStudent);
-            for (Student student : students) {
-                statementStudent.setInt(1, student.getGroup().getId());
-                statementStudent.setString(2, student.getFirstName());
-                statementStudent.setString(3, student.getLastName());
-                statementStudent.addBatch();
-            }
-            statementStudent.executeBatch();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         
         assertEquals(group, groupDao.getAllGrupsWithLessOrEqualsStudentsNumber(3).get(0));
     }
@@ -159,26 +150,9 @@ class GroupDaoImplTest {
         assertEquals(true, groupDao.isEmpty());
     }
     
+    @Sql("/SQL/data2.sql")
     @Test
     void isEmpty_shouldReturnFalse_whenTableIsNotEmpty() {
-        List<Group> groups = new ArrayList<>();
-        groups.add(new Group(2, "AT-42"));
-        groups.add(new Group(3, "VK-13"));
-        groups.add(new Group(4, "GG-01"));
-
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "INSERT INTO school.groups (group_name) VALUES (?)";
-            PreparedStatement statement = con.prepareStatement(sql);
-            for (Group group : groups) {
-                statement.setString(1, group.getName());
-                statement.addBatch();
-            }
-            statement.executeBatch();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         assertEquals(false, groupDao.isEmpty());
     }
 }

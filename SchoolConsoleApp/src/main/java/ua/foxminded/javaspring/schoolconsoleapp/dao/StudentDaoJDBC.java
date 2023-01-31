@@ -30,6 +30,25 @@ public class StudentDaoJDBC implements StudentDao {
     }
 
     @Override
+    public void addAll(List<Student> students) {
+        if (students == null) {
+            throw new IllegalArgumentException("Param cannot be null.");
+        }
+
+        String sql = "INSERT INTO school.students (first_name, last_name) VALUES (?, ?)";
+        jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1, students.get(i).getFirstName());
+                ps.setString(2, students.get(i).getLastName());
+            }
+
+            public int getBatchSize() {
+                return students.size();
+            }
+        });
+    }
+
+    @Override
     public List<Student> getAll() {
         StringJoiner sql = new StringJoiner(" ");
         sql.add("SELECT school.students.student_id, school.students.group_id, school.groups.group_name, first_name, last_name")

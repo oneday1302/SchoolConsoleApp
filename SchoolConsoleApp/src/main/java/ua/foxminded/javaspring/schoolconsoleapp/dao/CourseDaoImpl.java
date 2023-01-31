@@ -41,6 +41,27 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
+    public void addAll(List<Course> courses) {
+        if (courses == null) {
+            throw new IllegalArgumentException("Param cannot be null.");
+        }
+        
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "INSERT INTO school.courses (course_name, course_description) VALUES (?, ?)";
+            PreparedStatement statement = con.prepareStatement(sql);
+            for (Course course : courses) {
+                statement.setString(1, course.getName());
+                statement.setString(2, course.getDesc());
+                statement.addBatch();
+            }
+            statement.executeBatch();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public List<Course> getAll() {
         List<Course> courses = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {

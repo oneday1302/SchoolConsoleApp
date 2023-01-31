@@ -43,6 +43,27 @@ class CourseDaoJDBCTest {
         String sql = "SELECT * FROM school.courses";
         assertEquals(course, jdbc.query(sql, new CourseMapper()).get(0));
     }
+    
+    @Test
+    void addAll_shouldReturnIllegalArgumentException_whenInputParamNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            courseDao.addAll(null);
+        });
+    }
+
+    @Sql("/SQL/setCourseSetval.sql")
+    @Test
+    void addAll_whenInputParamLisyOfCourse() {
+        List<Course> courses = new ArrayList<>();
+        courses.add(new Course(1, "History", "History"));
+        courses.add(new Course(2, "Mathematics", "Mathematics"));
+        courses.add(new Course(3, "Biology", "Biology"));
+        
+        courseDao.addAll(courses);
+
+        String sql = "SELECT * FROM school.courses";
+        assertEquals(courses, jdbc.query(sql, new CourseMapper()));
+    }
 
     @Sql("/SQL/setCourseSetval.sql")
     @Sql("/SQL/data1.sql")

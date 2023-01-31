@@ -1,8 +1,11 @@
 package ua.foxminded.javaspring.schoolconsoleapp.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.foxminded.javaspring.schoolconsoleapp.Course;
@@ -23,6 +26,25 @@ public class CourseDaoJDBC implements CourseDao {
         
         String sql = "INSERT INTO school.courses (course_name, course_description) VALUES (?, ?)";
         jdbc.update(sql, course.getName(), course.getDesc());
+    }
+
+    @Override
+    public void addAll(List<Course> courses) {
+        if (courses == null) {
+            throw new IllegalArgumentException("Param cannot be null.");
+        }
+        
+        String sql = "INSERT INTO school.courses (course_name, course_description) VALUES (?, ?)";
+        jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1, courses.get(i).getName());
+                ps.setString(2, courses.get(i).getDesc());
+            }
+
+            public int getBatchSize() {
+                return courses.size();
+            }
+        });
     }
 
     @Override

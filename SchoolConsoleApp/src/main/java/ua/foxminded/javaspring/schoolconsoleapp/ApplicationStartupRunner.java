@@ -31,9 +31,9 @@ public class ApplicationStartupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (groupDao.isEmpty() && courseDao.isEmpty() && studentDao.isEmpty()) {
-            new GroupsGenerator(10).generate().forEach(groupDao::add);
-            new CoursesGenerator(new FileReader("coursesData.txt")).generate().forEach(courseDao::add);
-            new StudentsGenerator(new FileReader("firstNameData.txt"), new FileReader("lastNameData.txt"), 200).generate().forEach(studentDao::add);
+            groupDao.addAll(new GroupsGenerator(10).generate());
+            courseDao.addAll(new CoursesGenerator(new FileReader("coursesData.txt")).generate());
+            studentDao.addAll(new StudentsGenerator(new FileReader("firstNameData.txt"), new FileReader("lastNameData.txt"), 200).generate());
 
             List<Student> students = studentDao.getAll();
             new GroupsDistributor(students, groupDao.getAll()).distribute().forEach(studentDao::updateGroupIdRow);

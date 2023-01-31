@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import javax.sql.DataSource;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoImpl;
@@ -70,27 +71,46 @@ class CourseDaoImplTest {
 
         assertEquals(course, courses.get(0));
     }
-
+    
     @Test
-    void getAll_shouldReturnListOfCourses() {
-        List<Course> courses = new ArrayList<>();
-        courses.add(new Course(2, "History", "History"));
-        courses.add(new Course(3, "Mathematics", "Mathematics"));
-        courses.add(new Course(4, "Biology", "Biology"));
+    void addAll_shouldReturnIllegalArgumentException_whenInputParamNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            courseDao.addAll(null);
+        });
+    }
+    
+    @Test
+    void addAll_whenInputParamListOfCourse() {
+        List<Course> expected = new ArrayList<>();
+        expected.add(new Course("History", "History"));
+        expected.add(new Course("Mathematics", "Mathematics"));
+        expected.add(new Course("Biology", "Biology"));
+        
+        courseDao.addAll(expected);
 
+        List<Course> actual = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
-            String sql = "INSERT INTO school.courses (course_name, course_description) VALUES (?, ?)";
+            String sql = "SELECT course_name, course_description FROM school.courses";
             PreparedStatement statement = con.prepareStatement(sql);
-            for (Course course : courses) {
-                statement.setString(1, course.getName());
-                statement.setString(2, course.getDesc());
-                statement.addBatch();
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                actual.add(new Course(result.getString("course_name"), result.getString("course_description")));
             }
-            statement.executeBatch();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        assertEquals(expected, actual);
+    }
+
+    @Sql("/SQL/setCourseSetval.sql")
+    @Sql("/SQL/data1.sql")
+    @Test
+    void getAll_shouldReturnListOfCourses() {
+        List<Course> courses = new ArrayList<>();
+        courses.add(new Course(1, "History", "History"));
+        courses.add(new Course(2, "Mathematics", "Mathematics"));
+        courses.add(new Course(3, "Biology", "Biology"));
 
         assertEquals(courses, courseDao.getAll());
     }
@@ -100,27 +120,9 @@ class CourseDaoImplTest {
         assertEquals(true, courseDao.isEmpty());
     }
     
+    @Sql("/SQL/data1.sql")
     @Test
     void isEmpty_shouldReturnFalse_whenTableIsNotEmpty() {
-        List<Course> courses = new ArrayList<>();
-        courses.add(new Course(2, "History", "History"));
-        courses.add(new Course(3, "Mathematics", "Mathematics"));
-        courses.add(new Course(4, "Biology", "Biology"));
-
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "INSERT INTO school.courses (course_name, course_description) VALUES (?, ?)";
-            PreparedStatement statement = con.prepareStatement(sql);
-            for (Course course : courses) {
-                statement.setString(1, course.getName());
-                statement.setString(2, course.getDesc());
-                statement.addBatch();
-            }
-            statement.executeBatch();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         assertEquals(false, courseDao.isEmpty());
     }
 }

@@ -29,12 +29,33 @@ public class GroupDaoImpl implements GroupDao {
         if (group == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
+        
         try (Connection con = dataSource.getConnection()) {
             String sql = "INSERT INTO school.groups (group_name) VALUES (?)";
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setString(1, group.getName());
             statement.execute();
-            
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addAll(List<Group> groups) {
+        if (groups == null) {
+            throw new IllegalArgumentException("Param cannot be null.");
+        }
+        
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "INSERT INTO school.groups (group_name) VALUES (?)";
+            PreparedStatement statement = con.prepareStatement(sql);
+            for (Group group : groups) {
+                statement.setString(1, group.getName());
+                statement.addBatch();
+            }
+            statement.executeBatch();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

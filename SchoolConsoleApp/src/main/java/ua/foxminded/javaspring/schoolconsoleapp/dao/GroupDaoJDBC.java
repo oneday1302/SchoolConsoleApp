@@ -1,10 +1,13 @@
 package ua.foxminded.javaspring.schoolconsoleapp.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.StringJoiner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.foxminded.javaspring.schoolconsoleapp.Group;
@@ -25,6 +28,24 @@ public class GroupDaoJDBC implements GroupDao {
 
         String sql = "INSERT INTO school.groups (group_name) VALUES (?)";
         jdbc.update(sql, group.getName());
+    }
+
+    @Override
+    public void addAll(List<Group> groups) {
+        if (groups == null) {
+            throw new IllegalArgumentException("Param cannot be null.");
+        }
+
+        String sql = "INSERT INTO school.groups (group_name) VALUES (?)";
+        jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1, groups.get(i).getName());
+            }
+
+            public int getBatchSize() {
+                return groups.size();
+            }
+        });
     }
 
     @Override

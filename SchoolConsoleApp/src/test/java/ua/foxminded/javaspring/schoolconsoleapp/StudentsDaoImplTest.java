@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDaoImpl;
 
@@ -75,31 +77,44 @@ class StudentsDaoImplTest {
 
         assertEquals(student, students.get(0));
     }
+    
+    @Test
+    void addAll_shouldReturnIllegalArgumentException_whenInputParamNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentsDao.addAll(null);
+        });
+    }
 
+    @Test
+    void addAll__whenInputParamListOfStudent() {
+        List<Student> expected = new ArrayList<>();
+        expected.add(new Student("Jacob", "Smith"));
+        expected.add(new Student("Emily", "Jones"));
+        expected.add(new Student("Michael", "Taylor"));
+        studentsDao.addAll(expected);
+
+        List<Student> actual = new ArrayList<>();
+        try (Connection con = dataSource.getConnection()) {
+            PreparedStatement statement = con.prepareStatement("SELECT first_name, last_name FROM school.students");
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                actual.add(new Student(result.getString("first_name"), result.getString("last_name")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(expected, actual);
+    }
+
+    @Sql("/SQL/setStudentSetval.sql")
+    @Sql("/SQL/data5.sql")
     @Test
     void getAll_shouldReturnListOfStudents() {
         List<Student> students = new ArrayList<>();
         students.add(new Student(1, "Jacob", "Smith"));
         students.add(new Student(2, "Emily", "Jones"));
         students.add(new Student(3, "Michael", "Taylor"));
-
-        try (Connection con = dataSource.getConnection()) {
-            String sqlSetval = "SELECT setval('school.students_student_id_seq', 1, false)";
-            PreparedStatement statementSetval = con.prepareStatement(sqlSetval);
-            statementSetval.execute();
-
-            String sql = "INSERT INTO school.students (first_name, last_name) VALUES (?, ?)";
-            PreparedStatement statement = con.prepareStatement(sql);
-            for (Student student : students) {
-                statement.setString(1, student.getFirstName());
-                statement.setString(2, student.getLastName());
-                statement.addBatch();
-            }
-            statement.executeBatch();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         assertEquals(students, studentsDao.getAll());
     }
@@ -111,38 +126,14 @@ class StudentsDaoImplTest {
         });
     }
 
+    @Sql("/SQL/setGroupSetval.sql")
+    @Sql("/SQL/setStudentSetval.sql")
+    @Sql("/SQL/data6.sql")
     @Test
     void updateGroupIdRow_whenInputStudent() {
-        List<Group> groups = new ArrayList<>();
-        groups.add(new Group(1, "VK-13"));
-        groups.add(new Group(2, "AT-01"));
-
         Student student = new Student(1, "Jacob", "Smith");
-        student.setGroup(groups.get(0));
+        student.setGroup(new Group(1, "VK-13"));
 
-        try (Connection con = dataSource.getConnection()) {
-            String sqlGroup = "INSERT INTO school.groups (group_id, group_name) VALUES (?, ?)";
-            PreparedStatement statementGroup = con.prepareStatement(sqlGroup);
-            for (Group group : groups) {
-                statementGroup.setInt(1, group.getId());
-                statementGroup.setString(2, group.getName());
-                statementGroup.addBatch();
-            }
-            statementGroup.executeBatch();
-
-            String sqlStudent = "INSERT INTO school.students (student_id, group_id, first_name, last_name) VALUES (?, ?, ?, ?)";
-            PreparedStatement statementStudent = con.prepareStatement(sqlStudent);
-            statementStudent.setInt(1, student.getId());
-            statementStudent.setInt(2, student.getGroup().getId());
-            statementStudent.setString(3, student.getFirstName());
-            statementStudent.setString(4, student.getLastName());
-            statementStudent.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        student.setGroup(groups.get(1));
         studentsDao.updateGroupIdRow(student);
 
         List<Student> students = new ArrayList<>();
@@ -176,6 +167,9 @@ class StudentsDaoImplTest {
         });
     }
 
+    @Sql("/SQL/setCourseSetval.sql")
+    @Sql("/SQL/setStudentSetval.sql")
+    @Sql("/SQL/data7.sql")
     @Test
     void findAllStudentsInTheCourse_shouldReturnListOfStudents_whenInputCourseName() {
         List<Student> students = new ArrayList<>();
@@ -183,62 +177,13 @@ class StudentsDaoImplTest {
         students.add(new Student(2, "Emily", "Jones"));
         students.add(new Student(3, "Michael", "Taylor"));
 
-        Course course = new Course(1, "History", "History");
-
-        try (Connection con = dataSource.getConnection()) {
-            StringJoiner sqlSetval = new StringJoiner(" ");
-            sqlSetval.add("SELECT setval('school.students_student_id_seq', 1, false);")
-                     .add("SELECT setval('school.courses_course_id_seq', 1, false);");
-            PreparedStatement statementSetval = con.prepareStatement(sqlSetval.toString());
-            statementSetval.execute();
-
-            String sqlCourse = "INSERT INTO school.courses (course_name, course_description) VALUES (?, ?)";
-            PreparedStatement statCourse = con.prepareStatement(sqlCourse);
-            statCourse.setString(1, course.getName());
-            statCourse.setString(2, course.getDesc());
-            statCourse.execute();
-
-            String sqlStudent = "INSERT INTO school.students (first_name, last_name) VALUES (?, ?)";
-            PreparedStatement statStudent = con.prepareStatement(sqlStudent);
-            for (Student student : students) {
-                statStudent.setString(1, student.getFirstName());
-                statStudent.setString(2, student.getLastName());
-                statStudent.addBatch();
-            }
-            statStudent.executeBatch();
-
-            String sqlStudentCourse = "INSERT INTO school.students_courses (student_id, course_id) VALUES (?, ?)";
-            PreparedStatement statStudentCourse = con.prepareStatement(sqlStudentCourse);
-            for (Student student : students) {
-                statStudentCourse.setInt(1, student.getId());
-                statStudentCourse.setInt(2, course.getId());
-                statStudentCourse.addBatch();
-            }
-            statStudentCourse.executeBatch();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         assertEquals(students, studentsDao.findAllStudentsInTheCourse("History"));
     }
 
+    @Sql("/SQL/setStudentSetval.sql")
+    @Sql("/SQL/data8.sql")
     @Test
     void delete_whenInputIdStudent() {
-        Student student = new Student(1, "Jacob", "Smith");
-
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "INSERT INTO school.students (student_id, first_name, last_name) VALUES (?, ?, ?)";
-            PreparedStatement statementStudent = con.prepareStatement(sql);
-            statementStudent.setInt(1, student.getId());
-            statementStudent.setString(2, student.getFirstName());
-            statementStudent.setString(3, student.getLastName());
-            statementStudent.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         studentsDao.delete(1);
 
         Student actual = null;
@@ -262,30 +207,14 @@ class StudentsDaoImplTest {
         });
     }
 
+    @Sql("/SQL/setCourseSetval.sql")
+    @Sql("/SQL/setStudentSetval.sql")
+    @Sql("/SQL/data9.sql")
     @Test
     void addStudentToCourse_whenInputStudent() {
         Course course = new Course(1, "History", "History");
         Student student = new Student(1, "Jacob", "Smith");
         student.addCourse(course);
-
-        try (Connection con = dataSource.getConnection()) {
-            String sqlCourse = "INSERT INTO school.courses (course_id, course_name, course_description) VALUES (?, ?, ?)";
-            PreparedStatement statementCourse = con.prepareStatement(sqlCourse);
-            statementCourse.setInt(1, course.getId());
-            statementCourse.setString(2, course.getName());
-            statementCourse.setString(3, course.getDesc());
-            statementCourse.execute();
-
-            String sqlStudent = "INSERT INTO school.students (student_id, first_name, last_name) VALUES (?, ?, ?)";
-            PreparedStatement statementStudent = con.prepareStatement(sqlStudent);
-            statementStudent.setInt(1, student.getId());
-            statementStudent.setString(2, student.getFirstName());
-            statementStudent.setString(3, student.getLastName());
-            statementStudent.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         studentsDao.addStudentToCourse(student);
 
@@ -300,36 +229,11 @@ class StudentsDaoImplTest {
         }
     }
 
+    @Sql("/SQL/setCourseSetval.sql")
+    @Sql("/SQL/setStudentSetval.sql")
+    @Sql("/SQL/data10.sql")
     @Test
     void removeStudentFromCourses_whenInputStudentId() {
-        Course course = new Course(1, "History", "History");
-        Student student = new Student(1, "Jacob", "Smith");
-
-        try (Connection con = dataSource.getConnection()) {
-            String sqlCourse = "INSERT INTO school.courses (course_id, course_name, course_description) VALUES (?, ?, ?)";
-            PreparedStatement statementCourse = con.prepareStatement(sqlCourse);
-            statementCourse.setInt(1, course.getId());
-            statementCourse.setString(2, course.getName());
-            statementCourse.setString(3, course.getDesc());
-            statementCourse.execute();
-
-            String sqlStudent = "INSERT INTO school.students (student_id, first_name, last_name) VALUES (?, ?, ?)";
-            PreparedStatement statementStudent = con.prepareStatement(sqlStudent);
-            statementStudent.setInt(1, student.getId());
-            statementStudent.setString(2, student.getFirstName());
-            statementStudent.setString(3, student.getLastName());
-            statementStudent.execute();
-
-            String sqlStudentCourse = "INSERT INTO school.students_courses (student_id, course_id) VALUES (?, ?)";
-            PreparedStatement statStudentCourse = con.prepareStatement(sqlStudentCourse);
-            statStudentCourse.setInt(1, student.getId());
-            statStudentCourse.setInt(2, course.getId());
-            statStudentCourse.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         studentsDao.removeStudentFromCourses(1);
 
         try (Connection con = dataSource.getConnection()) {
@@ -343,89 +247,30 @@ class StudentsDaoImplTest {
         }
     }
 
+    @Sql("/SQL/setCourseSetval.sql")
+    @Sql("/SQL/setStudentSetval.sql")
+    @Sql("/SQL/data9.sql")
     @Test
     void addStudentToCourse_whenInputStudentIdAndCourseId() {
-        Course course = new Course(1, "History", "History");
-        Student student = new Student(1, "Jacob", "Smith");
-        student.addCourse(course);
+        studentsDao.addStudentToCourse(1, 1);
 
         try (Connection con = dataSource.getConnection()) {
-            String sqlCourse = "INSERT INTO school.courses (course_id, course_name, course_description) VALUES (?, ?, ?)";
-            PreparedStatement statementCourse = con.prepareStatement(sqlCourse);
-            statementCourse.setInt(1, course.getId());
-            statementCourse.setString(2, course.getName());
-            statementCourse.setString(3, course.getDesc());
-            statementCourse.execute();
-
-            String sqlStudent = "INSERT INTO school.students (student_id, first_name, last_name) VALUES (?, ?, ?)";
-            PreparedStatement statementStudent = con.prepareStatement(sqlStudent);
-            statementStudent.setInt(1, student.getId());
-            statementStudent.setString(2, student.getFirstName());
-            statementStudent.setString(3, student.getLastName());
-            statementStudent.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        studentsDao.addStudentToCourse(student.getId(), course.getId());
-
-        Student actual = null;
-        try (Connection con = dataSource.getConnection()) {
-            StringJoiner sql = new StringJoiner(" ");
-            sql.add("SELECT school.students.student_id, first_name, last_name, school.courses.course_id, course_name, course_description FROM school.students")
-               .add("JOIN school.students_courses")
-               .add("ON school.students.student_id = school.students_courses.student_id")
-               .add("JOIN school.courses")
-               .add("ON school.students_courses.course_id = school.courses.course_id");
-            PreparedStatement statement = con.prepareStatement(sql.toString());
+            String sql = "SELECT * FROM school.students_courses WHERE student_id = 1 AND course_id = 1";
+            PreparedStatement statement = con.prepareStatement(sql);
             ResultSet result = statement.executeQuery();
-            while (result.next()) {
-                Student tempStudent = new Student(
-                        result.getInt("student_id"), result.getString("first_name"),result.getString("last_name"));
-                tempStudent.addCourse(
-                        new Course(result.getInt("course_id"), result.getString("course_name"),result.getString("course_description")));
-                actual = tempStudent;
-            }
-
+            assertEquals(true, result.next());
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        assertEquals(student, actual);
     }
 
+    @Sql("/SQL/setCourseSetval.sql")
+    @Sql("/SQL/setStudentSetval.sql")
+    @Sql("/SQL/data10.sql")
     @Test
     void removeStudentFromCourse_whenInputStudentIdAndCourseId() {
-        Course course = new Course(1, "History", "History");
-        Student student = new Student(1, "Jacob", "Smith");
-
-        try (Connection con = dataSource.getConnection()) {
-            String sqlCourse = "INSERT INTO school.courses (course_id, course_name, course_description) VALUES (?, ?, ?)";
-            PreparedStatement statementCourse = con.prepareStatement(sqlCourse);
-            statementCourse.setInt(1, course.getId());
-            statementCourse.setString(2, course.getName());
-            statementCourse.setString(3, course.getDesc());
-            statementCourse.execute();
-
-            String sqlStudent = "INSERT INTO school.students (student_id, first_name, last_name) VALUES (?, ?, ?)";
-            PreparedStatement statementStudent = con.prepareStatement(sqlStudent);
-            statementStudent.setInt(1, student.getId());
-            statementStudent.setString(2, student.getFirstName());
-            statementStudent.setString(3, student.getLastName());
-            statementStudent.execute();
-
-            String sqlStudentCourse = "INSERT INTO school.students_courses (student_id, course_id) VALUES (?, ?)";
-            PreparedStatement statStudentCourse = con.prepareStatement(sqlStudentCourse);
-            statStudentCourse.setInt(1, student.getId());
-            statStudentCourse.setInt(2, course.getId());
-            statStudentCourse.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        studentsDao.removeStudentFromCourse(student.getId(), course.getId());
+        studentsDao.removeStudentFromCourse(1, 1);
 
         try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT * FROM school.students_courses";
@@ -443,31 +288,9 @@ class StudentsDaoImplTest {
         assertEquals(true, studentsDao.isEmpty());
     }
     
+    @Sql("/SQL/data5.sql")
     @Test
     void isEmpty_shouldReturnFalse_whenTableIsNotEmpty() {
-        List<Student> students = new ArrayList<>();
-        students.add(new Student(1, "Jacob", "Smith"));
-        students.add(new Student(2, "Emily", "Jones"));
-        students.add(new Student(3, "Michael", "Taylor"));
-
-        try (Connection con = dataSource.getConnection()) {
-            String sqlSetval = "SELECT setval('school.students_student_id_seq', 1, false)";
-            PreparedStatement statementSetval = con.prepareStatement(sqlSetval);
-            statementSetval.execute();
-
-            String sql = "INSERT INTO school.students (first_name, last_name) VALUES (?, ?)";
-            PreparedStatement statement = con.prepareStatement(sql);
-            for (Student student : students) {
-                statement.setString(1, student.getFirstName());
-                statement.setString(2, student.getLastName());
-                statement.addBatch();
-            }
-            statement.executeBatch();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         assertEquals(false, studentsDao.isEmpty());
     }
 }

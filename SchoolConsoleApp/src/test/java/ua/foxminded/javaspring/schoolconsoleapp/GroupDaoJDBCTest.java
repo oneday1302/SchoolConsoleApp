@@ -43,6 +43,26 @@ class GroupDaoJDBCTest {
         String sql = "SELECT * FROM school.groups";
         assertEquals(group, jdbc.query(sql, new GroupMapper()).get(0));
     }
+    
+    @Test
+    void addAll_shouldReturnIllegalArgumentException_whenInputParamNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            groupDao.addAll(null);
+        });
+    }
+
+    @Sql("/SQL/setGroupSetval.sql")
+    @Test
+    void addAll__whenInputParamListOfGroup() {
+        List<Group> groups = new ArrayList<>();
+        groups.add(new Group(1, "AT-42"));
+        groups.add(new Group(2, "VK-13"));
+        groups.add(new Group(3, "GG-01"));
+        groupDao.addAll(groups);
+
+        String sql = "SELECT * FROM school.groups";
+        assertEquals(groups, jdbc.query(sql, new GroupMapper()));
+    }
 
     @Sql("/SQL/setGroupSetval.sql")
     @Sql("/SQL/data2.sql")

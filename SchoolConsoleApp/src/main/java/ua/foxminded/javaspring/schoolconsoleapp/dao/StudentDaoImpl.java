@@ -31,12 +31,34 @@ public class StudentDaoImpl implements StudentDao {
         if (student == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
+        
         try (Connection con = dataSource.getConnection()) {
             String sql = "INSERT INTO school.students (first_name, last_name) VALUES (?, ?)";
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setString(1, student.getFirstName());
             statement.setString(2, student.getLastName());
             statement.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addAll(List<Student> students) {
+        if (students == null) {
+            throw new IllegalArgumentException("Param cannot be null.");
+        }
+        
+        try (Connection con = dataSource.getConnection()) {
+            String sql = "INSERT INTO school.students (first_name, last_name) VALUES (?, ?)";
+            PreparedStatement statement = con.prepareStatement(sql);
+            for (Student student : students) {
+                statement.setString(1, student.getFirstName());
+                statement.setString(2, student.getLastName());
+                statement.addBatch();
+            }
+            statement.executeBatch();
 
         } catch (SQLException e) {
             e.printStackTrace();

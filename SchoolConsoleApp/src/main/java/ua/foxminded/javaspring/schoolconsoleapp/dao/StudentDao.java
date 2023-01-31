@@ -6,6 +6,8 @@ import ua.foxminded.javaspring.schoolconsoleapp.Student;
 public interface StudentDao {
     
     void add(Student student);
+    
+    void addAll(List<Student> students);
 
     List<Student> getAll();
 

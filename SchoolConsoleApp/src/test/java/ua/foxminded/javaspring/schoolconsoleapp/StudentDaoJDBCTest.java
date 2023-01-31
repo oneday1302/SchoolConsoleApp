@@ -50,6 +50,27 @@ class StudentDaoJDBCTest {
         String sql = "SELECT * FROM school.students";
         assertEquals(student, jdbc.query(sql, new StudentMapper()).get(0));
     }
+    
+    @Test
+    void addAll_shouldReturnIllegalArgumentException_whenInputParamNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            studentDao.addAll(null);
+        });
+    }
+
+    @Sql("/SQL/setStudentSetval.sql")
+    @Test
+    void addAll__whenInputParamListOfStudent() {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student(1, "Jacob", "Smith"));
+        students.add(new Student(2, "Emily", "Jones"));
+        students.add(new Student(3, "Michael", "Taylor"));
+        
+        studentDao.addAll(students);
+
+        String sql = "SELECT * FROM school.students";
+        assertEquals(students, jdbc.query(sql, new StudentMapper()));
+    }
 
     @Sql("/SQL/setStudentSetval.sql")
     @Sql("/SQL/data5.sql")

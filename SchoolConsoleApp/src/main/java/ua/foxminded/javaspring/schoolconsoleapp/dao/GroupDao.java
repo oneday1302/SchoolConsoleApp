@@ -6,6 +6,8 @@ import ua.foxminded.javaspring.schoolconsoleapp.Group;
 public interface GroupDao {
     
     void add(Group group);
+    
+    void addAll(List<Group> groups);
 
     List<Group> getAll();
 
