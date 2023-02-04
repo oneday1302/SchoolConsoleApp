@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
 
-@SpringBootTest(classes = TestConfig.class)
+@SpringBootTest(classes = DaoTestConfig.class)
 @ActiveProfiles("JDBCTemplate")
 class StudentDaoJDBCTest {
     

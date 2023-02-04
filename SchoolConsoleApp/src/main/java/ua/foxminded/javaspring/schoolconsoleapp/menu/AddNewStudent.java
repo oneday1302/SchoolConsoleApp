@@ -2,18 +2,18 @@ package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
 import ua.foxminded.javaspring.schoolconsoleapp.Student;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
+import ua.foxminded.javaspring.schoolconsoleapp.service.StudentService;
 
 public class AddNewStudent implements Menu {
     private static final String NAME = "Add new student";
-    private final StudentDao studentsDao;
+    private final StudentService studentService;
     private final ConsoleInput input;
 
-    public AddNewStudent(StudentDao studentsDao, ConsoleInput input) {
-        if (studentsDao == null || input == null) {
+    public AddNewStudent(StudentService studentService, ConsoleInput input) {
+        if (studentService == null || input == null) {
             throw new IllegalArgumentException("Params cannot be null.");
         }
-        this.studentsDao = studentsDao;
+        this.studentService = studentService;
         this.input = input;
     }
 
@@ -24,7 +24,7 @@ public class AddNewStudent implements Menu {
         System.out.print("Enter the last name: ");
         String lastName = input.getLine();
 
-        studentsDao.add(new Student(fristName, lastName));
+        studentService.add(new Student(fristName, lastName));
     }
 
     @Override

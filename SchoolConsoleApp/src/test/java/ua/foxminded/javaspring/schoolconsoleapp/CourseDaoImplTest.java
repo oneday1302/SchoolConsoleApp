@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoImpl;
 
-@SpringBootTest(classes = TestConfig.class)
+@SpringBootTest(classes = DaoTestConfig.class)
 @ActiveProfiles("nativeJDBC")
 class CourseDaoImplTest {
     

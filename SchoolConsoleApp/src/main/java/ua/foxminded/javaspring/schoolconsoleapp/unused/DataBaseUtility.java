@@ -1,4 +1,4 @@
-package ua.foxminded.javaspring.schoolconsoleapp;
+package ua.foxminded.javaspring.schoolconsoleapp.unused;
 
 import java.io.IOException;
 import java.io.InputStream;

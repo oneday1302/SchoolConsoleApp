@@ -88,7 +88,8 @@ public class StudentDaoJDBC implements StudentDao {
            .add("ON school.students.student_id = school.students_courses.student_id")
            .add("JOIN school.courses")
            .add("ON school.students_courses.course_id = school.courses.course_id")
-           .add("WHERE school.courses.course_name = ?");
+           .add("WHERE school.courses.course_name = ?")
+           .add("ORDER BY school.students.student_id");
         return jdbc.query(sql.toString(), new Object[] { courseName }, new StudentMapper());
     }
 

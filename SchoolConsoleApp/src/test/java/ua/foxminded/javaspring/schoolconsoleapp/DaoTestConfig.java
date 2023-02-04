@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("ua.foxminded.javaspring.schoolconsoleapp.dao")
 @EnableAutoConfiguration
-public class TestConfig {
+public class DaoTestConfig {
     
 }

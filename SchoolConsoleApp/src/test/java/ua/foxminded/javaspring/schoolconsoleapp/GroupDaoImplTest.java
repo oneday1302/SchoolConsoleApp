@@ -17,7 +17,7 @@ import org.springframework.test.context.jdbc.Sql;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDaoImpl;
 
-@SpringBootTest(classes = TestConfig.class)
+@SpringBootTest(classes = DaoTestConfig.class)
 @ActiveProfiles("nativeJDBC")
 class GroupDaoImplTest {
     

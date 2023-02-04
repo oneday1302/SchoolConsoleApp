@@ -1,35 +1,35 @@
 package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
+import ua.foxminded.javaspring.schoolconsoleapp.service.CourseService;
+import ua.foxminded.javaspring.schoolconsoleapp.service.StudentService;
 
 public class RemoveStudentFromCourse implements Menu {
     private static final String NAME = "Remove the student from one of his courses";
-    private final CourseDao coursesDao;
-    private final StudentDao studentsDao;
+    private final CourseService courseService;
+    private final StudentService studentService;
     private final ConsoleInput input;
 
-    public RemoveStudentFromCourse(CourseDao coursesDao, StudentDao studentsDao, ConsoleInput input) {
-        if (coursesDao == null || studentsDao == null || input == null) {
+    public RemoveStudentFromCourse(CourseService courseService, StudentService studentService, ConsoleInput input) {
+        if (courseService == null || studentService == null || input == null) {
             throw new IllegalArgumentException("Params cannot be null.");
         }
-        this.coursesDao = coursesDao;
-        this.studentsDao = studentsDao;
+        this.courseService = courseService;
+        this.studentService = studentService;
         this.input = input;
     }
 
     @Override
     public void execute() {
-        coursesDao.getAll().forEach(System.out::println);
-        studentsDao.getAll().forEach(System.out::println);
+        courseService.getAll().forEach(System.out::println);
+        studentService.getAll().forEach(System.out::println);
 
         System.out.print("Enter the id of student: ");
         int studentId = input.getInt();
         System.out.print("Enter the id of course: ");
         int courseId = input.getInt();
 
-        studentsDao.removeStudentFromCourse(studentId, courseId);
+        studentService.removeStudentFromCourse(studentId, courseId);
     }
 
     @Override

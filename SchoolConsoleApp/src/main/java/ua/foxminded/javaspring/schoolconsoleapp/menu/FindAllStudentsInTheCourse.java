@@ -1,18 +1,18 @@
 package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
+import ua.foxminded.javaspring.schoolconsoleapp.service.StudentService;
 
 public class FindAllStudentsInTheCourse implements Menu {
     private static final String NAME = "Find all students related to the course with the given name";
-    private final StudentDao studentsDao;
+    private final StudentService studentService;
     private final ConsoleInput input;
 
-    public FindAllStudentsInTheCourse(StudentDao studentsDao, ConsoleInput input) {
-        if (studentsDao == null || input == null) {
+    public FindAllStudentsInTheCourse(StudentService studentService, ConsoleInput input) {
+        if (studentService == null || input == null) {
             throw new IllegalArgumentException("Params cannot be null.");
         }
-        this.studentsDao = studentsDao;
+        this.studentService = studentService;
         this.input = input;
     }
 
@@ -20,7 +20,7 @@ public class FindAllStudentsInTheCourse implements Menu {
     public void execute() {
         System.out.print("Enter the name of course: ");
         input.getLine();
-        studentsDao.findAllStudentsInTheCourse(input.getLine()).forEach(System.out::println);
+        studentService.findAllStudentsInTheCourse(input.getLine()).forEach(System.out::println);
     }
 
     @Override
