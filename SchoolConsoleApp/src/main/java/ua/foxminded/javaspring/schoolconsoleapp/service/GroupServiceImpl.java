@@ -1,7 +1,6 @@
 package ua.foxminded.javaspring.schoolconsoleapp.service;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.schoolconsoleapp.Group;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
@@ -9,8 +8,11 @@ import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
 @Service
 public class GroupServiceImpl implements GroupService {
 
-    @Autowired
-    private GroupDao groupDao;
+    private final GroupDao groupDao;
+
+    public GroupServiceImpl(GroupDao groupDao) {
+        this.groupDao = groupDao;
+    }
 
     @Override
     public void add(Group group) {

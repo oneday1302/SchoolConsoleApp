@@ -1,7 +1,6 @@
 package ua.foxminded.javaspring.schoolconsoleapp.service;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.schoolconsoleapp.Course;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
@@ -9,8 +8,11 @@ import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
 @Service
 public class CourseServiceImpl implements CourseService {
 
-    @Autowired
-    private CourseDao courseDao;
+    private final CourseDao courseDao;
+
+    public CourseServiceImpl(CourseDao courseDao) {
+        this.courseDao = courseDao;
+    }
 
     @Override
     public void add(Course course) {
