@@ -1,7 +1,6 @@
 package ua.foxminded.javaspring.schoolconsoleapp;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import ua.foxminded.javaspring.schoolconsoleapp.menu.AddNewStudent;
@@ -19,17 +18,17 @@ import ua.foxminded.javaspring.schoolconsoleapp.service.StudentService;
 @Component
 public class ApplicationStartupRunner implements CommandLineRunner {
     
-    @Autowired
-    private CourseService courseService;
-
-    @Autowired
-    private GroupService groupService;
-
-    @Autowired
-    private StudentService studentService;
+    private final CourseService courseService;
+    private final GroupService groupService;
+    private final StudentService studentService;
+    private final ConsoleInput input;
     
-    @Autowired
-    private ConsoleInput input;
+    public ApplicationStartupRunner(CourseService courseService, GroupService groupService, StudentService studentService, ConsoleInput input) {
+        this.courseService = courseService;
+        this.groupService = groupService;
+        this.studentService = studentService;
+        this.input = input;
+    }
 
     @Override
     public void run(String... args) throws Exception {
