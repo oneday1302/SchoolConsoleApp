@@ -1,10 +1,13 @@
 package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
+import org.springframework.stereotype.Component;
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
 import ua.foxminded.javaspring.schoolconsoleapp.service.CourseService;
 import ua.foxminded.javaspring.schoolconsoleapp.service.StudentService;
 
+@Component
 public class RemoveStudentFromCourse implements Menu {
+    
     private static final String NAME = "Remove the student from one of his courses";
     private final CourseService courseService;
     private final StudentService studentService;

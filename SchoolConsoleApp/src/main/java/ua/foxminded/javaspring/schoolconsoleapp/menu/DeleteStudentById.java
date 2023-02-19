@@ -1,9 +1,12 @@
 package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
+import org.springframework.stereotype.Component;
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
 import ua.foxminded.javaspring.schoolconsoleapp.service.StudentService;
 
+@Component
 public class DeleteStudentById implements Menu {
+    
     private static final String NAME = "Delete a student by the STUDENT_ID";
     private final StudentService studentService;
     private final ConsoleInput input;

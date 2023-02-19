@@ -1,10 +1,13 @@
 package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
+import org.springframework.stereotype.Component;
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
 import ua.foxminded.javaspring.schoolconsoleapp.service.CourseService;
 import ua.foxminded.javaspring.schoolconsoleapp.service.StudentService;
 
+@Component
 public class AddStudentToCourse implements Menu {
+    
     private static final String NAME = "Add a student to the course";
     private final CourseService courseService;
     private final StudentService studentService;
