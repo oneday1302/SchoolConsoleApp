@@ -2,13 +2,15 @@ package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
 
+@Component
 public class MenuGroup implements Menu {
     private List<Menu> listMenu = new ArrayList<>();
     private final String name;
     private final ConsoleInput input;
-
+    
     public MenuGroup(String name, ConsoleInput input) {
         if (input == null) {
             throw new IllegalArgumentException("Param cannot be null.");
