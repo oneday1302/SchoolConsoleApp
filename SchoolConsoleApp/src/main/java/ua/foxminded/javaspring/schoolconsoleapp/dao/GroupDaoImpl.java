@@ -10,7 +10,8 @@ import java.util.StringJoiner;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-import ua.foxminded.javaspring.schoolconsoleapp.Group;
+
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 
 @Repository
 @Profile("nativeJDBC")

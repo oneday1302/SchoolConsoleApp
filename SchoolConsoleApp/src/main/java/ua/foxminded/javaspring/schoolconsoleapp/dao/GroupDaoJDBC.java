@@ -10,8 +10,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ua.foxminded.javaspring.schoolconsoleapp.Group;
-import ua.foxminded.javaspring.schoolconsoleapp.GroupMapper;
+
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.GroupMapper;
 
 @Repository
 @Profile("JDBCTemplate")

@@ -1,7 +1,8 @@
 package ua.foxminded.javaspring.schoolconsoleapp.dao;
 
 import java.util.List;
-import ua.foxminded.javaspring.schoolconsoleapp.Group;
+
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 
 public interface GroupDao {
     

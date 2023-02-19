@@ -2,8 +2,9 @@ package ua.foxminded.javaspring.schoolconsoleapp.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import ua.foxminded.javaspring.schoolconsoleapp.Group;
+
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 
 @Service
 public class GroupServiceImpl implements GroupService {

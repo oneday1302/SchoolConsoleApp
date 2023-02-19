@@ -9,8 +9,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ua.foxminded.javaspring.schoolconsoleapp.Student;
-import ua.foxminded.javaspring.schoolconsoleapp.StudentMapper;
+
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentMapper;
 
 @Repository
 @Profile("JDBCTemplate")

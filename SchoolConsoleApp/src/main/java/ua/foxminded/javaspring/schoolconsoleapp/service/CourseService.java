@@ -1,7 +1,8 @@
 package ua.foxminded.javaspring.schoolconsoleapp.service;
 
 import java.util.List;
-import ua.foxminded.javaspring.schoolconsoleapp.Course;
+
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
 public interface CourseService {
 
