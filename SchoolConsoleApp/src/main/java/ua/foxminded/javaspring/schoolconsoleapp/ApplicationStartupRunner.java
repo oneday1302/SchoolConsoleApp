@@ -25,7 +25,7 @@ public class ApplicationStartupRunner implements CommandLineRunner {
     private final StudentService studentService;
     private final Menu menu;
 
-    public ApplicationStartupRunner(CourseService courseService, GroupService groupService, StudentService studentService, @Qualifier("setConfigurationMenuGroup") Menu menu) {
+    public ApplicationStartupRunner(CourseService courseService, GroupService groupService, StudentService studentService, @Qualifier("mainMenu") Menu menu) {
         this.courseService = courseService;
         this.groupService = groupService;
         this.studentService = studentService;
