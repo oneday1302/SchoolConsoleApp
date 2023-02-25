@@ -2,7 +2,6 @@ package ua.foxminded.javaspring.schoolconsoleapp.distributor;
 
 import java.util.List;
 import java.util.Random;
-
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 

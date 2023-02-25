@@ -2,7 +2,6 @@ package ua.foxminded.javaspring.schoolconsoleapp.generator;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import ua.foxminded.javaspring.schoolconsoleapp.DataSource;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 

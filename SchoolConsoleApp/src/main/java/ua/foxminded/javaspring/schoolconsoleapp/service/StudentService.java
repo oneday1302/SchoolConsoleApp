@@ -1,7 +1,6 @@
 package ua.foxminded.javaspring.schoolconsoleapp.service;
 
 import java.util.List;
-
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 public interface StudentService {

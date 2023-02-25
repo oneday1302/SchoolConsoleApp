@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 public class SqlScriptRunner {
+    
     private final String sqlFileName;
     private final DataSource dataSource;
 

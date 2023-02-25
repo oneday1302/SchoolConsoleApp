@@ -1,5 +1,6 @@
 package ua.foxminded.javaspring.schoolconsoleapp.aop;
 
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
@@ -38,7 +39,7 @@ public class LoggingAspect {
     }
 
     @AfterThrowing(pointcut = "CourseDaoJDBC_ProcessingMethods() || GroupDaoJDBC_ProcessingMethods() || StudentDaoJDBC_ProcessingMethods()", throwing = "error")
-    public void afterThrowingAdvice(Throwable error) {
-        log.error("Exception: ", error);
+    public void afterThrowingAdvice(JoinPoint joinPoint, Throwable error) {
+        log.error("{}:", joinPoint.getSignature(), error);
     }
 }
