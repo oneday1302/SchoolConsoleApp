@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.GroupEntity;
 
 class GroupsGeneratorTest {
 
@@ -25,12 +25,12 @@ class GroupsGeneratorTest {
 
     @Test
     void generate_shouldReturnListOfGroup_whenInputNormal() {
-        List<Group> expected = new ArrayList<>();
-        expected.add(new Group("AH-84"));
-        expected.add(new Group("AR-58"));
-        expected.add(new Group("DP-22"));
+        List<GroupEntity> expected = new ArrayList<>();
+        expected.add(new GroupEntity("AH-84"));
+        expected.add(new GroupEntity("AR-58"));
+        expected.add(new GroupEntity("DP-22"));
 
-        List<Group> actual = new GroupsGenerator(3, new Random(42)).generate();
+        List<GroupEntity> actual = new GroupsGenerator(3, new Random(42)).generate();
 
         assertEquals(expected, actual);
     }

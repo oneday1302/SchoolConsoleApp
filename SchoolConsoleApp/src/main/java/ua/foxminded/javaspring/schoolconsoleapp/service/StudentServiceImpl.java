@@ -3,19 +3,18 @@ package ua.foxminded.javaspring.schoolconsoleapp.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 @Service
-public class StudentServiceImpl implements StudentService {
+public class StudentServiceImpl<T> implements StudentService<T> {
 
-    private StudentDao studentDao;
+    private StudentDao<T> studentDao;
 
-    public StudentServiceImpl(StudentDao studentDao) {
+    public StudentServiceImpl(StudentDao<T> studentDao) {
         this.studentDao = studentDao;
     }
 
     @Override
-    public void add(Student student) {
+    public void add(T student) {
         if (student == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -24,7 +23,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void addAll(List<Student> students) {
+    public void addAll(List<T> students) {
         if (students == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -33,12 +32,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> getAll() {
+    public List<T> getAll() {
         return studentDao.getAll();
     }
 
     @Override
-    public void updateGroupIdRow(Student student) {
+    public void updateGroupIdRow(T student) {
         if (student == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -47,7 +46,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> findAllStudentsInTheCourse(String courseName) {
+    public List<T> findAllStudentsInTheCourse(String courseName) {
         if (courseName == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -61,7 +60,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void addStudentToCourse(Student student) {
+    public void addStudentToCourse(T student) {
         if (student == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }

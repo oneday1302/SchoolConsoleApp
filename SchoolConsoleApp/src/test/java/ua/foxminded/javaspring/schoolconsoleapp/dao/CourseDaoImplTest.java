@@ -14,10 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import javax.sql.DataSource;
-
 import ua.foxminded.javaspring.schoolconsoleapp.configs.DaoTestConfig;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoImpl;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
 @SpringBootTest(classes = DaoTestConfig.class)
@@ -25,7 +22,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 class CourseDaoImplTest {
     
     @Autowired
-    CourseDao courseDao;
+    CourseDao<Course> courseDao;
     
     @Autowired
     DataSource dataSource;

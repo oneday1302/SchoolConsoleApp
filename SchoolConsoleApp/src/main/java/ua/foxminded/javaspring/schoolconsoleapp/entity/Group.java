@@ -1,13 +1,11 @@
 package ua.foxminded.javaspring.schoolconsoleapp.entity;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Group {
+    
     private int id;
     private final String name;
-    private List<Student> students = new ArrayList<>();
 
     public Group(String name) {
         if (name == null) {
@@ -24,23 +22,12 @@ public class Group {
         this.name = name;
     }
 
-    public void addStudent(Student student) {
-        if (student == null) {
-            throw new IllegalArgumentException("Param cannot be null.");
-        }
-        students.add(student);
-    }
-
     public int getId() {
         return id;
     }
 
     public String getName() {
         return name;
-    }
-
-    public List<Student> getStudents() {
-        return students;
     }
 
     @Override

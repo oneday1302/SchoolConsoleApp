@@ -1,23 +1,22 @@
 package ua.foxminded.javaspring.schoolconsoleapp.service;
 
 import java.util.List;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
-public interface StudentService {
+public interface StudentService<T> {
 
-    void add(Student student);
+    void add(T student);
 
-    void addAll(List<Student> students);
+    void addAll(List<T> students);
 
-    List<Student> getAll();
+    List<T> getAll();
 
-    void updateGroupIdRow(Student student);
+    void updateGroupIdRow(T student);
 
-    List<Student> findAllStudentsInTheCourse(String courseName);
+    List<T> findAllStudentsInTheCourse(String courseName);
 
     void delete(int id);
 
-    void addStudentToCourse(Student student);
+    void addStudentToCourse(T student);
 
     void removeStudentFromCourses(int studentId);
 

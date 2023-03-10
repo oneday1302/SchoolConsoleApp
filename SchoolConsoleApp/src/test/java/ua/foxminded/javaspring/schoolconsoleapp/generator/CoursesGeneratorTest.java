@@ -8,10 +8,8 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import ua.foxminded.javaspring.schoolconsoleapp.DataSource;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
-import ua.foxminded.javaspring.schoolconsoleapp.generator.CoursesGenerator;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.CourseEntity;
 
 class CoursesGeneratorTest {
 
@@ -24,15 +22,15 @@ class CoursesGeneratorTest {
 
     @Test
     void generate_shouldReturnListOfCourse_whenInputCourseData() {
-        List<Course> expected = new ArrayList<>();
-        expected.add(new Course("Mathematics", "Mathematics"));
-        expected.add(new Course("Biology", "Biology"));
+        List<CourseEntity> expected = new ArrayList<>();
+        expected.add(new CourseEntity("Mathematics", "Mathematics"));
+        expected.add(new CourseEntity("Biology", "Biology"));
 
         Stream<String> stream = Stream.of("Mathematics_Mathematics", "Biology_Biology");
         DataSource<String> mockDataSource = Mockito.mock(DataSource.class);
         when(mockDataSource.getData()).thenReturn(stream);
 
-        List<Course> actual = new CoursesGenerator(mockDataSource).generate();
+        List<CourseEntity> actual = new CoursesGenerator(mockDataSource).generate();
 
         assertEquals(expected, actual);
     }

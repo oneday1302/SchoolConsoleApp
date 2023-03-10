@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-
 import ua.foxminded.javaspring.schoolconsoleapp.configs.DaoTestConfig;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDaoImpl;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
@@ -28,7 +25,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 class StudentsDaoImplTest {
     
     @Autowired
-    StudentDao studentsDao;
+    StudentDao<Student> studentsDao;
     
     @Autowired
     DataSource dataSource;

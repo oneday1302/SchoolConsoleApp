@@ -12,9 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-
 import ua.foxminded.javaspring.schoolconsoleapp.configs.DaoTestConfig;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
@@ -28,7 +26,7 @@ class StudentDaoJDBCTest {
     JdbcTemplate jdbc;
     
     @Autowired
-    StudentDao studentDao;
+    StudentDao<Student> studentDao;
 
     @AfterEach
     void cleanup() {

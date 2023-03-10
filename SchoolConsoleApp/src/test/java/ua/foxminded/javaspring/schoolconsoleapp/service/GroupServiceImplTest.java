@@ -9,17 +9,15 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import ua.foxminded.javaspring.schoolconsoleapp.configs.ServiceLayerTestConfig;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
-import ua.foxminded.javaspring.schoolconsoleapp.service.GroupService;
 
 @SpringBootTest(classes = ServiceLayerTestConfig.class)
 class GroupServiceImplTest {
 
     @Autowired
-    GroupDao groupDao;
+    GroupDao<Group> groupDao;
 
     @Autowired
     GroupService groupService;

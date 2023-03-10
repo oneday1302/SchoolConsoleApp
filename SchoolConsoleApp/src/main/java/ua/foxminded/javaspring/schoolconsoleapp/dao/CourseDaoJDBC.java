@@ -13,7 +13,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.CourseMapper;
 
 @Repository
 @Profile("JDBCTemplate")
-public class CourseDaoJDBC implements CourseDao {
+public class CourseDaoJDBC implements CourseDao<Course> {
 
     @Autowired
     private JdbcTemplate jdbc;

@@ -16,7 +16,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 @Repository
 @Profile("nativeJDBC")
-public class StudentDaoImpl implements StudentDao {
+public class StudentDaoImpl implements StudentDao<Student> {
     private final DataSource dataSource;
 
     public StudentDaoImpl(DataSource dataSource) {

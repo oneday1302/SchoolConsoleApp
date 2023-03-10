@@ -3,10 +3,9 @@ package ua.foxminded.javaspring.schoolconsoleapp.generator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.GroupEntity;
 
-import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
-
-public class GroupsGenerator implements Generator<Group> {
+public class GroupsGenerator implements Generator<GroupEntity> {
     private final int count;
     private final Random random;
 
@@ -23,10 +22,10 @@ public class GroupsGenerator implements Generator<Group> {
     }
 
     @Override
-    public List<Group> generate() {
-        List<Group> groups = new ArrayList<>();
+    public List<GroupEntity> generate() {
+        List<GroupEntity> groups = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            groups.add(new Group(generateGroupName()));
+            groups.add(new GroupEntity(generateGroupName()));
         }
         return groups;
     }

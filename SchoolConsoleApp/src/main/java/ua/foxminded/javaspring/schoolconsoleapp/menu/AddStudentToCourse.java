@@ -2,6 +2,8 @@ package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
 import org.springframework.stereotype.Component;
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.CourseEntity;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentEntity;
 import ua.foxminded.javaspring.schoolconsoleapp.service.CourseService;
 import ua.foxminded.javaspring.schoolconsoleapp.service.StudentService;
 
@@ -9,11 +11,11 @@ import ua.foxminded.javaspring.schoolconsoleapp.service.StudentService;
 public class AddStudentToCourse implements Menu {
     
     private static final String NAME = "Add a student to the course";
-    private final CourseService courseService;
-    private final StudentService studentService;
+    private final CourseService<CourseEntity> courseService;
+    private final StudentService<StudentEntity> studentService;
     private final ConsoleInput input;
 
-    public AddStudentToCourse(CourseService courseService, StudentService studentService, ConsoleInput input) {
+    public AddStudentToCourse(CourseService<CourseEntity> courseService, StudentService<StudentEntity> studentService, ConsoleInput input) {
         if (courseService == null || studentService == null || input == null) {
             throw new IllegalArgumentException("Params cannot be null.");
         }

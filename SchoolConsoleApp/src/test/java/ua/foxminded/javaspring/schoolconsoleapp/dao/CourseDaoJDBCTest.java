@@ -10,9 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-
 import ua.foxminded.javaspring.schoolconsoleapp.configs.DaoTestConfig;
-import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.CourseMapper;
 
@@ -24,7 +22,7 @@ class CourseDaoJDBCTest {
     JdbcTemplate jdbc;
 
     @Autowired
-    CourseDao courseDao;
+    CourseDao<Course> courseDao;
     
     @AfterEach
     void cleanup() {

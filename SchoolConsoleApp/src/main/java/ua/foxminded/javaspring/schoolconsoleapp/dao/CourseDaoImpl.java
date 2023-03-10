@@ -13,7 +13,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
 @Repository
 @Profile("nativeJDBC")
-public class CourseDaoImpl implements CourseDao {
+public class CourseDaoImpl implements CourseDao<Course> {
     private final DataSource dataSource;
 
     public CourseDaoImpl(DataSource dataSource) {

@@ -15,7 +15,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.GroupMapper;
 
 @Repository
 @Profile("JDBCTemplate")
-public class GroupDaoJDBC implements GroupDao {
+public class GroupDaoJDBC implements GroupDao<Group> {
 
     @Autowired
     private JdbcTemplate jdbc;

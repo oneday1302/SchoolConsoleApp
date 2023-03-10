@@ -7,23 +7,26 @@ import org.springframework.context.annotation.Configuration;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 @Configuration
 @ComponentScan("ua.foxminded.javaspring.schoolconsoleapp.service")
 public class ServiceLayerTestConfig {
 
     @Bean
-    public CourseDao getCourseDao() {
+    public CourseDao<Course> getCourseDao() {
         return Mockito.mock(CourseDao.class);
     }
     
     @Bean
-    public GroupDao getGroupDao() {
+    public GroupDao<Group> getGroupDao() {
         return Mockito.mock(GroupDao.class);
     }
     
     @Bean
-    public StudentDao getStudentDao() {
+    public StudentDao<Student> getStudentDao() {
         return Mockito.mock(StudentDao.class);
     }
 }

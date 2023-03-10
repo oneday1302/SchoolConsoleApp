@@ -1,15 +1,14 @@
 package ua.foxminded.javaspring.schoolconsoleapp.service;
 
 import java.util.List;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
-public interface CourseService {
+public interface CourseService<T> {
 
-    void add(Course course);
+    void add(T course);
 
-    void addAll(List<Course> courses);
+    void addAll(List<T> courses);
 
-    List<Course> getAll();
+    List<T> getAll();
 
     boolean isEmpty();
 }

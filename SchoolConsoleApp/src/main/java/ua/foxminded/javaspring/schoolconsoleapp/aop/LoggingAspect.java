@@ -14,23 +14,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoggingAspect {
 
-    @Pointcut("within(ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoJDBC)")
-    public void CourseDaoJDBC_ProcessingMethods() {
+    @Pointcut("within(ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoJPA)")
+    public void CourseDaoJPA_ProcessingMethods() {
 
     }
 
-    @Pointcut("within(ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDaoJDBC)")
-    public void GroupDaoJDBC_ProcessingMethods() {
+    @Pointcut("within(ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDaoJPA)")
+    public void GroupDaoJPA_ProcessingMethods() {
 
     }
 
-    @Pointcut("within(ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDaoJDBC)")
-    public void StudentDaoJDBC_ProcessingMethods() {
+    @Pointcut("within(ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDaoJPA)")
+    public void StudentDaoJPA_ProcessingMethods() {
 
     }
 
-    @Around("CourseDaoJDBC_ProcessingMethods() || GroupDaoJDBC_ProcessingMethods() || StudentDaoJDBC_ProcessingMethods()")
-    public Object logExecutionTime_CourseDaoJDBC(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("CourseDaoJPA_ProcessingMethods() || GroupDaoJPA_ProcessingMethods() || StudentDaoJPA_ProcessingMethods()")
+    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         Object proceed = joinPoint.proceed();
         long executionTime = System.currentTimeMillis() - start;
@@ -38,7 +38,7 @@ public class LoggingAspect {
         return proceed;
     }
 
-    @AfterThrowing(pointcut = "CourseDaoJDBC_ProcessingMethods() || GroupDaoJDBC_ProcessingMethods() || StudentDaoJDBC_ProcessingMethods()", throwing = "error")
+    @AfterThrowing(pointcut = "CourseDaoJPA_ProcessingMethods() || GroupDaoJPA_ProcessingMethods() || StudentDaoJPA_ProcessingMethods()", throwing = "error")
     public void afterThrowingAdvice(JoinPoint joinPoint, Throwable error) {
         log.error("{}:", joinPoint.getSignature(), error);
     }

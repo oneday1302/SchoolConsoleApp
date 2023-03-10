@@ -14,7 +14,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentMapper;
 
 @Repository
 @Profile("JDBCTemplate")
-public class StudentDaoJDBC implements StudentDao {
+public class StudentDaoJDBC implements StudentDao<Student> {
 
     @Autowired
     private JdbcTemplate jdbc;

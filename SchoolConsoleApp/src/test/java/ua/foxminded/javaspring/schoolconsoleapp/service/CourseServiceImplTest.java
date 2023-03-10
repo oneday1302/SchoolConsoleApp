@@ -10,17 +10,15 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import ua.foxminded.javaspring.schoolconsoleapp.configs.ServiceLayerTestConfig;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
-import ua.foxminded.javaspring.schoolconsoleapp.service.CourseService;
 
 @SpringBootTest(classes = ServiceLayerTestConfig.class)
 class CourseServiceImplTest {
     
     @Autowired
-    CourseDao courseDao;
+    CourseDao<Course> courseDao;
     
     @Autowired
     CourseService courseService;
