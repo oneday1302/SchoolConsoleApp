@@ -22,7 +22,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 class CourseDaoImplTest {
     
     @Autowired
-    CourseDao<Course> courseDao;
+    CourseDao courseDao;
     
     @Autowired
     DataSource dataSource;

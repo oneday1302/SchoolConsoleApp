@@ -3,18 +3,19 @@ package ua.foxminded.javaspring.schoolconsoleapp.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 @Service
-public class StudentServiceImpl<T> implements StudentService<T> {
+public class StudentServiceImpl implements StudentService {
 
-    private StudentDao<T> studentDao;
+    private StudentDao studentDao;
 
-    public StudentServiceImpl(StudentDao<T> studentDao) {
+    public StudentServiceImpl(StudentDao studentDao) {
         this.studentDao = studentDao;
     }
 
     @Override
-    public void add(T student) {
+    public void add(Student student) {
         if (student == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -23,7 +24,7 @@ public class StudentServiceImpl<T> implements StudentService<T> {
     }
 
     @Override
-    public void addAll(List<T> students) {
+    public void addAll(List<Student> students) {
         if (students == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -32,12 +33,12 @@ public class StudentServiceImpl<T> implements StudentService<T> {
     }
 
     @Override
-    public List<T> getAll() {
+    public List<Student> getAll() {
         return studentDao.getAll();
     }
 
     @Override
-    public void updateGroupIdRow(T student) {
+    public void updateGroupIdRow(Student student) {
         if (student == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -46,7 +47,7 @@ public class StudentServiceImpl<T> implements StudentService<T> {
     }
 
     @Override
-    public List<T> findAllStudentsInTheCourse(String courseName) {
+    public List<Student> findAllStudentsInTheCourse(String courseName) {
         if (courseName == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -60,7 +61,7 @@ public class StudentServiceImpl<T> implements StudentService<T> {
     }
 
     @Override
-    public void addStudentToCourse(T student) {
+    public void addStudentToCourse(Student student) {
         if (student == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }

@@ -1,22 +1,23 @@
 package ua.foxminded.javaspring.schoolconsoleapp.dao;
 
 import java.util.List;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
-public interface StudentDao<T> {
+public interface StudentDao {
     
-    void add(T student);
+    void add(Student student);
     
-    void addAll(List<T> students);
+    void addAll(List<Student> students);
 
-    List<T> getAll();
+    List<Student> getAll();
 
-    void updateGroupIdRow(T student);
+    void updateGroupIdRow(Student student);
 
-    List<T> findAllStudentsInTheCourse(String courseName);
+    List<Student> findAllStudentsInTheCourse(String courseName);
 
     void delete(int id);
     
-    void addStudentToCourse(T student);
+    void addStudentToCourse(Student student);
     
     void removeStudentFromCourses(int studentId);
     

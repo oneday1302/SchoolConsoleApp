@@ -2,13 +2,48 @@ package ua.foxminded.javaspring.schoolconsoleapp.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@Getter
+@EqualsAndHashCode(exclude = "courses")
+@Entity
+@Table(name = "students", schema = "school")
 public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "student_id")
     private int id;
-    private final String firstName;
-    private final String lastName;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
     private Group group;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "students_courses", schema = "school", 
+               joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "student_id"), 
+               inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "course_id"))
     private List<Course> courses = new ArrayList<>();
 
     public Student(String firstName, String lastName) {
@@ -25,12 +60,12 @@ public class Student {
         this.lastName = lastName;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public boolean hasGroup() {
         return group != null;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public boolean hasCourse(Course course) {
@@ -46,46 +81,16 @@ public class Student {
         }
         courses.add(course);
     }
-
-    public String getFirstName() {
-        return firstName;
+    
+    public void removeStudentFromCourses() {
+        courses.clear();
     }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setGroup(Group group) {
-        if (group == null) {
+    
+    public void removeStudentFromCourse(Course course) {
+        if (course == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
-        this.group = group;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(courses, firstName, group, lastName, id);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Student other = (Student) obj;
-        return Objects.equals(courses, other.courses) && Objects.equals(firstName, other.firstName)
-                && Objects.equals(group, other.group) && Objects.equals(lastName, other.lastName) && id == other.id;
+        courses.remove(course);
     }
 
     @Override

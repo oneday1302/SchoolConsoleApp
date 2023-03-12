@@ -23,7 +23,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 class GroupDaoImplTest {
     
     @Autowired
-    GroupDao<Group> groupDao;
+    GroupDao groupDao;
     
     @Autowired
     DataSource dataSource;

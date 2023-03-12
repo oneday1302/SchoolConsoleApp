@@ -14,7 +14,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 
 @Repository
 @Profile("nativeJDBC")
-public class GroupDaoImpl implements GroupDao<Group> {
+public class GroupDaoImpl implements GroupDao {
     private final DataSource dataSource;
 
     public GroupDaoImpl(DataSource dataSource) {

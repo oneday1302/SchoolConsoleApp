@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.CourseEntity;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentEntity;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 class CoursesDistributorTest {
 
     @Test
     void CoursesDistributor_shouldReturnIllegalArgumentException_whenInputFirstParamNull() {
-        List<CourseEntity> courses = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
         assertThrows(IllegalArgumentException.class, () -> {
             new CoursesDistributor(null, courses);
         });
@@ -20,7 +20,7 @@ class CoursesDistributorTest {
 
     @Test
     void CoursesDistributor_shouldReturnIllegalArgumentException_whenInputSecondParamNull() {
-        List<StudentEntity> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         assertThrows(IllegalArgumentException.class, () -> {
             new CoursesDistributor(students, null);
         });
@@ -35,28 +35,28 @@ class CoursesDistributorTest {
 
     @Test
     void distribute_shouldReturnListOfStudentsWithCourses_whenInputNormal() {
-        List<StudentEntity> students = new ArrayList<>();
-        students.add(new StudentEntity("Jacob", "Smith"));
-        students.add(new StudentEntity("Emily", "Jones"));
-        students.add(new StudentEntity("Michael", "Taylor"));
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Jacob", "Smith"));
+        students.add(new Student("Emily", "Jones"));
+        students.add(new Student("Michael", "Taylor"));
 
-        List<CourseEntity> courses = new ArrayList<>();
-        courses.add(new CourseEntity("Mathematics", "Mathematics"));
-        courses.add(new CourseEntity("Biology", "Biology"));
-        courses.add(new CourseEntity("Economics", "Economics"));
+        List<Course> courses = new ArrayList<>();
+        courses.add(new Course("Mathematics", "Mathematics"));
+        courses.add(new Course("Biology", "Biology"));
+        courses.add(new Course("Economics", "Economics"));
 
-        StudentEntity student1 = new StudentEntity("Jacob", "Smith");
-        student1.addCourse(new CourseEntity("Mathematics", "Mathematics"));
-        student1.addCourse(new CourseEntity("Economics", "Economics"));
-        student1.addCourse(new CourseEntity("Biology", "Biology"));
-        StudentEntity student2 = new StudentEntity("Emily", "Jones");
-        student2.addCourse(new CourseEntity("Economics", "Economics"));
-        student2.addCourse(new CourseEntity("Biology", "Biology"));
-        student2.addCourse(new CourseEntity("Mathematics", "Mathematics"));
-        StudentEntity student3 = new StudentEntity("Michael", "Taylor");
-        student3.addCourse(new CourseEntity("Economics", "Economics"));
+        Student student1 = new Student("Jacob", "Smith");
+        student1.addCourse(new Course("Mathematics", "Mathematics"));
+        student1.addCourse(new Course("Economics", "Economics"));
+        student1.addCourse(new Course("Biology", "Biology"));
+        Student student2 = new Student("Emily", "Jones");
+        student2.addCourse(new Course("Economics", "Economics"));
+        student2.addCourse(new Course("Biology", "Biology"));
+        student2.addCourse(new Course("Mathematics", "Mathematics"));
+        Student student3 = new Student("Michael", "Taylor");
+        student3.addCourse(new Course("Economics", "Economics"));
 
-        List<StudentEntity> expected = new ArrayList<>();
+        List<Student> expected = new ArrayList<>();
         expected.add(student1);
         expected.add(student2);
         expected.add(student3);

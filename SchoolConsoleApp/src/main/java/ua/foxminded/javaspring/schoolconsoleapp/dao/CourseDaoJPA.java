@@ -3,22 +3,21 @@ package ua.foxminded.javaspring.schoolconsoleapp.dao;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.CourseEntity;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
 @Transactional
 @Repository
 @Profile("DataJPA")
-public class CourseDaoJPA implements CourseDao<CourseEntity> {
+public class CourseDaoJPA implements CourseDao {
     
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public void add(CourseEntity course) {
+    public void add(Course course) {
         if (course == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -27,25 +26,25 @@ public class CourseDaoJPA implements CourseDao<CourseEntity> {
     }
 
     @Override
-    public void addAll(List<CourseEntity> courses) {
+    public void addAll(List<Course> courses) {
         if (courses == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         
-        for (CourseEntity course : courses) {
+        for (Course course : courses) {
             em.persist(course);
         }
     }
 
     @Override
-    public List<CourseEntity> getAll() {
-        String sql = "SELECT c FROM CourseEntity c ORDER BY id";
-        return em.createQuery(sql, CourseEntity.class).getResultList();
+    public List<Course> getAll() {
+        String sql = "SELECT c FROM Course c ORDER BY id";
+        return em.createQuery(sql, Course.class).getResultList();
     }
 
     @Override
     public boolean isEmpty() {
-        String sql = "SELECT COUNT(course_id) FROM CourseEntity";
+        String sql = "SELECT COUNT(course_id) FROM Course";
         Long count = em.createQuery(sql, Long.class).getSingleResult();
         return count == 0;
     }

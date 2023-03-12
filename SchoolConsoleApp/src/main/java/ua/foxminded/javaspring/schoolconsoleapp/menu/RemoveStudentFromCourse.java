@@ -2,8 +2,6 @@ package ua.foxminded.javaspring.schoolconsoleapp.menu;
 
 import org.springframework.stereotype.Component;
 import ua.foxminded.javaspring.schoolconsoleapp.ConsoleInput;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.CourseEntity;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentEntity;
 import ua.foxminded.javaspring.schoolconsoleapp.service.CourseService;
 import ua.foxminded.javaspring.schoolconsoleapp.service.StudentService;
 
@@ -11,11 +9,11 @@ import ua.foxminded.javaspring.schoolconsoleapp.service.StudentService;
 public class RemoveStudentFromCourse implements Menu {
     
     private static final String NAME = "Remove the student from one of his courses";
-    private final CourseService<CourseEntity> courseService;
-    private final StudentService<StudentEntity> studentService;
+    private final CourseService courseService;
+    private final StudentService studentService;
     private final ConsoleInput input;
 
-    public RemoveStudentFromCourse(CourseService<CourseEntity> courseService, StudentService<StudentEntity> studentService, ConsoleInput input) {
+    public RemoveStudentFromCourse(CourseService courseService, StudentService studentService, ConsoleInput input) {
         if (courseService == null || studentService == null || input == null) {
             throw new IllegalArgumentException("Params cannot be null.");
         }

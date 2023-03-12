@@ -25,7 +25,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 class StudentsDaoImplTest {
     
     @Autowired
-    StudentDao<Student> studentsDao;
+    StudentDao studentsDao;
     
     @Autowired
     DataSource dataSource;

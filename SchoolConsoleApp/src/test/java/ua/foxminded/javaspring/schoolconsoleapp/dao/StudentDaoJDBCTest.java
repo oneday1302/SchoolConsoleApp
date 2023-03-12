@@ -16,7 +16,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.configs.DaoTestConfig;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentMapper;
+import ua.foxminded.javaspring.schoolconsoleapp.unused.StudentMapper;
 
 @SpringBootTest(classes = DaoTestConfig.class)
 @ActiveProfiles("JDBCTemplate")
@@ -26,7 +26,7 @@ class StudentDaoJDBCTest {
     JdbcTemplate jdbc;
     
     @Autowired
-    StudentDao<Student> studentDao;
+    StudentDao studentDao;
 
     @AfterEach
     void cleanup() {

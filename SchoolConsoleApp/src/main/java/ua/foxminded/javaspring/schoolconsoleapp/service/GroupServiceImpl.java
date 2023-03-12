@@ -3,18 +3,19 @@ package ua.foxminded.javaspring.schoolconsoleapp.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 
 @Service
-public class GroupServiceImpl<T> implements GroupService<T> {
+public class GroupServiceImpl implements GroupService {
 
-    private final GroupDao<T> groupDao;
+    private final GroupDao groupDao;
 
-    public GroupServiceImpl(GroupDao<T> groupDao) {
+    public GroupServiceImpl(GroupDao groupDao) {
         this.groupDao = groupDao;
     }
 
     @Override
-    public void add(T group) {
+    public void add(Group group) {
         if (group == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -23,7 +24,7 @@ public class GroupServiceImpl<T> implements GroupService<T> {
     }
 
     @Override
-    public void addAll(List<T> groups) {
+    public void addAll(List<Group> groups) {
         if (groups == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -32,17 +33,17 @@ public class GroupServiceImpl<T> implements GroupService<T> {
     }
 
     @Override
-    public List<T> getAll() {
+    public List<Group> getAll() {
         return groupDao.getAll();
     }
 
     @Override
-    public T get(int id) {
+    public Group get(int id) {
         return groupDao.get(id);
     }
 
     @Override
-    public List<T> getAllGrupsWithLessOrEqualsStudentsNumber(int studentsNumber) {
+    public List<Group> getAllGrupsWithLessOrEqualsStudentsNumber(int studentsNumber) {
         return groupDao.getAllGrupsWithLessOrEqualsStudentsNumber(studentsNumber);
     }
 

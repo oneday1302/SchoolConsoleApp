@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import ua.foxminded.javaspring.schoolconsoleapp.DataSource;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentEntity;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
-public class StudentsGenerator implements Generator<StudentEntity> {
+public class StudentsGenerator implements Generator<Student> {
     private final DataSource<String> firstName;
     private final DataSource<String> lastName;
     private final int count;
@@ -31,13 +31,13 @@ public class StudentsGenerator implements Generator<StudentEntity> {
     }
 
     @Override
-    public List<StudentEntity> generate() {
+    public List<Student> generate() {
         List<String> firstNameList = firstName.getData().collect(Collectors.toList());
         List<String> lastNameList = lastName.getData().collect(Collectors.toList());
-        List<StudentEntity> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             students.add(
-                    new StudentEntity(
+                    new Student(
                             firstNameList.get(random.nextInt(firstNameList.size())),
                             lastNameList.get(random.nextInt(lastNameList.size()))));
         }

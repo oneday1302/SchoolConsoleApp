@@ -13,7 +13,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
 @Repository
 @Profile("nativeJDBC")
-public class CourseDaoImpl implements CourseDao<Course> {
+public class CourseDaoImpl implements CourseDao {
     private final DataSource dataSource;
 
     public CourseDaoImpl(DataSource dataSource) {
@@ -32,7 +32,7 @@ public class CourseDaoImpl implements CourseDao<Course> {
             String sql = "INSERT INTO school.courses (course_name, course_description) VALUES (?, ?)";
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setString(1, course.getName());
-            statement.setString(2, course.getDesc());
+            statement.setString(2, course.getDescription());
             statement.execute();
             
         } catch (SQLException e) {
@@ -51,7 +51,7 @@ public class CourseDaoImpl implements CourseDao<Course> {
             PreparedStatement statement = con.prepareStatement(sql);
             for (Course course : courses) {
                 statement.setString(1, course.getName());
-                statement.setString(2, course.getDesc());
+                statement.setString(2, course.getDescription());
                 statement.addBatch();
             }
             statement.executeBatch();

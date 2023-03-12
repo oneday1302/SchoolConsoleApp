@@ -9,11 +9,11 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.CourseMapper;
+import ua.foxminded.javaspring.schoolconsoleapp.unused.CourseMapper;
 
 @Repository
 @Profile("JDBCTemplate")
-public class CourseDaoJDBC implements CourseDao<Course> {
+public class CourseDaoJDBC implements CourseDao {
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -25,7 +25,7 @@ public class CourseDaoJDBC implements CourseDao<Course> {
         }
         
         String sql = "INSERT INTO school.courses (course_name, course_description) VALUES (?, ?)";
-        jdbc.update(sql, course.getName(), course.getDesc());
+        jdbc.update(sql, course.getName(), course.getDescription());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CourseDaoJDBC implements CourseDao<Course> {
         jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 ps.setString(1, courses.get(i).getName());
-                ps.setString(2, courses.get(i).getDesc());
+                ps.setString(2, courses.get(i).getDescription());
             }
 
             public int getBatchSize() {

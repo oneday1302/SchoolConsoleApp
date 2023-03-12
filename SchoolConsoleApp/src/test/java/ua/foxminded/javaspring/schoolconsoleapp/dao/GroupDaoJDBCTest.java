@@ -12,8 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ua.foxminded.javaspring.schoolconsoleapp.configs.DaoTestConfig;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.GroupMapper;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
+import ua.foxminded.javaspring.schoolconsoleapp.unused.GroupMapper;
 
 @SpringBootTest(classes = DaoTestConfig.class)
 @ActiveProfiles("JDBCTemplate")
@@ -23,7 +23,7 @@ class GroupDaoJDBCTest {
     JdbcTemplate jdbc;
     
     @Autowired
-    GroupDao<Group> groupDao;
+    GroupDao groupDao;
 
     @AfterEach
     void cleanup() {

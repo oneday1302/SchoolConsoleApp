@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.GroupEntity;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentEntity;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 class GroupsDistributorTest {
 
     @Test
     void GroupsDistributor_shouldReturnIllegalArgumentException_whenInputFirstParamNull() {
-        List<GroupEntity> groups = new ArrayList<>();
+        List<Group> groups = new ArrayList<>();
         assertThrows(IllegalArgumentException.class, () -> {
             new GroupsDistributor(null, groups);
         });
@@ -20,7 +20,7 @@ class GroupsDistributorTest {
 
     @Test
     void GroupsDistributor_shouldReturnIllegalArgumentException_whenInputSecondParamNull() {
-        List<StudentEntity> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         assertThrows(IllegalArgumentException.class, () -> {
             new GroupsDistributor(students, null);
         });
@@ -35,21 +35,21 @@ class GroupsDistributorTest {
 
     @Test
     void distribute_shouldReturnListOfStudentsWithGroup_whenInputNumberOfStudentsLessThanMinNumber() {
-        List<StudentEntity> students = new ArrayList<>();
-        students.add(new StudentEntity("Jacob", "Smith"));
-        students.add(new StudentEntity("Emily", "Jones"));
-        students.add(new StudentEntity("Michael", "Taylor"));
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Jacob", "Smith"));
+        students.add(new Student("Emily", "Jones"));
+        students.add(new Student("Michael", "Taylor"));
 
-        List<GroupEntity> groups = new ArrayList<>();
-        groups.add(new GroupEntity("QH-42"));
-        groups.add(new GroupEntity("UC-36"));
-        groups.add(new GroupEntity("FV-33"));
+        List<Group> groups = new ArrayList<>();
+        groups.add(new Group("QH-42"));
+        groups.add(new Group("UC-36"));
+        groups.add(new Group("FV-33"));
 
-        StudentEntity student1 = new StudentEntity("Jacob", "Smith");
-        StudentEntity student2 = new StudentEntity("Emily", "Jones");
-        StudentEntity student3 = new StudentEntity("Michael", "Taylor");
+        Student student1 = new Student("Jacob", "Smith");
+        Student student2 = new Student("Emily", "Jones");
+        Student student3 = new Student("Michael", "Taylor");
 
-        List<StudentEntity> expected = new ArrayList<>();
+        List<Student> expected = new ArrayList<>();
         expected.add(student1);
         expected.add(student2);
         expected.add(student3);
@@ -61,24 +61,24 @@ class GroupsDistributorTest {
 
     @Test
     void distribute_shouldReturnListOfStudentsWithGroup_whenInputNormal() {
-        List<StudentEntity> students = new ArrayList<>();
-        students.add(new StudentEntity("Jacob", "Smith"));
-        students.add(new StudentEntity("Emily", "Jones"));
-        students.add(new StudentEntity("Michael", "Taylor"));
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Jacob", "Smith"));
+        students.add(new Student("Emily", "Jones"));
+        students.add(new Student("Michael", "Taylor"));
 
-        List<GroupEntity> groups = new ArrayList<>();
-        groups.add(new GroupEntity("QH-42"));
-        groups.add(new GroupEntity("UC-36"));
-        groups.add(new GroupEntity("FV-33"));
+        List<Group> groups = new ArrayList<>();
+        groups.add(new Group("QH-42"));
+        groups.add(new Group("UC-36"));
+        groups.add(new Group("FV-33"));
 
-        StudentEntity student1 = new StudentEntity("Jacob", "Smith");
-        student1.setGroup(new GroupEntity("QH-42"));
-        StudentEntity student2 = new StudentEntity("Emily", "Jones");
-        student2.setGroup(new GroupEntity("UC-36"));
-        StudentEntity student3 = new StudentEntity("Michael", "Taylor");
-        student3.setGroup(new GroupEntity("QH-42"));
+        Student student1 = new Student("Jacob", "Smith");
+        student1.setGroup(new Group("QH-42"));
+        Student student2 = new Student("Emily", "Jones");
+        student2.setGroup(new Group("UC-36"));
+        Student student3 = new Student("Michael", "Taylor");
+        student3.setGroup(new Group("QH-42"));
 
-        List<StudentEntity> expected = new ArrayList<>();
+        List<Student> expected = new ArrayList<>();
         expected.add(student1);
         expected.add(student2);
         expected.add(student3);

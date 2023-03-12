@@ -13,23 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 @Aspect
 @Slf4j
 public class LoggingAspect {
-
-    @Pointcut("within(ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDaoJPA)")
-    public void CourseDaoJPA_ProcessingMethods() {
-
-    }
-
-    @Pointcut("within(ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDaoJPA)")
-    public void GroupDaoJPA_ProcessingMethods() {
+    
+    @Pointcut("within(ua.foxminded.javaspring.schoolconsoleapp.dao.*)")
+    public void processingMethods() {
 
     }
-
-    @Pointcut("within(ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDaoJPA)")
-    public void StudentDaoJPA_ProcessingMethods() {
-
-    }
-
-    @Around("CourseDaoJPA_ProcessingMethods() || GroupDaoJPA_ProcessingMethods() || StudentDaoJPA_ProcessingMethods()")
+    
+    @Around("processingMethods()")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         Object proceed = joinPoint.proceed();
@@ -37,8 +27,8 @@ public class LoggingAspect {
         log.debug("Method: {} executed in {} milliseconds", joinPoint.getSignature(), executionTime);
         return proceed;
     }
-
-    @AfterThrowing(pointcut = "CourseDaoJPA_ProcessingMethods() || GroupDaoJPA_ProcessingMethods() || StudentDaoJPA_ProcessingMethods()", throwing = "error")
+    
+    @AfterThrowing(pointcut = "processingMethods()", throwing = "error")
     public void afterThrowingAdvice(JoinPoint joinPoint, Throwable error) {
         log.error("{}:", joinPoint.getSignature(), error);
     }

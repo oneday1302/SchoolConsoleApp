@@ -1,8 +1,11 @@
-package ua.foxminded.javaspring.schoolconsoleapp.entity;
+package ua.foxminded.javaspring.schoolconsoleapp.unused;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
+
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 public class StudentMapper implements RowMapper<Student> {
 

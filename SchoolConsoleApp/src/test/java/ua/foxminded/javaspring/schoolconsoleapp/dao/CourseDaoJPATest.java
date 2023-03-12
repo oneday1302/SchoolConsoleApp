@@ -3,16 +3,16 @@ package ua.foxminded.javaspring.schoolconsoleapp.dao;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.CourseEntity;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
 @ActiveProfiles("DataJPA")
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = CourseDaoJPA.class))
@@ -21,10 +21,10 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.CourseEntity;
 class CourseDaoJPATest {
 
     @Autowired
-    private EntityManager em;
+    private TestEntityManager em;
 
     @Autowired
-    private CourseDao<CourseEntity> courseDao;
+    private CourseDao courseDao;
 
     @Test
     void add_shouldReturnIllegalArgumentException_whenInputParamNull() {
@@ -36,11 +36,10 @@ class CourseDaoJPATest {
     @Sql("/SQL/setCourseSetval.sql")
     @Test
     void add_whenInputParamCourse() {
-        CourseEntity course = new CourseEntity("History", "History");
+        Course course = new Course("History", "History");
         courseDao.add(course);
 
-        String sql = "SELECT c FROM CourseEntity c";
-        assertEquals(course, em.createQuery(sql, CourseEntity.class).getSingleResult());
+        assertEquals(course, em.find(Course.class, 1));
     }
 
     @Test
@@ -53,25 +52,25 @@ class CourseDaoJPATest {
     @Sql("/SQL/setCourseSetval.sql")
     @Test
     void addAll_whenInputParamLisyOfCourse() {
-        List<CourseEntity> courses = new ArrayList<>();
-        courses.add(new CourseEntity("History", "History"));
-        courses.add(new CourseEntity("Mathematics", "Mathematics"));
-        courses.add(new CourseEntity("Biology", "Biology"));
+        List<Course> courses = new ArrayList<>();
+        courses.add(new Course("History", "History"));
+        courses.add(new Course("Mathematics", "Mathematics"));
+        courses.add(new Course("Biology", "Biology"));
 
         courseDao.addAll(courses);
 
-        String sql = "SELECT c FROM CourseEntity c";
-        assertEquals(courses, em.createQuery(sql, CourseEntity.class).getResultList());
+        String sql = "SELECT c FROM Course c";
+        assertEquals(courses, em.getEntityManager().createQuery(sql, Course.class).getResultList());
     }
 
     @Sql("/SQL/setCourseSetval.sql")
     @Sql("/SQL/data1.sql")
     @Test
     void getAll_shouldReturnListOfCourses() {
-        List<CourseEntity> courses = new ArrayList<>();
-        courses.add(new CourseEntity(1, "History", "History"));
-        courses.add(new CourseEntity(2, "Mathematics", "Mathematics"));
-        courses.add(new CourseEntity(3, "Biology", "Biology"));
+        List<Course> courses = new ArrayList<>();
+        courses.add(new Course(1, "History", "History"));
+        courses.add(new Course(2, "Mathematics", "Mathematics"));
+        courses.add(new Course(3, "Biology", "Biology"));
 
         assertEquals(courses, courseDao.getAll());
     }

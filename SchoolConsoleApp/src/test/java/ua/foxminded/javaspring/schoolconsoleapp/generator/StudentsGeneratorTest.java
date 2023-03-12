@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ua.foxminded.javaspring.schoolconsoleapp.DataSource;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentEntity;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 class StudentsGeneratorTest {
 
@@ -47,10 +47,10 @@ class StudentsGeneratorTest {
 
     @Test
     void generate_shouldReturnListOfStudents_whenInputNormal() {
-        List<StudentEntity> expected = new ArrayList<>();
-        expected.add(new StudentEntity("Michael", "Smith"));
-        expected.add(new StudentEntity("Jacob", "Taylor"));
-        expected.add(new StudentEntity("Jacob", "Jones"));
+        List<Student> expected = new ArrayList<>();
+        expected.add(new Student("Michael", "Smith"));
+        expected.add(new Student("Jacob", "Taylor"));
+        expected.add(new Student("Jacob", "Jones"));
 
         Stream<String> streamFirstName = Stream.of("Jacob", "Emily", "Michael");
         DataSource<String> mockFirstName = Mockito.mock(DataSource.class);
@@ -60,7 +60,7 @@ class StudentsGeneratorTest {
         DataSource<String> mockLastName = Mockito.mock(DataSource.class);
         when(mockLastName.getData()).thenReturn(streamLastName);
 
-        List<StudentEntity> actual = new StudentsGenerator(mockFirstName, mockLastName, 3, new Random(42)).generate();
+        List<Student> actual = new StudentsGenerator(mockFirstName, mockLastName, 3, new Random(42)).generate();
 
         assertEquals(expected, actual);
     }

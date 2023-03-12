@@ -1,50 +1,37 @@
 package ua.foxminded.javaspring.schoolconsoleapp.entity;
 
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@EqualsAndHashCode
+@Entity
+@Table(name = "groups", schema = "school")
 public class Group {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "group_id")
     private int id;
-    private final String name;
+
+    @Column(name = "group_name")
+    private String name;
 
     public Group(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         this.name = name;
-    }
-
-    public Group(int id, String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Param cannot be null.");
-        }
-        this.id = id;
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Group other = (Group) obj;
-        return id == other.id && Objects.equals(name, other.name);
     }
 
     @Override

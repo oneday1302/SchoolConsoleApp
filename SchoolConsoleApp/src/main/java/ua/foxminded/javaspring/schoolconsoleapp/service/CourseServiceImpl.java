@@ -3,18 +3,19 @@ package ua.foxminded.javaspring.schoolconsoleapp.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
 @Service
-public class CourseServiceImpl<T> implements CourseService<T> {
+public class CourseServiceImpl implements CourseService {
 
-    private final CourseDao<T> courseDao;
+    private final CourseDao courseDao;
 
-    public CourseServiceImpl(CourseDao<T> courseDao) {
+    public CourseServiceImpl(CourseDao courseDao) {
         this.courseDao = courseDao;
     }
 
     @Override
-    public void add(T course) {
+    public void add(Course course) {
         if (course == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -23,7 +24,7 @@ public class CourseServiceImpl<T> implements CourseService<T> {
     }
 
     @Override
-    public void addAll(List<T> courses) {
+    public void addAll(List<Course> courses) {
         if (courses == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
@@ -32,7 +33,7 @@ public class CourseServiceImpl<T> implements CourseService<T> {
     }
 
     @Override
-    public List<T> getAll() {
+    public List<Course> getAll() {
         return courseDao.getAll();
     }
 

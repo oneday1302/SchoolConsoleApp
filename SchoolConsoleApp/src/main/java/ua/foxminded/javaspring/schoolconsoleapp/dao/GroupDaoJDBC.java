@@ -11,11 +11,11 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.GroupMapper;
+import ua.foxminded.javaspring.schoolconsoleapp.unused.GroupMapper;
 
 @Repository
 @Profile("JDBCTemplate")
-public class GroupDaoJDBC implements GroupDao<Group> {
+public class GroupDaoJDBC implements GroupDao {
 
     @Autowired
     private JdbcTemplate jdbc;

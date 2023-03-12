@@ -3,17 +3,17 @@ package ua.foxminded.javaspring.schoolconsoleapp.dao;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.GroupEntity;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentEntity;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 @ActiveProfiles("DataJPA")
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = GroupDaoJPA.class))
@@ -22,10 +22,10 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentEntity;
 class GroupDaoJPATest {
 
     @Autowired
-    private EntityManager em;
+    private TestEntityManager em;
 
     @Autowired
-    GroupDao<GroupEntity> groupDao;
+    GroupDao groupDao;
 
     @Test
     void add_shouldReturnIllegalArgumentException_whenInputParamNull() {
@@ -37,11 +37,10 @@ class GroupDaoJPATest {
     @Sql("/SQL/setGroupSetval.sql")
     @Test
     void add__whenInputParamGroup() {
-        GroupEntity group = new GroupEntity("AT-42");
+        Group group = new Group("AT-42");
         groupDao.add(group);
 
-        String sql = "SELECT g FROM GroupEntity g";
-        assertEquals(group, em.createQuery(sql, GroupEntity.class).getSingleResult());
+        assertEquals(group, em.find(Group.class, 1));
     }
 
     @Test
@@ -54,24 +53,24 @@ class GroupDaoJPATest {
     @Sql("/SQL/setGroupSetval.sql")
     @Test
     void addAll__whenInputParamListOfGroup() {
-        List<GroupEntity> groups = new ArrayList<>();
-        groups.add(new GroupEntity("AT-42"));
-        groups.add(new GroupEntity("VK-13"));
-        groups.add(new GroupEntity("GG-01"));
+        List<Group> groups = new ArrayList<>();
+        groups.add(new Group("AT-42"));
+        groups.add(new Group("VK-13"));
+        groups.add(new Group("GG-01"));
         groupDao.addAll(groups);
 
-        String sql = "SELECT g FROM GroupEntity g";
-        assertEquals(groups, em.createQuery(sql, GroupEntity.class).getResultList());
+        String sql = "SELECT g FROM Group g";
+        assertEquals(groups, em.getEntityManager().createQuery(sql, Group.class).getResultList());
     }
 
     @Sql("/SQL/setGroupSetval.sql")
     @Sql("/SQL/data2.sql")
     @Test
     void getAll_shouldReturnListOfGroups() {
-        List<GroupEntity> groups = new ArrayList<>();
-        groups.add(new GroupEntity(1, "AT-42"));
-        groups.add(new GroupEntity(2, "VK-13"));
-        groups.add(new GroupEntity(3, "GG-01"));
+        List<Group> groups = new ArrayList<>();
+        groups.add(new Group(1, "AT-42"));
+        groups.add(new Group(2, "VK-13"));
+        groups.add(new Group(3, "GG-01"));
 
         assertEquals(groups, groupDao.getAll());
     }
@@ -85,22 +84,22 @@ class GroupDaoJPATest {
     @Sql("/SQL/data3.sql")
     @Test
     void get_shouldReturnGroup_whenInputGroupId() {
-        GroupEntity group = new GroupEntity(1, "AT-42");
+        Group group = new Group(1, "AT-42");
         assertEquals(group, groupDao.get(1));
     }
 
     @Sql("/SQL/data4.sql")
     @Test
     void getAllGrupsWithLessOrEqualsStudentsNumber_shouldReturnListOfGroups_whenInputStudentsNumber() {
-        GroupEntity group = new GroupEntity(1, "VK-13");
+        Group group = new Group(1, "VK-13");
 
-        StudentEntity student1 = new StudentEntity("Jacob", "Smith");
+        Student student1 = new Student("Jacob", "Smith");
         student1.setGroup(group);
-        StudentEntity student2 = new StudentEntity("Emily", "Jones");
+        Student student2 = new Student("Emily", "Jones");
         student2.setGroup(group);
-        StudentEntity student3 = new StudentEntity("Michael", "Taylor");
+        Student student3 = new Student("Michael", "Taylor");
         student3.setGroup(group);
-        List<StudentEntity> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         students.add(student1);
         students.add(student2);
         students.add(student3);

@@ -2,27 +2,27 @@ package ua.foxminded.javaspring.schoolconsoleapp.distributor;
 
 import java.util.List;
 import java.util.Random;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.CourseEntity;
-import ua.foxminded.javaspring.schoolconsoleapp.entity.StudentEntity;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
-public class CoursesDistributor implements Distributor<StudentEntity> {
+public class CoursesDistributor implements Distributor<Student> {
     private static final int DEFAULTE_MIN_COUNT_COURSES = 1;
     private static final int DEFAULTE_MAX_COUNT_COURSES = 3;
-    private List<StudentEntity> students;
-    private final List<CourseEntity> courses;
+    private List<Student> students;
+    private final List<Course> courses;
     private final Random random;
     private final int minCountCurses;
     private final int maxCountCurses;
     
-    public CoursesDistributor(List<StudentEntity> students, List<CourseEntity> courses) {
+    public CoursesDistributor(List<Student> students, List<Course> courses) {
         this(students, courses, DEFAULTE_MIN_COUNT_COURSES, DEFAULTE_MAX_COUNT_COURSES, new Random());
     }
 
-    public CoursesDistributor(List<StudentEntity> students, List<CourseEntity> courses, int minCountCurses, int maxCountCurses) {
+    public CoursesDistributor(List<Student> students, List<Course> courses, int minCountCurses, int maxCountCurses) {
         this(students, courses, minCountCurses, maxCountCurses, new Random());
     }
 
-    CoursesDistributor(List<StudentEntity> students, List<CourseEntity> courses, int minCountCurses, int maxCountCurses, Random random) {
+    CoursesDistributor(List<Student> students, List<Course> courses, int minCountCurses, int maxCountCurses, Random random) {
         if (students == null || courses == null) {
             throw new IllegalArgumentException("Params cannot be null.");
         }
@@ -37,8 +37,8 @@ public class CoursesDistributor implements Distributor<StudentEntity> {
     }
 
     @Override
-    public List<StudentEntity> distribute() {
-        for (StudentEntity student : students) {
+    public List<Student> distribute() {
+        for (Student student : students) {
             int countCourses = getRandomNum(minCountCurses, maxCountCurses);
             while (countCourses != 0) {
                 int i = random.nextInt(courses.size());

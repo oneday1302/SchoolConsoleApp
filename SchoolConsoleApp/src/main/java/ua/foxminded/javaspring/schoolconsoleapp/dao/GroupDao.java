@@ -1,18 +1,19 @@
 package ua.foxminded.javaspring.schoolconsoleapp.dao;
 
 import java.util.List;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 
-public interface GroupDao<T> {
+public interface GroupDao {
     
-    void add(T group);
+    void add(Group group);
     
-    void addAll(List<T> groups);
+    void addAll(List<Group> groups);
 
-    List<T> getAll();
+    List<Group> getAll();
 
-    T get(int id);
+    Group get(int id);
     
-    List<T> getAllGrupsWithLessOrEqualsStudentsNumber(int studentsNumber);
+    List<Group> getAllGrupsWithLessOrEqualsStudentsNumber(int studentsNumber);
     
     boolean isEmpty();
 }

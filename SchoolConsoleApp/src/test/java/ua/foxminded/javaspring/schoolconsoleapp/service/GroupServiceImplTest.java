@@ -17,7 +17,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 class GroupServiceImplTest {
 
     @Autowired
-    GroupDao<Group> groupDao;
+    GroupDao groupDao;
 
     @Autowired
     GroupService groupService;

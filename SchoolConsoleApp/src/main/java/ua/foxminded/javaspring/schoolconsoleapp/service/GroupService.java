@@ -1,18 +1,19 @@
 package ua.foxminded.javaspring.schoolconsoleapp.service;
 
 import java.util.List;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 
-public interface GroupService<T> {
+public interface GroupService {
     
-    void add(T group);
+    void add(Group group);
 
-    void addAll(List<T> groups);
+    void addAll(List<Group> groups);
 
-    List<T> getAll();
+    List<Group> getAll();
 
-    T get(int id);
+    Group get(int id);
 
-    List<T> getAllGrupsWithLessOrEqualsStudentsNumber(int studentsNumber);
+    List<Group> getAllGrupsWithLessOrEqualsStudentsNumber(int studentsNumber);
 
     boolean isEmpty();
 }

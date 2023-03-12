@@ -18,7 +18,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 class CourseServiceImplTest {
     
     @Autowired
-    CourseDao<Course> courseDao;
+    CourseDao courseDao;
     
     @Autowired
     CourseService courseService;

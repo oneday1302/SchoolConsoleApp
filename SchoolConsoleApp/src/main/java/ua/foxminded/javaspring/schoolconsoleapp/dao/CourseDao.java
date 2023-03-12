@@ -1,14 +1,15 @@
 package ua.foxminded.javaspring.schoolconsoleapp.dao;
 
 import java.util.List;
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
-public interface CourseDao<T> {
+public interface CourseDao {
 
-    void add(T course);
+    void add(Course course);
     
-    void addAll(List<T> courses);
+    void addAll(List<Course> courses);
 
-    List<T> getAll();
+    List<Course> getAll();
     
     boolean isEmpty();
 }
