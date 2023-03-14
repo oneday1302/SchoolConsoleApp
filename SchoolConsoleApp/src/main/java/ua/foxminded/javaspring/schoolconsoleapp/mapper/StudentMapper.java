@@ -1,4 +1,4 @@
-package ua.foxminded.javaspring.schoolconsoleapp.unused;
+package ua.foxminded.javaspring.schoolconsoleapp.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

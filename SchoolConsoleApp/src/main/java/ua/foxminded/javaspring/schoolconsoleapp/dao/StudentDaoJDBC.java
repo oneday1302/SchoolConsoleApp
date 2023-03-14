@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
-import ua.foxminded.javaspring.schoolconsoleapp.unused.StudentMapper;
+import ua.foxminded.javaspring.schoolconsoleapp.mapper.StudentMapper;
 
 @Repository
 @Profile("JDBCTemplate")
