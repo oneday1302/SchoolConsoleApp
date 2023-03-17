@@ -11,6 +11,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import javax.sql.DataSource;
@@ -47,7 +48,7 @@ class CourseDaoImplTest {
 
     @Test
     void add_shouldReturnIllegalArgumentException_whenInputParamNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             courseDao.add(null);
         });
     }
@@ -74,7 +75,7 @@ class CourseDaoImplTest {
     
     @Test
     void addAll_shouldReturnIllegalArgumentException_whenInputParamNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             courseDao.addAll(null);
         });
     }

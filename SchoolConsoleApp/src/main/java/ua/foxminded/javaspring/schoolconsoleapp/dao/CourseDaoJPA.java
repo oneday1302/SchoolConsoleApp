@@ -6,11 +6,12 @@ import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
 @Transactional
 @Repository
-@Profile("DataJPA")
+@Profile("Hibernate")
 public class CourseDaoJPA implements CourseDao {
     
     @PersistenceContext

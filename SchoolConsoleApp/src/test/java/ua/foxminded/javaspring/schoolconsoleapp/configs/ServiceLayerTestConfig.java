@@ -4,6 +4,7 @@ import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
 import ua.foxminded.javaspring.schoolconsoleapp.dao.CourseDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.GroupDao;
 import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;

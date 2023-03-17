@@ -40,10 +40,8 @@ public class Student {
     @Column(name = "last_name")
     private String lastName;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "students_courses", schema = "school", 
-               joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "student_id"), 
-               inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "course_id"))
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "students_courses", schema = "school", joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "student_id"), inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "course_id"))
     private List<Course> courses = new ArrayList<>();
 
     public Student(String firstName, String lastName) {
@@ -81,16 +79,25 @@ public class Student {
         }
         courses.add(course);
     }
-    
+
     public void removeStudentFromCourses() {
         courses.clear();
     }
-    
+
     public void removeStudentFromCourse(Course course) {
         if (course == null) {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         courses.remove(course);
+    }
+
+    public void removeStudentFromCourse(int courseId) {
+        for(Course course : courses) {
+            if (course.getId() == courseId) {
+                courses.remove(course);
+                break;
+            }
+        }
     }
 
     @Override

@@ -12,7 +12,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 @Transactional
 @Repository
-@Profile("DataJPA")
+@Profile("Hibernate")
 public class StudentDaoJPA implements StudentDao {
 
     @PersistenceContext

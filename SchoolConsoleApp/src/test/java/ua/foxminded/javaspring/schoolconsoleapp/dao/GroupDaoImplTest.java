@@ -12,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ua.foxminded.javaspring.schoolconsoleapp.configs.DaoTestConfig;
@@ -49,7 +50,7 @@ class GroupDaoImplTest {
 
     @Test
     void add_shouldReturnIllegalArgumentException_whenInputParamNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             groupDao.add(null);
         });
     }
@@ -75,7 +76,7 @@ class GroupDaoImplTest {
     
     @Test
     void addAll_shouldReturnIllegalArgumentException_whenInputParamNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             groupDao.addAll(null);
         });
     }

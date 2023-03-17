@@ -8,5 +8,5 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("ua.foxminded.javaspring.schoolconsoleapp.dao")
 @EnableAutoConfiguration
 public class DaoTestConfig {
-    
+   
 }

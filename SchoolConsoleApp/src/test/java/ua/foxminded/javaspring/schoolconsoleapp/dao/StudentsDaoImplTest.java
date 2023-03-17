@@ -13,6 +13,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ua.foxminded.javaspring.schoolconsoleapp.configs.DaoTestConfig;
@@ -55,7 +56,7 @@ class StudentsDaoImplTest {
 
     @Test
     void add_shouldReturnIllegalArgumentException_whenInputParamNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             studentsDao.add(null);
         });
     }
@@ -81,7 +82,7 @@ class StudentsDaoImplTest {
     
     @Test
     void addAll_shouldReturnIllegalArgumentException_whenInputParamNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             studentsDao.addAll(null);
         });
     }
@@ -122,7 +123,7 @@ class StudentsDaoImplTest {
 
     @Test
     void updateGroupIdRow_shouldReturnIllegalArgumentException_whenInputNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             studentsDao.updateGroupIdRow(null);
         });
     }
@@ -163,7 +164,7 @@ class StudentsDaoImplTest {
 
     @Test
     void findAllStudentsInTheCourse_shouldReturnIllegalArgumentException_whenInputNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             studentsDao.findAllStudentsInTheCourse(null);
         });
     }
@@ -203,7 +204,7 @@ class StudentsDaoImplTest {
 
     @Test
     void addStudentToCourse_shouldReturnIllegalArgumentException_whenInputNull() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             studentsDao.addStudentToCourse(null);
         });
     }

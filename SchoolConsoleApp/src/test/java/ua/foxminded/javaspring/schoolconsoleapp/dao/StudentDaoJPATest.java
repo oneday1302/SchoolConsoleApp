@@ -16,7 +16,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
-@ActiveProfiles("DataJPA")
+@ActiveProfiles("Hibernate")
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = StudentDaoJPA.class))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Sql(scripts = "/SQL/afterEach3.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

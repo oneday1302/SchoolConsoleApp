@@ -15,7 +15,7 @@ import org.springframework.test.context.jdbc.Sql;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
-@ActiveProfiles("DataJPA")
+@ActiveProfiles("Hibernate")
 @DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = GroupDaoJPA.class))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Sql(scripts = "/SQL/afterEach2.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -88,6 +88,8 @@ class GroupDaoJPATest {
         assertEquals(group, groupDao.get(1));
     }
 
+    @Sql("/SQL/setStudentSetval.sql")
+    @Sql("/SQL/setGroupSetval.sql")
     @Sql("/SQL/data4.sql")
     @Test
     void getAllGrupsWithLessOrEqualsStudentsNumber_shouldReturnListOfGroups_whenInputStudentsNumber() {
