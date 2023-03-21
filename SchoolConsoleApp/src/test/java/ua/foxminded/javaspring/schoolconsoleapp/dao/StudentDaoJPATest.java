@@ -38,7 +38,7 @@ class StudentDaoJPATest {
     @Sql("/SQL/setStudentSetval.sql")
     @Test
     void add__whenInputParamStudent() {
-        Student student = new Student("Jacob", "Smith");
+        Student student = new Student(1, "Jacob", "Smith");
         studentDao.add(student);
 
         assertEquals(student, em.find(Student.class, 1));
@@ -55,9 +55,9 @@ class StudentDaoJPATest {
     @Test
     void addAll__whenInputParamListOfStudent() {
         List<Student> students = new ArrayList<>();
-        students.add(new Student("Jacob", "Smith"));
-        students.add(new Student("Emily", "Jones"));
-        students.add(new Student("Michael", "Taylor"));
+        students.add(new Student(1, "Jacob", "Smith"));
+        students.add(new Student(2, "Emily", "Jones"));
+        students.add(new Student(3, "Michael", "Taylor"));
         
         studentDao.addAll(students);
 

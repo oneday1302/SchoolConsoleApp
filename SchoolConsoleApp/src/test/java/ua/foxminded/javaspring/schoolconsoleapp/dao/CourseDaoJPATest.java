@@ -36,7 +36,7 @@ class CourseDaoJPATest {
     @Sql("/SQL/setCourseSetval.sql")
     @Test
     void add_whenInputParamCourse() {
-        Course course = new Course("History", "History");
+        Course course = new Course(1, "History", "History");
         courseDao.add(course);
 
         assertEquals(course, em.find(Course.class, 1));
@@ -53,9 +53,9 @@ class CourseDaoJPATest {
     @Test
     void addAll_whenInputParamLisyOfCourse() {
         List<Course> courses = new ArrayList<>();
-        courses.add(new Course("History", "History"));
-        courses.add(new Course("Mathematics", "Mathematics"));
-        courses.add(new Course("Biology", "Biology"));
+        courses.add(new Course(1, "History", "History"));
+        courses.add(new Course(2, "Mathematics", "Mathematics"));
+        courses.add(new Course(3, "Biology", "Biology"));
 
         courseDao.addAll(courses);
 

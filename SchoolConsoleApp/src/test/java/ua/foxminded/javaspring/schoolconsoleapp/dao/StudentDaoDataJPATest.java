@@ -13,7 +13,6 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;

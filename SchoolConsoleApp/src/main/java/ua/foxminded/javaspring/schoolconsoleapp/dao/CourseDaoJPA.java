@@ -6,7 +6,6 @@ import javax.persistence.PersistenceContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
 @Transactional
@@ -23,7 +22,7 @@ public class CourseDaoJPA implements CourseDao {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         
-        em.persist(course);
+        em.merge(course);
     }
 
     @Override
@@ -33,7 +32,7 @@ public class CourseDaoJPA implements CourseDao {
         }
         
         for (Course course : courses) {
-            em.persist(course);
+            em.merge(course);
         }
     }
 

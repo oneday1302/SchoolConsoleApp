@@ -1,7 +1,6 @@
 package ua.foxminded.javaspring.schoolconsoleapp.dao;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
@@ -41,13 +40,7 @@ public class GroupDaoDataJPA implements GroupDao {
 
     @Override
     public Group get(int id) {
-        Group group = null;
-        try {
-            group = repository.findById(id).get();
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-        return group;
+        return repository.findById(id).orElse(null);
     }
 
     @Override
@@ -57,6 +50,6 @@ public class GroupDaoDataJPA implements GroupDao {
 
     @Override
     public boolean isEmpty() {
-        return repository.countOfGroups() == 0;
+        return repository.count() == 0;
     }
 }

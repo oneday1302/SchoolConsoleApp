@@ -40,6 +40,6 @@ public class CourseDaoDataJPA implements CourseDao {
 
     @Override
     public boolean isEmpty() {
-        return repository.countOfCourses() == 0;
+        return repository.count() == 0;
     }
 }

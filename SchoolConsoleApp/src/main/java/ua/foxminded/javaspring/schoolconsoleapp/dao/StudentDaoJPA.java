@@ -24,7 +24,7 @@ public class StudentDaoJPA implements StudentDao {
             throw new IllegalArgumentException("Param cannot be null.");
         }
 
-        em.persist(student);
+        em.merge(student);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class StudentDaoJPA implements StudentDao {
         }
 
         for (Student student : students) {
-            em.persist(student);
+            em.merge(student);
         }
     }
 

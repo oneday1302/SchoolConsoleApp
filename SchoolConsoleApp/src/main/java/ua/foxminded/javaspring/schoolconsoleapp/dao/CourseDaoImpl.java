@@ -9,12 +9,12 @@ import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
-
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 
 @Repository
 @Profile("nativeJDBC")
 public class CourseDaoImpl implements CourseDao {
+    
     private final DataSource dataSource;
 
     public CourseDaoImpl(DataSource dataSource) {

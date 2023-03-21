@@ -37,7 +37,7 @@ class GroupDaoJPATest {
     @Sql("/SQL/setGroupSetval.sql")
     @Test
     void add__whenInputParamGroup() {
-        Group group = new Group("AT-42");
+        Group group = new Group(1, "AT-42");
         groupDao.add(group);
 
         assertEquals(group, em.find(Group.class, 1));
@@ -54,9 +54,9 @@ class GroupDaoJPATest {
     @Test
     void addAll__whenInputParamListOfGroup() {
         List<Group> groups = new ArrayList<>();
-        groups.add(new Group("AT-42"));
-        groups.add(new Group("VK-13"));
-        groups.add(new Group("GG-01"));
+        groups.add(new Group(1, "AT-42"));
+        groups.add(new Group(2, "VK-13"));
+        groups.add(new Group(3, "GG-01"));
         groupDao.addAll(groups);
 
         String sql = "SELECT g FROM Group g";

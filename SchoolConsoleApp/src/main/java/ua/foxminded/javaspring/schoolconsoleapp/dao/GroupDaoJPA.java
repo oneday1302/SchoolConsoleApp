@@ -24,7 +24,7 @@ public class GroupDaoJPA implements GroupDao {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         
-        em.persist(group);
+        em.merge(group);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class GroupDaoJPA implements GroupDao {
         }
         
         for(Group group : groups) {
-            em.persist(group);
+            em.merge(group);
         }
     }
 

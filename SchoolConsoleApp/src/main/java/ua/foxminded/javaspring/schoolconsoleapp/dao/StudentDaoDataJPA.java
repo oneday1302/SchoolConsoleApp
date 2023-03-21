@@ -9,10 +9,12 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 @Profile("DataJPA")
 public class StudentDaoDataJPA implements StudentDao {
 
-    private final StudentRepository repository;
-    
-    public StudentDaoDataJPA(StudentRepository repository) {
-        this.repository = repository;
+    private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
+
+    public StudentDaoDataJPA(StudentRepository studentRepository, CourseRepository courseRepository) {
+        this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     @Override
@@ -21,7 +23,7 @@ public class StudentDaoDataJPA implements StudentDao {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         
-        repository.save(student);
+        studentRepository.save(student);
     }
 
     @Override
@@ -30,12 +32,12 @@ public class StudentDaoDataJPA implements StudentDao {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         
-        repository.saveAll(students);
+        studentRepository.saveAll(students);
     }
 
     @Override
     public List<Student> getAll() {
-        return repository.findAll();
+        return studentRepository.findAll();
     }
 
     @Override
@@ -44,7 +46,7 @@ public class StudentDaoDataJPA implements StudentDao {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         
-        repository.save(student);
+        studentRepository.save(student);
     }
 
     @Override
@@ -53,12 +55,12 @@ public class StudentDaoDataJPA implements StudentDao {
             throw new IllegalArgumentException("Param cannot be null.");
         }
         
-        return repository.findAllStudentsInTheCourse(courseName);
+        return studentRepository.findAllStudentsInTheCourseByCoursesName(courseName);
     }
 
     @Override
     public void delete(int id) {
-        repository.deleteById(id);
+        studentRepository.deleteById(id);
     }
 
     @Override
@@ -67,33 +69,33 @@ public class StudentDaoDataJPA implements StudentDao {
             throw new IllegalArgumentException("Params cannot be null.");
         }
         
-        repository.save(student);
+        studentRepository.save(student);
     }
 
     @Override
     public void removeStudentFromCourses(int studentId) {
-        Student student = repository.findById(studentId).get();
+        Student student = studentRepository.findById(studentId).get();
         student.removeStudentFromCourses();
-        repository.save(student);
+        studentRepository.save(student);
         
     }
 
     @Override
     public void removeStudentFromCourse(int studentId, int courseId) {
-        Student student = repository.findById(studentId).get();
+        Student student = studentRepository.findById(studentId).get();
         student.removeStudentFromCourse(courseId);
-        repository.save(student);
+        studentRepository.save(student);
     }
 
     @Override
     public void addStudentToCourse(int studentId, int courseId) {
-        Student student = repository.findById(studentId).get();
-        student.addCourse(repository.getCourse(courseId));
-        repository.save(student);
+        Student student = studentRepository.findById(studentId).get();
+        student.addCourse(courseRepository.findById(courseId).get());
+        studentRepository.save(student);
     }
 
     @Override
     public boolean isEmpty() {
-        return repository.countOfStudents() == 0;
+        return studentRepository.count() == 0;
     }
 }

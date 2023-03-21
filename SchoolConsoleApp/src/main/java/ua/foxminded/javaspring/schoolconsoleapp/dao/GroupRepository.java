@@ -12,7 +12,4 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
     
     @Query("select g from Group g join Student s on g.id = s.id group by g.id having count(s.id) <=:studentsNumber order by g.id")
     public List<Group> getAllGrupsWithLessOrEqualsStudentsNumber(@Param("studentsNumber") long studentsNumber);
-    
-    @Query("select count(id) from Group")
-    public int countOfGroups();
 }
