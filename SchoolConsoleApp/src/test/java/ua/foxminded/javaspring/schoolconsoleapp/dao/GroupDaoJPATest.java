@@ -25,7 +25,7 @@ class GroupDaoJPATest {
     private TestEntityManager em;
 
     @Autowired
-    GroupDao groupDao;
+    private GroupDao groupDao;
 
     @Test
     void add_shouldReturnIllegalArgumentException_whenInputParamNull() {
@@ -39,7 +39,6 @@ class GroupDaoJPATest {
     void add__whenInputParamGroup() {
         Group group = new Group(1, "AT-42");
         groupDao.add(group);
-
         assertEquals(group, em.find(Group.class, 1));
     }
 

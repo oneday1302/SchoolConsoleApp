@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
@@ -21,7 +21,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 class CourseDaoDataJPATest {
     
     @Autowired
-    private JpaRepository<Course, Integer> repository;
+    private TestEntityManager em;
     
     @Autowired
     private CourseDao courseDao;
@@ -38,7 +38,7 @@ class CourseDaoDataJPATest {
     void add_whenInputParamCourse() {
         Course course = new Course(1, "History", "History");
         courseDao.add(course);
-        assertEquals(course, repository.getOne(1));
+        assertEquals(course, em.find(Course.class, 1));
     }
     
     @Test
@@ -58,7 +58,8 @@ class CourseDaoDataJPATest {
         
         courseDao.addAll(courses);
 
-        assertEquals(courses, repository.findAll());
+        String sql = "SELECT c FROM Course c";
+        assertEquals(courses, em.getEntityManager().createQuery(sql, Course.class).getResultList());
     }
 
     @Sql("/SQL/setCourseSetval.sql")

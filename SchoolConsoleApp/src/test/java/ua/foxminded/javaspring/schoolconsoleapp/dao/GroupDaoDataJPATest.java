@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Group;
@@ -22,7 +22,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 class GroupDaoDataJPATest {
     
     @Autowired
-    private JpaRepository<Group, Integer> repository;
+    private TestEntityManager em;
     
     @Autowired
     private GroupDao groupDao;
@@ -39,7 +39,7 @@ class GroupDaoDataJPATest {
     void add__whenInputParamGroup() {
         Group group = new Group(1, "AT-42");
         groupDao.add(group);
-        assertEquals(group, repository.getOne(1));
+        assertEquals(group, em.find(Group.class, 1));
     }
 
     @Test
@@ -58,7 +58,8 @@ class GroupDaoDataJPATest {
         groups.add(new Group("GG-01"));
         groupDao.addAll(groups);
 
-        assertEquals(groups, repository.findAll());
+        String sql = "SELECT g FROM Group g";
+        assertEquals(groups, em.getEntityManager().createQuery(sql, Group.class).getResultList());
     }
 
     @Sql("/SQL/setGroupSetval.sql")

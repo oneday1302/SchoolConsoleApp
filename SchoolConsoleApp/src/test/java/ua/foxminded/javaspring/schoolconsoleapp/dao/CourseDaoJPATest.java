@@ -38,7 +38,6 @@ class CourseDaoJPATest {
     void add_whenInputParamCourse() {
         Course course = new Course(1, "History", "History");
         courseDao.add(course);
-
         assertEquals(course, em.find(Course.class, 1));
     }
 

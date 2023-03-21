@@ -26,7 +26,7 @@ class StudentDaoJPATest {
     private TestEntityManager em;
     
     @Autowired
-    StudentDao studentDao;
+    private StudentDao studentDao;
 
     @Test
     void add_shouldReturnIllegalArgumentException_whenInputParamNull() {
@@ -40,7 +40,6 @@ class StudentDaoJPATest {
     void add__whenInputParamStudent() {
         Student student = new Student(1, "Jacob", "Smith");
         studentDao.add(student);
-
         assertEquals(student, em.find(Student.class, 1));
     }
     

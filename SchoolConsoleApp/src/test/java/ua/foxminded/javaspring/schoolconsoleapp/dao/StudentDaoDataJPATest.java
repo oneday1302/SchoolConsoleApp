@@ -3,14 +3,13 @@ package ua.foxminded.javaspring.schoolconsoleapp.dao;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
@@ -24,7 +23,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 class StudentDaoDataJPATest {
     
     @Autowired
-    private JpaRepository<Student, Integer> repository;
+    private TestEntityManager em;
     
     @Autowired
     private StudentDao studentDao;
@@ -41,8 +40,7 @@ class StudentDaoDataJPATest {
     void add__whenInputParamStudent() {
         Student student = new Student("Jacob", "Smith");
         studentDao.add(student);
-
-        assertEquals(student, repository.getOne(1));
+        assertEquals(student, em.find(Student.class, 1));
     }
     
     @Test
@@ -62,7 +60,8 @@ class StudentDaoDataJPATest {
         
         studentDao.addAll(students);
 
-        assertEquals(students, repository.findAll());
+        String sql = "SELECT s FROM Student s";
+        assertEquals(students, em.getEntityManager().createQuery(sql, Student.class).getResultList());
     }
 
     @Sql("/SQL/setStudentSetval.sql")
@@ -92,7 +91,7 @@ class StudentDaoDataJPATest {
         Student student = new Student(1, "Jacob", "Smith");
         student.setGroup(new Group(1, "VK-13"));
         studentDao.updateGroupIdRow(student);
-        assertEquals("VK-13", repository.getOne(1).getGroup().getName());
+        assertEquals(student, em.find(Student.class, 1));
     }
     
     @Test
@@ -120,9 +119,7 @@ class StudentDaoDataJPATest {
     @Test
     void delete_whenInputStudentId() {
         studentDao.delete(1);
-        assertThrows(NoSuchElementException.class, () -> {
-            repository.findById(1).get();
-        });
+        assertEquals(null, em.find(Student.class, 1));
     }
     
     @Test
@@ -143,7 +140,8 @@ class StudentDaoDataJPATest {
 
         studentDao.addStudentToCourse(student);
         
-        assertEquals(course, repository.getOne(1).getCourses().get(0));
+        String sql = "SELECT c FROM Student s Join s.courses c where c.name = ?1";
+        assertEquals(course, em.getEntityManager().createQuery(sql, Course.class).setParameter(1, course.getName()).getSingleResult());
     }
     
     @Sql("/SQL/setCourseSetval.sql")
@@ -152,7 +150,8 @@ class StudentDaoDataJPATest {
     @Test
     void removeStudentFromCourses_whenInputStudentId() {
         studentDao.removeStudentFromCourses(1);
-        assertEquals(0, repository.getOne(1).getCourses().size());
+        String sql = "select count (c) from Student s join s.courses c";
+        assertEquals(0, em.getEntityManager().createQuery(sql, Long.class).getSingleResult());
     }
     
     @Sql("/SQL/setCourseSetval.sql")
@@ -161,7 +160,8 @@ class StudentDaoDataJPATest {
     @Test
     void removeStudentFromCourse_whenInputStudentIdAndCourseId() {
         studentDao.removeStudentFromCourse(1, 1);
-        assertEquals(0, repository.getOne(1).getCourses().size());
+        String sql = "select count (c) from Student s join s.courses c";
+        assertEquals(0, em.getEntityManager().createQuery(sql, Long.class).getSingleResult());
     }
     
     @Sql("/SQL/setCourseSetval.sql")
@@ -170,7 +170,8 @@ class StudentDaoDataJPATest {
     @Test
     void addStudentToCourse_whenInputStudentIdAndCourseId() {
         studentDao.addStudentToCourse(1, 1);
-        assertEquals(1, repository.getOne(1).getCourses().size());
+        String sql = "select count (c) from Student s join s.courses c";
+        assertEquals(1, em.getEntityManager().createQuery(sql, Long.class).getSingleResult());
     }
     
     @Test
