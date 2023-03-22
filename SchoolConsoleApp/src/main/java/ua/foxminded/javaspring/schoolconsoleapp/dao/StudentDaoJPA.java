@@ -81,6 +81,9 @@ public class StudentDaoJPA implements StudentDao {
     @Override
     public void removeStudentFromCourses(int studentId) {
         Student student = em.find(Student.class, studentId);
+        if (student == null) {
+            throw new IllegalArgumentException("Entity no found.");
+        }
         student.removeStudentFromCourses();
         em.merge(student);
     }
@@ -88,14 +91,22 @@ public class StudentDaoJPA implements StudentDao {
     @Override
     public void removeStudentFromCourse(int studentId, int courseId) {
         Student student = em.find(Student.class, studentId);
-        student.removeStudentFromCourse(em.find(Course.class, courseId));
+        Course course = em.find(Course.class, courseId);
+        if (student == null || course == null) {
+            throw new IllegalArgumentException("Entity no found.");
+        }
+        student.removeStudentFromCourse(course);
         em.merge(student);
     }
 
     @Override
     public void addStudentToCourse(int studentId, int courseId) {
         Student student = em.find(Student.class, studentId);
-        student.addCourse(em.find(Course.class, courseId));
+        Course course = em.find(Course.class, courseId);
+        if (student == null || course == null) {
+            throw new IllegalArgumentException("Entity no found.");
+        }
+        student.addCourse(course);
         em.merge(student);
     }
 
