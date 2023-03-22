@@ -1,8 +1,12 @@
 package ua.foxminded.javaspring.schoolconsoleapp.dao;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
+
+import ua.foxminded.javaspring.schoolconsoleapp.entity.Course;
 import ua.foxminded.javaspring.schoolconsoleapp.entity.Student;
 
 @Repository
@@ -74,24 +78,37 @@ public class StudentDaoDataJPA implements StudentDao {
 
     @Override
     public void removeStudentFromCourses(int studentId) {
-        Student student = studentRepository.findById(studentId).get();
-        student.removeStudentFromCourses();
-        studentRepository.save(student);
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (!student.isPresent()) {
+            throw new IllegalArgumentException("Entity no found.");
+        }
+        student.get().removeStudentFromCourses();
+        studentRepository.save(student.get());
         
     }
 
     @Override
     public void removeStudentFromCourse(int studentId, int courseId) {
-        Student student = studentRepository.findById(studentId).get();
-        student.removeStudentFromCourse(courseId);
-        studentRepository.save(student);
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (!student.isPresent()) {
+            throw new IllegalArgumentException("Entity no found.");
+        }
+        student.get().removeStudentFromCourse(courseId);
+        studentRepository.save(student.get());
     }
 
     @Override
     public void addStudentToCourse(int studentId, int courseId) {
-        Student student = studentRepository.findById(studentId).get();
-        student.addCourse(courseRepository.findById(courseId).get());
-        studentRepository.save(student);
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (!student.isPresent()) {
+            throw new IllegalArgumentException("Entity no found.");
+        }
+        Optional<Course> course = courseRepository.findById(courseId);
+        if (!course.isPresent()) {
+            throw new IllegalArgumentException("Entity no found.");
+        }
+        student.get().addCourse(course.get());
+        studentRepository.save(student.get());
     }
 
     @Override
