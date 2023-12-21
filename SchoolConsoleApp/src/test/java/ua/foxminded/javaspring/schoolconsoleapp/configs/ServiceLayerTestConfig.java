@@ -11,6 +11,7 @@ import ua.foxminded.javaspring.schoolconsoleapp.dao.StudentDao;
 
 @Configuration
 @ComponentScan("ua.foxminded.javaspring.schoolconsoleapp.service")
+
 public class ServiceLayerTestConfig {
 
     @Bean
